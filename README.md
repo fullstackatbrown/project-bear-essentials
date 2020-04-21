@@ -6,7 +6,7 @@ Welcome to the Brown Essentials repository!
 
 Contained in this section are instructions on how to get started developing for this project.
 
-First, ensure that you have `npm` and `yarn` installed. Once you confirm that, run `npm i -g expo-cli` and `npm i -g react-native` to install all necessary dependencies for development. Next, clone and navigate into the repository, and run `yarn` to install all packages.
+First, ensure that you have `npm` and `yarn` installed. Once you confirm that, run `npm i -g expo-cli` and `npm i -g react-native` to install all necessary dependencies for development. Next, clone and navigate into the repository, and run `yarn` in /client to install all packages.
 
 To build and run the project, run `yarn start`.
 
