@@ -4,6 +4,7 @@ import * as React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import LaundryScreen from '../screens/LaundryScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -30,6 +31,14 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Resources',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Laundry"
+        component={LaundryScreen}
+        options={{
+          title: 'Laundry',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-basket" />,
         }}
       />
     </BottomTab.Navigator>
