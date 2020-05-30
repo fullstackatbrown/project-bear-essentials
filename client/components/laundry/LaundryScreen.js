@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import LaundryCard from "./LaundryCard";
 
 export default class LaundryScreen extends React.Component {
   constructor(props) {
@@ -51,12 +52,7 @@ export default class LaundryScreen extends React.Component {
   renderCard(card) {
     // TODO: Create collapsable
     const attrs = this.cards[card];
-    return (
-      <View>
-        <Text>{attrs.title}</Text>
-        <Text>{attrs.room && "Room " + attrs.room}</Text>
-      </View>
-    );
+    return <LaundryCard title={attrs.title} room={attrs.room} />;
   }
 
   renderSuggestions() {
