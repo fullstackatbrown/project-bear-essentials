@@ -10,29 +10,32 @@ const LaundryCard = props => {
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
 
+    // when star is pressed
     const starHandler = () => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
             setStarColor('black');
             
-            // add to favorites
+            // remove from favorites
         } else {
             setStarred(true);
             setStarName('star');
             setStarColor('yellow');
-            // remove from favorites
+            // add to favorites
         }
     }
 
+    // when bell is pressed
     const bellHandler = () => {
         if (notif) {
             setNotif(false);
             setBellName('bell-outline');
-            // add notifications
+            // remove notifications
         } else {
             setNotif(true);
             setBellName('bell');
+            // add notifications
         }
     }
 
@@ -57,6 +60,7 @@ const LaundryCard = props => {
     );
 };
 
+// styles
 const styles = StyleSheet.create({
     back: {
         padding: 5,
