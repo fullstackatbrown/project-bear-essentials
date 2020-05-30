@@ -43,8 +43,9 @@ const LaundryCard = props => {
         <View style={styles.back}>
             <View style={styles.card}>
                 <View>
-                    <Text style={styles.title}>{props.title}</Text>
-                    <Text style={styles.room}>{props.room && "(Room " + props.room + ")"}</Text>
+                    <Text style={styles.title}>{props.card.title}</Text>
+                    <Text style={styles.room}>{props.card.room && 
+                        "(Room " + props.card.room + ")"}</Text>
                     <Text>Machine details here</Text>
                 </View>
                 <View style={styles.icons}>

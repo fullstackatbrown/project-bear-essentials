@@ -52,7 +52,7 @@ export default class LaundryScreen extends React.Component {
   renderCard(card) {
     // TODO: Create collapsable
     const attrs = this.cards[card];
-    return <LaundryCard title={attrs.title} room={attrs.room} />;
+    return <LaundryCard card={attrs} />;
   }
 
   renderSuggestions() {
