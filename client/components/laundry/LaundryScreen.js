@@ -30,44 +30,63 @@ export default class LaundryScreen extends React.Component {
     this.state = {
       emptySearchBar: true,
       suggestions: [], // keys for cards
-      expanded: new Set(), // keys for cards
-      starred: new Set(), // keys for cards, pull user info
+      starred: new Set(["ANDREWS EAST 154", "MILLER HALL"]), // keys for cards, pull user info
       notifications: new Set(), // keys for cards, pull user info
     };
+
+    this.onTextChanged = this.onTextChanged.bind(this);
+    this.onStarChanged = this.onStarChanged.bind(this);
   }
+
+  onStarChanged = (card) => {
+    const starred = this.state.starred;
+    if (starred.has(card)) {
+      starred.delete(card);
+    } else {
+      starred.add(card);
+    }
+    this.setState(() => ({})) // re-renders LaundryScreen
+  };
 
   onTextChanged = (text) => {
     let emptySearchBar = true;
     let newSuggestions = [];
     if (text.length > 0) {
       emptySearchBar = false;
-      const regex = new RegExp(`${text}`, "i");
       newSuggestions = Object.keys(this.cards)
         .sort()
-        .filter((v) => regex.test(v));
+        .filter((v) => (v.toLowerCase().indexOf(text.toLowerCase()) != -1 ));
     }
-    this.setState(() => ({ suggestions: newSuggestions, emptySearchBar }));
+    this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
 
-  renderCard(card) {
-    // TODO: Create collapsable
-    const attrs = this.cards[card];
-    return <LaundryCard card={attrs} />;
-  }
-
-  renderSuggestions() {
-    const { emptySearchBar, suggestions } = this.state;
-    if (suggestions.length === 0) {
-      if (emptySearchBar) {
-        return <Text>TODO: Display starred rooms</Text>; // "You do not have any starred laundry rooms" OR display all starred rooms
-      }
-      return <Text>No search results found</Text>;
-    }
+  mapToCards (toMap) {
     return (
       <ScrollView>
-        {suggestions.map((card) => this.renderCard(card))}
+        {toMap.map((card) =>
+          <LaundryCard
+            key={card}
+            card={this.cards[card]}
+            starred={this.state.starred.has(card)}
+            starAction={() => this.onStarChanged(card)} />)}
       </ScrollView>
-    );
+      )
+  }
+
+  renderSuggestions () {
+    const { emptySearchBar, suggestions } = this.state;
+    const starredArr = Array.from(this.state.starred).sort()
+    if (suggestions.length === 0) {
+      if (emptySearchBar) {
+        if (starredArr.length === 0) {
+          return <Text>No starred laundry rooms yet.</Text>;
+        }
+        return this.mapToCards(starredArr);
+      }
+      return <Text>No search results found.</Text>;
+    }
+    
+    return this.mapToCards(suggestions);
   }
 
   render() {
@@ -92,6 +111,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
+    borderRadius: 10,
     borderColor: "#777",
     padding: 8,
     margin: 10,

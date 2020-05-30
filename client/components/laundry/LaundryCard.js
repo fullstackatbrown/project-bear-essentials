@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LaundryCard = props => {
-    const [starred, setStarred] = useState(false);
-    const [starName, setStarName] = useState('staro');
-    const [starColor, setStarColor] = useState('black');
+    const [starred, setStarred] = useState((props.starred) ? true : false);
+    const [starName, setStarName] = useState(starred ? 'star' : 'staro');
+    const [starColor, setStarColor] = useState(starred ? 'gold' : 'black');
 
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
@@ -21,9 +21,11 @@ const LaundryCard = props => {
         } else {
             setStarred(true);
             setStarName('star');
-            setStarColor('yellow');
+            setStarColor('gold');
             // add to favorites
         }
+
+        props.starAction()
     }
 
     // when bell is pressed
@@ -68,15 +70,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#0000'
     },
     card: {
-        padding: 10,
-        borderRadius: 5,
+        padding: 12,
+        borderRadius: 10,
         width: 300,
 
         // shadows for ios
         shadowColor: 'black',
-        shadowRadius: 6,
-        shadowOpacity: 0.26,
+        shadowRadius: 2,
+        shadowOpacity: 0.25,
         backgroundColor: 'white',
+        shadowOffset: {
+            width: 0,
+            height: 1
+        },
 
         // shadows for android
         elevation: 5,
