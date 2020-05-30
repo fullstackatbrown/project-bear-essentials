@@ -1,9 +1,41 @@
-import React from 'react';
-import { StyleSheet, View, Text} from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons'; 
+import React, {useState} from 'react';
+import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LaundryCard = props => {
+    const [starred, setStarred] = useState(false);
+    const [starName, setStarName] = useState('staro');
+    const [starColor, setStarColor] = useState('black');
+
+    const [notif, setNotif] = useState(false);
+    const [bellName, setBellName] = useState('bell-outline');
+
+    const starHandler = () => {
+        if (starred) {
+            setStarred(false);
+            setStarName('staro');
+            setStarColor('black');
+            
+            // add to favorites
+        } else {
+            setStarred(true);
+            setStarName('star');
+            setStarColor('yellow');
+            // remove from favorites
+        }
+    }
+
+    const bellHandler = () => {
+        if (notif) {
+            setNotif(false);
+            setBellName('bell-outline');
+            // add notifications
+        } else {
+            setNotif(true);
+            setBellName('bell');
+        }
+    }
+
     return (
         <View style={styles.back}>
             <View style={styles.card}>
@@ -13,8 +45,12 @@ const LaundryCard = props => {
                     <Text>Machine details here</Text>
                 </View>
                 <View style={styles.icons}>
-                    <AntDesign name="staro" size={24} color="black" />
-                    <EvilIcons name="bell" size={24} color="black" />
+                    <TouchableOpacity onPress={starHandler}>
+                       <AntDesign name={starName} size={24} color={starColor}/>  
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={bellHandler}>
+                        <MaterialCommunityIcons name={bellName} size={24} color='gray' />
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
