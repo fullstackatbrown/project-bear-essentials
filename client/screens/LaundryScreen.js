@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import LaundryCard from '../components/LaundryCard';
 
 export default class LaundryScreen extends React.Component {
 	
@@ -50,10 +51,7 @@ export default class LaundryScreen extends React.Component {
 	renderCard (card) { // TODO: Create collapsable
 		const attrs = this.cards[card];
 		return (
-			<View>
-				<Text>{attrs.title}</Text>
-				<Text>{attrs.room && "Room " + attrs.room}</Text>
-			</View>
+				<LaundryCard title={attrs.title} room={attrs.room}/>
 		);
 	}
 
