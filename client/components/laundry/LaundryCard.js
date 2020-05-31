@@ -5,26 +5,26 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 const LaundryCard = props => {
     const [starred, setStarred] = useState((props.starred) ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
-    const [starColor, setStarColor] = useState(starred ? 'gold' : 'black');
+    const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
+
+    
 
     // when star is pressed
     const starHandler = () => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
-            setStarColor('black');
-            
-            // remove from favorites
+            setStarColor('#BCBCBC'); //inactive color
         } else {
             setStarred(true);
             setStarName('star');
-            setStarColor('gold');
-            // add to favorites
+            setStarColor('#FFEF26'); //star yellow
         }
 
+        // send changes to parent
         props.starAction()
     }
 
@@ -72,8 +72,6 @@ const styles = StyleSheet.create({
     card: {
         padding: 12,
         borderRadius: 10,
-        width: 300,
-
         // shadows for ios
         shadowColor: 'black',
         shadowRadius: 2,
@@ -83,6 +81,8 @@ const styles = StyleSheet.create({
             width: 0,
             height: 1
         },
+        width: '90%',
+        alignSelf: 'center',
 
         // shadows for android
         elevation: 5,

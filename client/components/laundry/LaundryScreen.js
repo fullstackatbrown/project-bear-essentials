@@ -111,12 +111,12 @@ export default class LaundryScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: "#fafafa",
   },
   textInput: {
     borderWidth: 0,
-    marginLeft: 10
+    marginLeft: 10,
+    flex: 1
   },
   searchBar: {
     borderWidth: 0,
@@ -125,9 +125,9 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 12,
     margin: 10,
-    width: 300,
+    width: '90%',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignSelf: 'center',
 
     // shadows for ios
     shadowColor: 'black',
