@@ -1,16 +1,21 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import Collapsible from 'react-native-collapsible';
 
 const LaundryCard = props => {
+    // states for star
     const [starred, setStarred] = useState((props.starred) ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
     const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 
+    // states for bell
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
     const [bellColor, setBellColor] = useState('#BCBCBC');
 
+    // states for collapsible
+    const [collapsed, setCollapsed] = useState(true);
 
     // when star is pressed
     const starHandler = () => {
@@ -38,32 +43,64 @@ const LaundryCard = props => {
         } else {
             setNotif(true);
             setBellName('bell');
-            setBellColor('#949494')
+            setBellColor('#949494');
             // add notifications
         }
+    }
+
+    // when down arrow is pressed
+    const downArrowHandler = () => {
+        setCollapsed(false);
+    }
+
+    // when up arrow is pressed
+    const upArrowHandler = () => {
+        setCollapsed(true);
     }
 
     return (
         <View style={styles.back}>
             <View style={styles.card}>
-                <View>
-                    <Text style={styles.title}>{props.card.title}</Text>
-                    <Text style={styles.room}>{props.card.room && 
-                        "(Room " + props.card.room + ")"}</Text>
-                    <Text>Machine details here</Text>
-                </View>
-                <View style={styles.icons}>
+                <View style={styles.header}>
+                    <View>
+                        <Text style={styles.title}>{props.card.title}</Text>
+                        <Text style={styles.room}>{props.card.room && 
+                            "(Room " + props.card.room + ")"}</Text>
+                    </View>
                     <TouchableOpacity onPress={starHandler}>
-                       <AntDesign name={starName} size={24} color={starColor}/>  
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={bellHandler}>
-                        <MaterialCommunityIcons name={bellName} size={24} color={bellColor} />
+                        <AntDesign name={starName} size={24} color={starColor}/>  
                     </TouchableOpacity>
                 </View>
+                <Collapsible collapsed={!collapsed}>
+                    <View style={styles.temporary}>
+                        <Text>Machine details here</Text>
+                        <TouchableOpacity onPress={downArrowHandler}>
+                            <Ionicons name="ios-arrow-down" size={24} color="#949494" />
+                        </TouchableOpacity>
+                    </View>
+                </Collapsible>
+                <Collapsible collapsed={collapsed}>
+                    <View style={styles.hiddenCard}>
+                        <View>
+                            <Text>Individual machines</Text>
+                            <Text>Individual machines</Text>
+                            <Text>Individual machines</Text>
+                            <Text>Individual machines</Text>
+                        </View>
+                        <View style={styles.upArrow}>
+                            <TouchableOpacity onPress={upArrowHandler}>
+                                <Ionicons name="ios-arrow-up" size={24} color="#949494" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    
+                    
+                </Collapsible>
             </View>
         </View>
     );
 };
+
 
 // styles
 const styles = StyleSheet.create({
@@ -88,9 +125,6 @@ const styles = StyleSheet.create({
 
         // shadows for android
         elevation: 5,
-
-        flexDirection: 'row',
-        justifyContent: 'space-between'
     },
     title: {
         fontWeight: '400',
@@ -99,8 +133,20 @@ const styles = StyleSheet.create({
     room : {
         color: 'gray'
     },
-    icons: {
-        justifyContent: 'space-around'
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    temporary: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    hiddenCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    upArrow : {
+        justifyContent: 'flex-end'
     }
 });
 
