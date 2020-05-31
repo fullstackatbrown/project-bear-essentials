@@ -58,29 +58,39 @@ const LaundryCard = props => {
         setCollapsed(true);
     }
 
+    // returns formatted room, if it exists
+    const roomHandler = () => {
+        if (props.card.room) {
+            return (
+                <Text style={styles.room}>
+                    {"(Room " + props.card.room + ")"}
+                </Text>
+            );
+        }
+    }
+
     return (
         <View style={styles.back}>
             <View style={styles.card}>
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.title}>{props.card.title}</Text>
-                        <Text style={styles.room}>{props.card.room && 
-                            "(Room " + props.card.room + ")"}</Text>
+                        {roomHandler()}
                     </View>
                     <TouchableOpacity onPress={starHandler}>
-                        <AntDesign name={starName} size={24} color={starColor}/>  
+                        <AntDesign name={starName} size={30} color={starColor} style={styles.star}/>  
                     </TouchableOpacity>
                 </View>
                 <Collapsible collapsed={!collapsed}>
-                    <View style={styles.temporary}>
+                    <View style={styles.uncollapsed}>
                         <Text>Machine details here</Text>
                         <TouchableOpacity onPress={downArrowHandler}>
-                            <Ionicons name="ios-arrow-down" size={24} color="#949494" />
+                            <Ionicons name="ios-arrow-down" size={40} color="#CCCCCC" style={styles.arrow} />
                         </TouchableOpacity>
                     </View>
                 </Collapsible>
                 <Collapsible collapsed={collapsed}>
-                    <View style={styles.hiddenCard}>
+                    <View style={styles.collapsed}>
                         <View>
                             <Text>Individual machines</Text>
                             <Text>Individual machines</Text>
@@ -89,7 +99,7 @@ const LaundryCard = props => {
                         </View>
                         <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
-                                <Ionicons name="ios-arrow-up" size={24} color="#949494" />
+                                <Ionicons name="ios-arrow-up" size={36} color="#CCCCCC" style={styles.arrow} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -109,7 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0000'
     },
     card: {
-        padding: 12,
+        padding: 20,
         borderRadius: 10,
         // shadows for ios
         shadowColor: 'black',
@@ -128,26 +138,33 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: '400',
-        fontSize: 20
+        fontSize: 26
     },
-    room : {
-        color: 'gray'
+    room: {
+        fontSize: 20,
+        color: 'gray',
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    temporary: {
+    uncollapsed: {
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    hiddenCard: {
+    collapsed: {
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    upArrow : {
+    upArrow: {
         justifyContent: 'flex-end'
-    }
+    },
+    arrow: {
+        marginBottom: -10,
+        marginRight: 2
+    },
 });
 
 export default LaundryCard;

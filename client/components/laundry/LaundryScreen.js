@@ -80,11 +80,11 @@ export default class LaundryScreen extends React.Component {
     if (suggestions.length === 0) {
       if (emptySearchBar) {
         if (starredArr.length === 0) {
-          return <Text>No starred laundry rooms yet.</Text>;
+          return <Text style={styles.textCentered}>No starred laundry rooms yet.</Text>;
         }
         return this.mapToCards(starredArr);
       }
-      return <Text>No search results found.</Text>;
+      return <Text style={styles.textCentered}>No search results found.</Text>;
     }
     
     return this.mapToCards(suggestions);
@@ -94,7 +94,7 @@ export default class LaundryScreen extends React.Component {
     return (
       <View style={styles.screen}>
         <View style={styles.searchBar}>
-          <Ionicons name="ios-search" size={24} color="gray" />
+          <Ionicons name="ios-search" size={24} color="gray" style={styles.searchIcon} />
           <TextInput
           style={styles.textInput}
           placeholder="Search laundry"
@@ -116,16 +116,24 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 0,
     marginLeft: 10,
-    flex: 1
+    flex: 1,
+    fontSize: 16,
+    color: "#9C9C9C",
+  },
+  textCentered: {
+    marginTop: 20,
+    alignSelf: 'center',
+    fontSize: 18,
+    color: "#9C9C9C",
   },
   searchBar: {
     borderWidth: 0,
-    borderRadius: 20,
-    borderColor: "gray",
-    padding: 8,
+    borderRadius: 25,
+    borderColor: "#BCBCBC",
+    padding: 10,
     paddingLeft: 12,
-    margin: 10,
-    width: '90%',
+    margin: 12,
+    width: '88%',
     flexDirection: 'row',
     alignSelf: 'center',
 
@@ -141,5 +149,8 @@ const styles = StyleSheet.create({
 
     // shadows for android
     elevation: 5
+  },
+  searchIcon: {
+    marginTop: 2,
   }
 });
