@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontWeight: '400',
+        fontWeight: '500',
         fontSize: 26
     },
     room: {
