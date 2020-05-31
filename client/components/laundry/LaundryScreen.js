@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import LaundryCard from "./LaundryCard";
+import { Ionicons } from '@expo/vector-icons';
 
 export default class LaundryScreen extends React.Component {
   constructor(props) {
@@ -92,11 +93,15 @@ export default class LaundryScreen extends React.Component {
   render() {
     return (
       <View style={styles.screen}>
-        <TextInput
+        <View style={styles.searchBar}>
+          <Ionicons name="ios-search" size={24} color="gray" />
+          <TextInput
           style={styles.textInput}
           placeholder="Search laundry"
           onChangeText={(text) => this.onTextChanged(text)}
         />
+        </View>
+        
         {this.renderSuggestions()}
       </View>
     );
@@ -110,11 +115,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#fafafa",
   },
   textInput: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#777",
-    padding: 8,
-    margin: 10,
-    width: 200,
+    borderWidth: 0,
+    marginLeft: 10
   },
+  searchBar: {
+    borderWidth: 0,
+    borderRadius: 20,
+    borderColor: "gray",
+    padding: 8,
+    paddingLeft: 12,
+    margin: 10,
+    width: 300,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    // shadows for ios
+    shadowColor: 'black',
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    backgroundColor: 'white',
+    shadowOffset: {
+        width: 0,
+        height: 1
+    },
+
+    // shadows for android
+    elevation: 5
+  }
 });
