@@ -9,8 +9,8 @@ const LaundryCard = props => {
 
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
+    const [bellColor, setBellColor] = useState('#BCBCBC');
 
-    
 
     // when star is pressed
     const starHandler = () => {
@@ -33,10 +33,12 @@ const LaundryCard = props => {
         if (notif) {
             setNotif(false);
             setBellName('bell-outline');
+            setBellColor('#BCBCBC');
             // remove notifications
         } else {
             setNotif(true);
             setBellName('bell');
+            setBellColor('#949494')
             // add notifications
         }
     }
@@ -55,7 +57,7 @@ const LaundryCard = props => {
                        <AntDesign name={starName} size={24} color={starColor}/>  
                     </TouchableOpacity>
                     <TouchableOpacity onPress={bellHandler}>
-                        <MaterialCommunityIcons name={bellName} size={24} color='gray' />
+                        <MaterialCommunityIcons name={bellName} size={24} color={bellColor} />
                     </TouchableOpacity>
                 </View>
             </View>
