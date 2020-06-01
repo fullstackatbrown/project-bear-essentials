@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-nativ
 import { ScrollView } from "react-native-gesture-handler";
 import LaundryCard from "./LaundryCard";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { LAUNDRY_DATA } from "../../assets/dummydata/laundry"
+import { LAUNDRY_DATA } from "../../assets/dummydata/laundry/endpoint"
 
 export default class LaundryScreen extends React.Component {
   constructor(props) {
