@@ -1,44 +1,28 @@
 import * as React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import LaundryCard from "./LaundryCard";
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { LAUNDRY_DATA } from "../../assets/dummydata/laundry"
 
 export default class LaundryScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.cards = {
-      // FAKE DATA
-      "ANDREWS EAST 154": {
-        title: "Andrews East",
-        room: "154", // sometimes has a letter, so keep as string
-      },
-      "ANDREWS WEST 160": {
-        title: "Andrews West",
-        room: "160",
-      },
-      "METCALF HALL": {
-        title: "Metcalf",
-        room: "",
-      },
-      "MILLER HALL": {
-        title: "Miller",
-        room: null,
-      },
-    };
+    this.cards = LAUNDRY_DATA;
 
     this.state = {
       emptySearchBar: true,
-      suggestions: [], // keys for cards
-      starred: new Set(["ANDREWS EAST 154", "MILLER HALL"]), // keys for cards, pull user info
-      notifications: new Set(), // keys for cards, pull user info
+      suggestions: [],
+      starred: new Set(["ANDREWS EAST 154", "MILLER HALL"]),
+      notifications: new Set(),
     };
 
     this.onTextChanged = this.onTextChanged.bind(this);
     this.onStarChanged = this.onStarChanged.bind(this);
   }
 
+  // Called when a card is starred or unstarred
   onStarChanged = (card) => {
     const starred = this.state.starred;
     if (starred.has(card)) {
@@ -49,6 +33,7 @@ export default class LaundryScreen extends React.Component {
     this.setState(() => ({})) // re-renders LaundryScreen
   };
 
+  // Called on search bar text change
   onTextChanged = (text) => {
     let emptySearchBar = true;
     let newSuggestions = [];
@@ -61,6 +46,7 @@ export default class LaundryScreen extends React.Component {
     this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
 
+  // Returns scrolling card view, given list of cards (keys) to be rendered
   mapToCards (toMap) {
     return (
       <ScrollView>
@@ -74,6 +60,7 @@ export default class LaundryScreen extends React.Component {
       )
   }
 
+  // Returns search bar results, starred laundry rooms, or no results message
   renderSuggestions () {
     const { emptySearchBar, suggestions } = this.state;
     const starredArr = Array.from(this.state.starred).sort()
@@ -90,16 +77,29 @@ export default class LaundryScreen extends React.Component {
     return this.mapToCards(suggestions);
   }
 
+  // Returns search bar's clear button when there is text in the search box
+  crossHandler () {
+    const { emptySearchBar } = this.state;
+    if (!emptySearchBar) {
+      return (
+        <TouchableOpacity onPress={() => {this.textInput.clear(); this.onTextChanged("")}}>
+          <AntDesign style={styles.crossIcon} name="close" size={24} color="#A9A9A9" />
+        </TouchableOpacity>
+      );
+    }
+  }
+
   render() {
     return (
       <View style={styles.screen}>
         <View style={styles.searchBar}>
-          <Ionicons name="ios-search" size={24} color="gray" style={styles.searchIcon} />
+          <Ionicons style={styles.searchIcon} name="ios-search" size={24} color="gray" />
           <TextInput
           style={styles.textInput}
+          ref={input => { this.textInput = input }}
           placeholder="Search laundry"
-          onChangeText={(text) => this.onTextChanged(text)}
-        />
+          onChangeText={(text) => this.onTextChanged(text)} />
+          {this.crossHandler()}
         </View>
         
         {this.renderSuggestions()}
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 0,
     marginLeft: 10,
+    marginRight: 10,
     flex: 1,
     fontSize: 16,
     color: "#9C9C9C",
@@ -152,5 +153,9 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     marginTop: 2,
-  }
+  },
+  crossIcon: {
+    marginTop: 2,
+    marginRight: 3,
+  },
 });

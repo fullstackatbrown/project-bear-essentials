@@ -78,28 +78,31 @@ const LaundryCard = props => {
                         {roomHandler()}
                     </View>
                     <TouchableOpacity onPress={starHandler}>
-                        <AntDesign name={starName} size={30} color={starColor} style={styles.star}/>  
+                        <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
                     </TouchableOpacity>
                 </View>
                 <Collapsible collapsed={!collapsed}>
                     <View style={styles.uncollapsed}>
                         <Text>Machine details here</Text>
                         <TouchableOpacity onPress={downArrowHandler}>
-                            <Ionicons name="ios-arrow-down" size={40} color="#CCCCCC" style={styles.arrow} />
+                            <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
                         </TouchableOpacity>
                     </View>
                 </Collapsible>
                 <Collapsible collapsed={collapsed}>
                     <View style={styles.collapsed}>
                         <View>
-                            <Text>Individual machines</Text>
-                            <Text>Individual machines</Text>
-                            <Text>Individual machines</Text>
-                            <Text>Individual machines</Text>
+                            <Text>Washer</Text>
+                            <Text>Washer</Text>
+                        </View>
+                        <View style={styles.horizontalLine} />
+                        <View>
+                            <Text>Dryer</Text>
+                            <Text>Dryer</Text>
                         </View>
                         <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
-                                <Ionicons name="ios-arrow-up" size={36} color="#CCCCCC" style={styles.arrow} />
+                                <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
     },
     collapsed: {
         marginTop: 10,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between'
     },
     upArrow: {
@@ -164,6 +167,14 @@ const styles = StyleSheet.create({
     arrow: {
         marginBottom: -10,
         marginRight: 2
+    },
+    horizontalLine: {
+        marginTop: 6,
+        marginBottom: 6,
+        alignSelf: 'center',
+        width: '100%',
+        borderBottomColor: '#C4C4C4',
+        borderBottomWidth: StyleSheet.hairlineWidth,
     },
 });
 
