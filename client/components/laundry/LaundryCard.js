@@ -96,18 +96,18 @@ const LaundryCard = props => {
                             <Text>Washer</Text>
                         </View>
                         <View style={styles.horizontalLine} />
-                        <View>
-                            <Text>Dryer</Text>
-                            <Text>Dryer</Text>
-                        </View>
-                        <View style={styles.upArrow}>
+                        <View style={styles.colSections}>
+                            <View>
+                                <Text>Dryer</Text>
+                                <Text>Dryer</Text>
+                            </View>
+                            <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
                                 <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    
-                    
+                        </View>
+                    </View>                    
                 </Collapsible>
             </View>
         </View>
@@ -149,17 +149,21 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     uncollapsed: {
         marginTop: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     collapsed: {
         marginTop: 10,
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+    },
+    colSections: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     upArrow: {
         justifyContent: 'flex-end'
@@ -169,12 +173,12 @@ const styles = StyleSheet.create({
         marginRight: 2
     },
     horizontalLine: {
-        marginTop: 6,
-        marginBottom: 6,
+        marginTop: 10,
+        marginBottom: 10,
         alignSelf: 'center',
         width: '100%',
-        borderBottomColor: '#C4C4C4',
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#AEAEAE',
+        borderBottomWidth: 0.7,
     },
 });
 
