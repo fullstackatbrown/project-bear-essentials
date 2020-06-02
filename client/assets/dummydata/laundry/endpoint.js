@@ -1,9 +1,9 @@
 // TODO: Make dummy data
 
 const LAUNDRY_DATA = {
-  "ANDREWS EAST 154": {
-    title: "Andrews East",
-    room: "154",
+  "125-127 WATERMAN STREET 003": {
+    title: "125-127 Waterman Street",
+    room: "003",
     machines: [
       {
         id: 1,
@@ -62,7 +62,7 @@ const LAUNDRY_DATA = {
     ],
   },
   "METCALF HALL": {
-    title: "Metcalf",
+    title: "Metcalf Hall",
     room: "",
     machines: [
       {
@@ -80,7 +80,7 @@ const LAUNDRY_DATA = {
     ],
   },
   "MILLER HALL": {
-    title: "Miller",
+    title: "Miller Hall",
     room: null,
     machines: [
       {

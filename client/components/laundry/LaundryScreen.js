@@ -14,7 +14,7 @@ export default class LaundryScreen extends React.Component {
     this.state = {
       emptySearchBar: true,
       suggestions: [],
-      starred: new Set(["ANDREWS EAST 154", "MILLER HALL"]),
+      starred: new Set(["125-127 WATERMAN STREET 003", "MILLER HALL"]),
       notifications: new Set(),
     };
 
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     flex: 1,
-    fontSize: 16,
+    fontSize: 18,
     color: "#9C9C9C",
   },
   textCentered: {

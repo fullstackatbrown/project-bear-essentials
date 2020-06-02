@@ -31,7 +31,7 @@ const LaundryCard = props => {
 
         // send changes to parent
         props.starAction()
-    }
+    };
 
     // when bell is pressed
     const bellHandler = () => {
@@ -46,17 +46,17 @@ const LaundryCard = props => {
             setBellColor('#949494');
             // add notifications
         }
-    }
+    };
 
     // when down arrow is pressed
     const downArrowHandler = () => {
         setCollapsed(false);
-    }
+    };
 
     // when up arrow is pressed
     const upArrowHandler = () => {
         setCollapsed(true);
-    }
+    };
 
     // returns formatted room, if it exists
     const roomHandler = () => {
@@ -67,13 +67,55 @@ const LaundryCard = props => {
                 </Text>
             );
         }
-    }
+    };
+
+    const pluralize = (num) => {
+        if (num > 1) {
+            return 's';
+        }
+    };
+
+    const summaryHandler = () => {
+        let availWashers = 0;
+        let availDryers = 0;
+        props.card.machines.forEach(function (machine) {
+            if (machine.avail == true) {
+                if (machine.type == "WASHER") {
+                    availWashers++;
+                } else if (machine.type == "DRYER") {
+                    availDryers++;
+                }
+            }
+        });
+
+        if (availWashers == 0 && availDryers == 0) {
+            return <Text style={styles.fail}>No available machines</Text>;
+        } else if (availDryers == 0) {
+            return (
+                <Text style={styles.success}>
+                    {availWashers} washer{pluralize(availWashers)} available
+                </Text>
+            );
+        } else if (availWashers == 0) {
+            return (
+                <Text style={styles.success}>
+                    {availDryers} dryer{pluralize(availDryers)} available
+                </Text>
+            );
+        } else {
+            return (
+                <Text style={styles.success}>
+                    {availWashers} washer{pluralize(availWashers)}, {availDryers} dryer{pluralize(availDryers)} available
+                </Text>
+            );
+        }
+    };
 
     return (
         <View style={styles.back}>
             <View style={styles.card}>
                 <View style={styles.header}>
-                    <View>
+                    <View style={{ maxWidth: '80%' }}>
                         <Text style={styles.title}>{props.card.title}</Text>
                         {roomHandler()}
                     </View>
@@ -83,7 +125,7 @@ const LaundryCard = props => {
                 </View>
                 <Collapsible collapsed={!collapsed}>
                     <View style={styles.uncollapsed}>
-                        <Text>Machine details here</Text>
+                        <Text>{summaryHandler()}</Text>
                         <TouchableOpacity onPress={downArrowHandler}>
                             <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
                         </TouchableOpacity>
@@ -141,7 +183,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: '500',
-        fontSize: 26
+        fontSize: 26,
     },
     room: {
         fontSize: 20,
@@ -179,6 +221,14 @@ const styles = StyleSheet.create({
         width: '100%',
         borderBottomColor: '#AEAEAE',
         borderBottomWidth: 0.7,
+    },
+    success: {
+        color: 'green',
+        fontSize: 16,
+    },
+    fail: {
+        color: 'red',
+        fontSize: 16,
     },
 });
 
