@@ -1,7 +1,13 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLList } from "graphql";
+const {
+  GraphQLObjectType,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLString,
+  GraphQLBoolean,
+} = require("graphql");
 
 // Reusable Laundry Room GraphQL Type
-export const RoomType = new GraphQLObjectType({
+const RoomType = new GraphQLObjectType({
   name: "RoomType",
   fields: () => ({
     id: { type: GraphQLString },
@@ -10,7 +16,7 @@ export const RoomType = new GraphQLObjectType({
 });
 
 // Reusable Laundry Machine GraphQL Type
-export const MachineType = new GraphQLObjectType({
+const MachineType = new GraphQLObjectType({
   name: "MachineType",
   fields: () => ({
     id: { type: GraphQLInt },
@@ -20,7 +26,7 @@ export const MachineType = new GraphQLObjectType({
 });
 
 // Reusable Detailed Laundry Machine GraphQL Type
-export const MachineDetailedType = new GraphQLObjectType({
+const MachineDetailedType = new GraphQLObjectType({
   name: "MachineDetailedType",
   fields: () => ({
     id: { type: GraphQLInt },
@@ -34,8 +40,8 @@ export const MachineDetailedType = new GraphQLObjectType({
 
 // Endpoint for /laundry/rooms
 // Returned by getLaundryRooms()
-export const LaundryRooms = new GraphQLObjectType({
-  name: "/laundry/rooms",
+const LaundryRooms = new GraphQLObjectType({
+  name: "LaundryRooms",
   fields: () => ({
     num_result: { type: GraphQLInt },
     results: { type: new GraphQLList(RoomType) },
@@ -44,8 +50,8 @@ export const LaundryRooms = new GraphQLObjectType({
 
 // Endpoint for /laundry/room/<room_id>
 // Returned by getLaundryRoom(room_id, details=false)
-export const LaundryRoomsRoom = new GraphQLObjectType({
-  name: "/laundry/rooms/room_id",
+const LaundryRoom = new GraphQLObjectType({
+  name: "LaundryRoom",
   fields: () => ({
     id: { type: GraphQLString },
     machines: { type: new GraphQLList(MachineType) },
@@ -54,8 +60,8 @@ export const LaundryRoomsRoom = new GraphQLObjectType({
 
 // Endpoint for /laundry/room/<room_id>?get_status=true
 // Returned by getLaundryRoom(room_id, details=true)
-export const LaundryRoomsRoomDetailed = new GraphQLObjectType({
-  name: "/laundry/rooms/room_id?get_status=true",
+const LaundryRoomDetailed = new GraphQLObjectType({
+  name: "LaundryRoomDetailed",
   fields: () => ({
     id: { type: GraphQLString },
     machines: { type: new GraphQLList(MachineDetailedType) },
@@ -64,8 +70,8 @@ export const LaundryRoomsRoomDetailed = new GraphQLObjectType({
 
 //Endpoint for /laundry/room/<room_id>/machines/<machine_id>
 // Returned by getLaundryMachine(room_id, machine_id, details=false)
-export const LaundryRoomsRoomMachinesMachineId = new GraphQLObjectType({
-  name: "/laundry/rooms/room/machines/machine_id",
+const LaundryMachine = new GraphQLObjectType({
+  name: "LaundryMachine",
   fields: () => ({
     result: { type: MachineType },
   }),
@@ -73,9 +79,17 @@ export const LaundryRoomsRoomMachinesMachineId = new GraphQLObjectType({
 
 //Endpoint for /laundry/room/<room_id>/machines/<machine_id>?get_status=true
 // Returned by getLaundryMachine(room_id, machine_id, details=true)
-export const LaundryRoomsRoomMachinesMachineIdDetailed = new GraphQLObjectType({
-  name: "/laundry/rooms/room/machines/machine_id?get_status=true",
+const LaundryMachineDetailed = new GraphQLObjectType({
+  name: "LaundryMachineDetailed",
   fields: () => ({
     result: { type: MachineDetailedType },
   }),
 });
+
+module.exports = {
+  LaundryRooms: LaundryRooms,
+  LaundryRoom: LaundryRoom,
+  LaundryRoomDetailed: LaundryRoomDetailed,
+  LaundryMachine: LaundryMachine,
+  LaundryMachineDetailed: LaundryMachineDetailed,
+};
