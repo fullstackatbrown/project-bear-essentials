@@ -1,5 +1,3 @@
-// TODO: Make dummy data
-
 const LAUNDRY_DATA = {
   "125-127 WATERMAN STREET 003": {
     title: "125-127 Waterman Street",
