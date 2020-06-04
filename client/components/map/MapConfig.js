@@ -1,11 +1,43 @@
-export const initialRegion = {
+export const INITIAL_REGION = {
   latitude: 41.8267718,
   longitude: -71.4047369,
   latitudeDelta: 0.01,
   longitudeDelta: 0.01,
 };
 
-export const mapStyle = [
+export const FLAGS = [
+  "INDEPENDNT",
+  "ACAD",
+  "RES HALL",
+  "SUPPORT",
+  "AUXILIARY",
+  "LIBRARY",
+  "ADMIN",
+  "STUDENT AC",
+  "COMMERCIAL",
+  "ATHLETICS",
+  "HOSPITAL",
+  "CHURCH",
+  "DINING",
+];
+
+export const FLAGS_COLORS = {
+  INDEPENDNT: "red",
+  ACAD: "tomato",
+  "RES HALL": "orange",
+  SUPPORT: "yellow",
+  AUXILIARY: "gold",
+  LIBRARY: "wheat",
+  ADMIN: "tan",
+  "STUDENT AC": "linen",
+  COMMERCIAL: "green",
+  ATHLETICS: "blue",
+  HOSPITAL: "aqua",
+  CHURCH: "violet",
+  DINING: "indigo",
+};
+
+export const MAP_STYLE = [
   {
     elementType: "geometry",
     stylers: [
