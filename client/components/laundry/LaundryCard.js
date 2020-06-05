@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ToolbarAndroidComponent} from 'react-native';
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
+import LaundryMachine from './LaundryMachine';
 
 const LaundryCard = props => {
     // states for star
@@ -9,13 +10,14 @@ const LaundryCard = props => {
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
     const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 
-    // states for bell
-    const [notif, setNotif] = useState(false);
-    const [bellName, setBellName] = useState('bell-outline');
-    const [bellColor, setBellColor] = useState('#BCBCBC');
-
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
+
+    // list of machines
+    let allWashers = [];
+    let allDryers = [];
+    let availWashers = 0;
+    let availDryers = 0;
 
     // when star is pressed
     const starHandler = () => {
@@ -35,17 +37,7 @@ const LaundryCard = props => {
 
     // when bell is pressed
     const bellHandler = () => {
-        if (notif) {
-            setNotif(false);
-            setBellName('bell-outline');
-            setBellColor('#BCBCBC');
-            // remove notifications
-        } else {
-            setNotif(true);
-            setBellName('bell');
-            setBellColor('#949494');
-            // add notifications
-        }
+        // pass on to parent
     };
 
     // when down arrow is pressed
@@ -69,25 +61,15 @@ const LaundryCard = props => {
         }
     };
 
+    // appends a 's' for multiple machines
     const pluralize = (num) => {
         if (num > 1) {
             return 's';
         }
     };
 
+    // creates summary for unexpanded laundry card
     const summaryHandler = () => {
-        let availWashers = 0;
-        let availDryers = 0;
-        props.card.machines.forEach(function (machine) {
-            if (machine.avail == true) {
-                if (machine.type == "WASHER") {
-                    availWashers++;
-                } else if (machine.type == "DRYER") {
-                    availDryers++;
-                }
-            }
-        });
-
         if (availWashers == 0 && availDryers == 0) {
             return <Text style={styles.fail}>No available machines</Text>;
         } else if (availDryers == 0) {
@@ -110,6 +92,26 @@ const LaundryCard = props => {
             );
         }
     };
+
+    // parse room data when card is generated
+    const parseRoomData = () => {
+        props.card.machines.forEach(function (machine) {
+            if (machine.type == "WASHER") {
+                allWashers.push(machine);
+                if (machine.avail) {
+                    availWashers ++;
+                }
+            } else {
+                allDryers.push(machine);
+                if (machine.avail) {
+                    availDryers ++;
+                }
+            }
+        })
+    }
+
+    // parse room data when component is created
+    parseRoomData();
 
     return (
         <View style={styles.back}>
@@ -134,14 +136,14 @@ const LaundryCard = props => {
                 <Collapsible collapsed={collapsed}>
                     <View style={styles.collapsed}>
                         <View>
-                            <Text>Washer</Text>
-                            <Text>Washer</Text>
+                            {allWashers.map((washer) => 
+                                (<LaundryMachine machine={washer} key={washer}/>))}
                         </View>
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
-                                <Text>Dryer</Text>
-                                <Text>Dryer</Text>
+                                {allWashers.map((washer) => 
+                                    (<LaundryMachine machine={washer} key={washer}/>))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
