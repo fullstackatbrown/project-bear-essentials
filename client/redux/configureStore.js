@@ -1,20 +1,25 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { persistStore, persistCombineReducers } from "redux-persist";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import { dining } from "./dining";
-import storage from "redux-persist/es/storage";
+import AsyncStorage from "@react-native-community/async-storage";
+
+import { laundry } from "./laundry";
+import { maps } from "./maps";
+import { settings } from "./settings";
 
 export const ConfigureStore = () => {
   const config = {
     key: "root",
-    storage,
+    storage: AsyncStorage,
     debug: true,
   };
 
   const store = createStore(
-    combineReducers({
-      dining,
+    persistCombineReducers(config, {
+      laundry,
+      maps,
+      settings,
     }),
     applyMiddleware(thunk, logger)
   );
