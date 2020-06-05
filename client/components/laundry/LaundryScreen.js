@@ -43,9 +43,9 @@ class LaundryScreen extends Component {
   // Called when a card is starred or unstarred
   onStarChanged = card => {
     if (this.props.starred.includes(card)) {
-      deleteStarred(card);
+      this.props.deleteStarred(card);
     } else {
-      addStarred(card);
+      this.props.addStarred(card);
     }
   };
 
@@ -81,17 +81,18 @@ class LaundryScreen extends Component {
   // Returns search bar results, starred laundry rooms, or no results message
   renderSuggestions() {
     const { emptySearchBar, suggestions } = this.state;
-    const starredArr = Array.from(this.props.starred).sort();
+    let starred = this.props.starred.sort();
+
     if (suggestions.length === 0) {
       if (emptySearchBar) {
-        if (starredArr.length === 0) {
+        if (starred.length === 0) {
           return (
             <Text style={styles.textCentered}>
               No starred laundry rooms yet.
             </Text>
           );
         }
-        return this.mapToCards(starredArr);
+        return this.mapToCards(starred);
       }
       return <Text style={styles.textCentered}>No search results found.</Text>;
     }

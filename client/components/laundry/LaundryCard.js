@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     uncollapsed: {
-        marginTop: 10,
+        marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
