@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,11 +7,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import LaundryCard from "./LaundryCard";
+import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import LaundryCard from "./LaundryCard";
 import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint";
+import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 
-export default class LaundryScreen extends React.Component {
+const mapStateToProps = state => {
+  return {
+    starred: state.laundry.starred,
+  };
+};
+
+class LaundryScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -98,12 +106,13 @@ export default class LaundryScreen extends React.Component {
           onPress={() => {
             this.textInput.clear();
             this.onTextChanged("");
-          }}>
+          }}
+        >
           <AntDesign
             style={styles.crossIcon}
-            name='close'
+            name="close"
             size={24}
-            color='#A9A9A9'
+            color="#A9A9A9"
           />
         </TouchableOpacity>
       );
@@ -116,16 +125,16 @@ export default class LaundryScreen extends React.Component {
         <View style={styles.searchBar}>
           <Ionicons
             style={styles.searchIcon}
-            name='ios-search'
+            name="ios-search"
             size={24}
-            color='gray'
+            color="gray"
           />
           <TextInput
             style={styles.textInput}
             ref={input => {
               this.textInput = input;
             }}
-            placeholder='Search laundry'
+            placeholder="Search laundry"
             onChangeText={text => this.onTextChanged(text)}
           />
           {this.crossHandler()}
@@ -188,3 +197,5 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
 });
+
+export default connect(mapStateToProps)(LaundryScreen);

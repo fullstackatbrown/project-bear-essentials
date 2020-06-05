@@ -117,9 +117,6 @@ const MapScreen = props => {
               <View style={styles.modalContent}>
                 <View style={styles.modalTop}>
                   <Text style={styles.modalTitle}>Flags</Text>
-                  <TouchableHighlight onPress={() => setModalVisible(false)}>
-                    <Text style={styles.modalTitle}>X</Text>
-                  </TouchableHighlight>
                 </View>
                 <View
                   style={{ height: "85%" }}
@@ -147,15 +144,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  map: {
-    flex: 1,
-  },
   button: {
     marginRight: 20,
     marginTop: 20,
     backgroundColor: "red",
     width: 50,
     height: 50,
+    shadowColor: "black",
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 10,
   },
   modal: {
     flex: 1,
@@ -174,6 +176,14 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "50%",
     padding: 10,
+    shadowColor: "black",
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 5,
   },
   modalTop: {
     padding: 10,
