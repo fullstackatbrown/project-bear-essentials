@@ -14,7 +14,7 @@ import { pluralize } from './LaundryUtils';
 
 const LaundryCard = props => {
     // states for star
-    const [starred, setStarred] = useState((props.starred) ? true : false);
+    const [starred, setStarred] = useState((props.isStarred) ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
     const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 

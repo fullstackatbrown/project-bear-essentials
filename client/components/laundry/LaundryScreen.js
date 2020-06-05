@@ -33,7 +33,6 @@ class LaundryScreen extends Component {
     this.state = {
       emptySearchBar: true,
       suggestions: [],
-      starred: new Set(["125-127 WATERMAN STREET 003", "MILLER HALL"]),
       notifications: new Set(),
     };
 
@@ -43,13 +42,11 @@ class LaundryScreen extends Component {
 
   // Called when a card is starred or unstarred
   onStarChanged = card => {
-    const starred = this.state.starred;
-    if (starred.has(card)) {
-      starred.delete(card);
+    if (this.props.starred.includes(card)) {
+      deleteStarred(card);
     } else {
-      starred.add(card);
+      addStarred(card);
     }
-    this.setState(() => ({})); // re-renders LaundryScreen
   };
 
   // Called on search bar text change
@@ -73,7 +70,7 @@ class LaundryScreen extends Component {
           <LaundryCard
             key={card}
             card={this.cards[card]}
-            starred={this.state.starred.has(card)}
+            isStarred={this.props.starred.includes(card)}
             starAction={() => this.onStarChanged(card)}
           />
         ))}
@@ -84,7 +81,7 @@ class LaundryScreen extends Component {
   // Returns search bar results, starred laundry rooms, or no results message
   renderSuggestions() {
     const { emptySearchBar, suggestions } = this.state;
-    const starredArr = Array.from(this.state.starred).sort();
+    const starredArr = Array.from(this.props.starred).sort();
     if (suggestions.length === 0) {
       if (emptySearchBar) {
         if (starredArr.length === 0) {
