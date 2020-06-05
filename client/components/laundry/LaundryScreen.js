@@ -19,6 +19,11 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+  addStarred: flag => dispatch(addStarred(flag)),
+  deleteStarred: flag => dispatch(deleteStarred(flag)),
+});
+
 class LaundryScreen extends Component {
   constructor(props) {
     super(props);
@@ -198,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(LaundryScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LaundryScreen);

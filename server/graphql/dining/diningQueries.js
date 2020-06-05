@@ -11,23 +11,28 @@ CAFE_MAP.set("ivyroom", 1536);
 CAFE_MAP.set("campusmarket", 1537);
 CAFE_MAP.set("cafecarts", 1538);
 
+// Returns a single JS Object containing all cafe data.
 const getCafe = async cafe => {
+  let cafe_id = CAFE_MAP.get(cafe);
   let endpoint =
-    brownapi +
-    `dining/cafe/${CAFE_MAP.get(cafe)}?client_id=${process.env.CLIENT_ID}`;
+    brownapi + `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  return data.results.cafes;
+  return data.results.cafes[cafe_id];
 };
 
+// Returns an array of cafes
 const getCafes = async () => {
   let keys = "";
   CAFE_MAP.forEach(e => (keys += e + ","));
   let endpoint =
     brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  return data.results.cafes;
+  let ret = [];
+  CAFE_MAP.forEach(e => ret.push(data.results.cafes[e]));
+  return ret;
 };
 
+// Returns menus.
 const getMenu = async cafe => {
   let endpoint =
     brownapi +
@@ -37,6 +42,7 @@ const getMenu = async cafe => {
   return data.results.days;
 };
 
+// Returns menus.
 //TODO: This one is weirdly formatted
 //use yourDate.toISOString().split('T')[0]
 const getMenuOnDay = async (cafe, date) => {
@@ -53,6 +59,5 @@ module.exports = {
   getCafe: getCafe,
   getCafes: getCafes,
   getMenu: getMenu,
-  getMenuOnDay,
-  getMenuOnDay,
+  getMenuOnDay: getMenuOnDay,
 };
