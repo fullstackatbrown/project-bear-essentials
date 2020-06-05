@@ -31,17 +31,19 @@ const LaundryMachine = props => {
     const renderMachine = () => {
         if (props.machine.avail) {
             return (
-                <Text style={styles.available}>
-                {formatMachineName(props.machine.type)} {props.machine.id}
-            </Text>)
-
+                <View style={styles.row}>
+                    <MaterialCommunityIcons name='bell-outline' size={30} color='transparent' />
+                    <Text style={[styles.available, styles.words]}>
+                        {formatMachineName(props.machine.type)} {props.machine.id}
+                    </Text>
+                </View>)
         } else {
             return (
                 <View style={styles.row}>
                 <TouchableOpacity onPress={bellHandler}>
-                    <MaterialCommunityIcons name={bellName} size={24} color={bellColor} /> 
+                    <MaterialCommunityIcons name={bellName} size={30} color={bellColor} /> 
                 </TouchableOpacity>
-                <Text style={styles.used}>
+                <Text style={[styles.used, styles.words]}>
                     {formatMachineName(props.machine.type)} {props.machine.id} ({props.machine.time_remaining} minutes)
                 </Text>
             </View>)
@@ -57,13 +59,20 @@ const LaundryMachine = props => {
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 7
     },
     used: {
-       color: "#CC0200" 
+       color: "#CC0200",
+       fontSize: 16
     },
     available: {
-        color: "#0F9960"
+        color: "#0F9960",
+        fontSize: 16
+    },
+    words: {
+        marginLeft: 7
     }
 })
 export default LaundryMachine;

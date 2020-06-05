@@ -142,8 +142,8 @@ const LaundryCard = props => {
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
-                                {allWashers.map((washer) => 
-                                    (<LaundryMachine machine={washer} key={washer}/>))}
+                                {allDryers.map((dryer) => 
+                                    (<LaundryMachine machine={dryer} key={dryer}/>))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
