@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { pluralize } from './LaundryUtils';
 
 const LaundryMachine = props => {
 
     const [notif, setNotif] = useState(false);
     const [bellName, setBellName] = useState('bell-outline');
     const [bellColor, setBellColor] = useState('#CCCCCC');
+
+    const thisMachine = props.machine;
 
     // when bell is pressed
     const bellHandler = () => {
@@ -29,12 +32,13 @@ const LaundryMachine = props => {
     }
 
     const renderMachine = () => {
-        if (props.machine.avail) {
+
+        if (thisMachine.avail) {
             return (
                 <View style={styles.row}>
                     <MaterialCommunityIcons name='bell-outline' size={30} color='transparent' />
                     <Text style={[styles.available, styles.words]}>
-                        {formatMachineName(props.machine.type)} {props.machine.id}
+                        {formatMachineName(thisMachine.type)} {thisMachine.id}
                     </Text>
                 </View>)
         } else {
@@ -44,7 +48,7 @@ const LaundryMachine = props => {
                     <MaterialCommunityIcons name={bellName} size={30} color={bellColor} /> 
                 </TouchableOpacity>
                 <Text style={[styles.used, styles.words]}>
-                    {formatMachineName(props.machine.type)} {props.machine.id} ({props.machine.time_remaining} minutes)
+                    {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
                 </Text>
             </View>)
         }
@@ -52,7 +56,7 @@ const LaundryMachine = props => {
 
     return (
         <View>
-            {renderMachine()}  
+            {renderMachine()}
         </View>
     )
 };
@@ -61,18 +65,17 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 7
+        paddingVertical: 7,
     },
     used: {
-       color: "#CC0200",
-       fontSize: 16
+        color: "#CC0200",
     },
     available: {
         color: "#0F9960",
-        fontSize: 16
     },
     words: {
-        marginLeft: 7
+        marginLeft: 12,
+        fontSize: 19,
     }
 })
 export default LaundryMachine;

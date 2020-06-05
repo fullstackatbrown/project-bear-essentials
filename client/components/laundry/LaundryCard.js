@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, ToolbarAndroidComponent} from 'react-native';
+import {
+    StyleSheet, 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    ToolbarAndroidComponent
+} from 'react-native';
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
 import LaundryMachine from './LaundryMachine';
+import { pluralize } from './LaundryUtils';
 
 const LaundryCard = props => {
     // states for star
@@ -61,33 +69,26 @@ const LaundryCard = props => {
         }
     };
 
-    // appends a 's' for multiple machines
-    const pluralize = (num) => {
-        if (num > 1) {
-            return 's';
-        }
-    };
-
     // creates summary for unexpanded laundry card
     const summaryHandler = () => {
         if (availWashers == 0 && availDryers == 0) {
-            return <Text style={styles.fail}>No available machines</Text>;
+            return <Text style={[styles.fail, styles.words]}>No available machines</Text>;
         } else if (availDryers == 0) {
             return (
-                <Text style={styles.success}>
-                    {availWashers} washer{pluralize(availWashers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availWashers, "washer")} available
                 </Text>
             );
         } else if (availWashers == 0) {
             return (
-                <Text style={styles.success}>
-                    {availDryers} dryer{pluralize(availDryers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availDryers, "dryer")} available
                 </Text>
             );
         } else {
             return (
-                <Text style={styles.success}>
-                    {availWashers} washer{pluralize(availWashers)}, {availDryers} dryer{pluralize(availDryers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availWashers, "washer")}, {pluralize(availDryers, "dryer")} available
                 </Text>
             );
         }
@@ -137,13 +138,13 @@ const LaundryCard = props => {
                     <View style={styles.collapsed}>
                         <View>
                             {allWashers.map((washer) => 
-                                (<LaundryMachine machine={washer} key={washer}/>))}
+                                (<LaundryMachine machine={washer} key={washer.id}/>))}
                         </View>
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
                                 {allDryers.map((dryer) => 
-                                    (<LaundryMachine machine={dryer} key={dryer}/>))}
+                                    (<LaundryMachine machine={dryer} key={dryer.id}/>))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
@@ -166,8 +167,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0000'
     },
     card: {
-        padding: 20,
-        borderRadius: 10,
+        padding: 25,
+        borderRadius: 15,
         // shadows for ios
         shadowColor: 'black',
         shadowRadius: 2,
@@ -184,11 +185,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontWeight: '500',
-        fontSize: 26,
+        fontWeight: '700',
+        fontSize: 28,
     },
     room: {
-        fontSize: 20,
+        fontSize: 22,
         color: 'gray',
     },
     header: {
@@ -225,12 +226,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.7,
     },
     success: {
-        color: 'green',
-        fontSize: 16,
+        color: "#0F9960",
     },
     fail: {
-        color: 'red',
-        fontSize: 16,
+        color: "#CC0200",
+    },
+    words: {
+        fontSize: 19,
     },
 });
 
