@@ -27,10 +27,8 @@ const mapDispatchToProps = dispatch => ({
 class LaundryScreen extends Component {
   constructor(props) {
     super(props);
-
-    this.cards = LAUNDRY_DATA;
-
     this.state = {
+      cards: LAUNDRY_DATA,
       emptySearchBar: true,
       suggestions: [],
       notifications: new Set(),
@@ -55,9 +53,9 @@ class LaundryScreen extends Component {
     let newSuggestions = [];
     if (text.length > 0) {
       emptySearchBar = false;
-      newSuggestions = Object.keys(this.cards)
-        .sort()
-        .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1);
+      newSuggestions = Object.keys(this.state.cards)
+        .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
+        .sort();
     }
     this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
@@ -69,7 +67,7 @@ class LaundryScreen extends Component {
         {toMap.map(card => (
           <LaundryCard
             key={card}
-            card={this.cards[card]}
+            card={this.state.cards[card]}
             isStarred={this.props.starred.includes(card)}
             starAction={() => this.onStarChanged(card)}
           />
@@ -142,7 +140,6 @@ class LaundryScreen extends Component {
           />
           {this.crossHandler()}
         </View>
-
         {this.renderSuggestions()}
       </View>
     );
@@ -201,4 +198,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// connect to redux
 export default connect(mapStateToProps, mapDispatchToProps)(LaundryScreen);
