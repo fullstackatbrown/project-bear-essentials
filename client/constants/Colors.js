@@ -16,6 +16,6 @@ export default {
   danger: "#db3737",
   warning: "#d9822b",
   success: "#0f9960",
-  inactiveIcon: "ccc",
+  inactiveIcon: "#CCCCCC",
   activeIcon: "#949494"
 };

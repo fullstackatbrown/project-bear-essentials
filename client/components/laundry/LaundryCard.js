@@ -4,19 +4,19 @@ import {
     View, 
     Text, 
     TouchableOpacity, 
-    FlatList, 
     ToolbarAndroidComponent
 } from 'react-native';
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
 import LaundryMachine from './LaundryMachine';
-import { pluralize, COLORS } from './LaundryUtils';
+import { pluralize} from './LaundryUtils';
+import Colors from '../../constants/Colors.js'
 
 const LaundryCard = props => {
     // states for star
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
-    const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
+    const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
 
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
@@ -32,11 +32,11 @@ const LaundryCard = props => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
-            setStarColor('#BCBCBC'); //inactive color
+            setStarColor(Colors.inactiveIcon); //inactive color
         } else {
             setStarred(true);
             setStarName('star');
-            setStarColor('#FFEF26'); //star yellow
+            setStarColor(Colors.starYellow); //star yellow
         }
 
         // send changes to parent
@@ -229,10 +229,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.7,
     },
     success: {
-        color: COLORS.success,
+        color: Colors.success,
     },
     fail: {
-        color: COLORS.fail,
+        color: Colors.danger,
     },
     words: {
         fontSize: 19,

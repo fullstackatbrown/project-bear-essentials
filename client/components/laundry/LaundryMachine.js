@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { pluralize, COLORS } from './LaundryUtils';
+import { pluralize} from './LaundryUtils';
+import Colors from '../../constants/Colors.js'
 
 const LaundryMachine = props => {
 
     const [notif, setNotif] = useState(props.isNotif ? true : false);
     const [bellName, setBellName] = useState(notif ? 'bell' : 'bell-outline');
-    const [bellColor, setBellColor] = useState(notif ? '#949494' : '#CCCCCC');
+    const [bellColor, setBellColor] = 
+        useState(notif ? Colors.activeIcon : Colors.inactiveIcon);
 
     const thisMachine = props.machine;
 
@@ -15,11 +17,11 @@ const LaundryMachine = props => {
     const bellHandler = () => {
         if (notif) {
             setBellName('bell-outline');
-            setBellColor('#CCCCCC');
+            setBellColor(Colors.inactiveIcon);
             setNotif(false);
         } else {
             setBellName('bell');
-            setBellColor('#949494')
+            setBellColor(Colors.activeIcon)
             setNotif(true);
         }
 
@@ -67,10 +69,10 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
     },
     used: {
-        color: COLORS.fail,
+        color: Colors.danger,
     },
     available: {
-        color: COLORS.success,
+        color: Colors.success,
     },
     words: {
         marginLeft: 12,
