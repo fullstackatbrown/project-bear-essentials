@@ -11,48 +11,90 @@ CAFE_MAP.set("ivyroom", 1536);
 CAFE_MAP.set("campusmarket", 1537);
 CAFE_MAP.set("cafecarts", 1538);
 
-// Returns a single JS Object containing all cafe data.
+/**
+ * Returns information for `cafe`.
+ * @param {string} cafe cafe for which to return information for.
+ */
 const getCafe = async cafe => {
   let cafe_id = CAFE_MAP.get(cafe);
   let endpoint =
     brownapi +
-    `dining/cafes/${CAFE_MAP.get(cafe)}?client_id=${process.env.CLIENT_ID}`;
+    `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  return data.results.cafes[cafe_id];
+  let res = data.results.cafes[cafe_id];
+  res.id = cafe_id;
+  return res;
 };
 
-// Returns an array of cafes
+/**
+ * Returns information for all cafes.
+ */
 const getCafes = async () => {
-  let keys = "";
-  CAFE_MAP.forEach(e => (keys += e + ","));
+  let cafe_ids = Array.from(CAFE_MAP.values());
+  let keys = cafe_ids.join(",");
   let endpoint =
-    brownapi + `dining/cafes/${keys}?client_id=${process.env.CLIENT_ID}`;
+    brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let ret = [];
-  CAFE_MAP.forEach(e => ret.push(data.results.cafes[e]));
-  return ret;
+  let res = cafe_ids.map(cafe_id => {
+    let cafe = data.results.cafes[cafe_id];
+    cafe.id = cafe_id;
+    return cafe;
+  });
+  return res;
 };
 
-// Returns menus.
+/**
+ * Returns today's menu for `cafe`.
+ * @param {string} cafe cafe for which to return today's menu.
+ */
 const getMenu = async cafe => {
+  let cafe_id = CAFE_MAP.get(cafe);
   let endpoint =
     brownapi +
-    `dining/cafes/${CAFE_MAP.get(cafe)}/menu?client_id=${process.env.CLIENT_ID}`;
+    `dining/cafe/${cafe_id}/menu?client_id=${process.env.CLIENT_ID}`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  console.log(data.results.days);
-  return data.results.days;
+  let res = data.results.days[0].cafes[cafe_id];
+  res.cafe_id = cafe_id;
+  return res;
 };
 
-// Returns menus.
-//TODO: This one is weirdly formatted
-//use yourDate.toISOString().split('T')[0]
-const getMenuOnDay = async (cafe, date) => {
+/**
+ * Returns today's menus for all cafes.
+ */
+const getMenus = async () => {
+  let cafe_ids = Array.from(CAFE_MAP.values());
+  let keys = cafe_ids.join(",");
   let endpoint =
     brownapi +
-    `dining/cafes/${CAFE_MAP.get(cafe)}/${date}?client_id=${
-      process.env.CLIENT_ID
+    `dining/cafe/${keys}/menu?client_id=${process.env.CLIENT_ID}`;
+  let { data } = await axios.get(endpoint).catch(e => console.log(e));
+  let res = cafe_ids.map(cafe_id => {
+    let menu = data.results.days[0].cafes[cafe_id];
+    menu.cafe_id = cafe_id;
+    return menu;
+  });
+  return res;
+};
+
+/**
+ * Returns menus occuring on `dates` for given `cafe`, in the order specified by `dates`.
+ * @param {string} cafe cafe for which to return menus for.
+ * @param {Array<Date>} dates dates for which to return menus for.
+ */
+const getMenuOnDays = async (cafe, dates) => {
+  let cafe_id = CAFE_MAP.get(cafe)
+  dates = dates.map(date => date.toISOString().split('T')[0])
+  let endpoint =
+    brownapi +
+    `dining/cafe/${cafe_id}/menu/${date.join(",")}?client_id=${
+    process.env.CLIENT_ID
     }`;
   let { data } = await axios.get(endpoint).catch(e => console.log(e));
+  let res = data.results.days.map(day => {
+    let menu = day.cafes[cafe_id];
+    menu.cafe_id = cafe_id;
+    return menu;
+  });
   return data.results.days;
 };
 
@@ -60,5 +102,6 @@ module.exports = {
   getCafe: getCafe,
   getCafes: getCafes,
   getMenu: getMenu,
-  getMenuOnDay: getMenuOnDay,
+  getMenus: getMenus,
+  getMenuOnDays: getMenuOnDays,
 };
