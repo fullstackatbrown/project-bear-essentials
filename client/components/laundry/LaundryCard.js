@@ -1,21 +1,31 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {
+    StyleSheet, 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    ToolbarAndroidComponent
+} from 'react-native';
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
+import LaundryMachine from './LaundryMachine';
+import { pluralize } from './LaundryUtils';
 
 const LaundryCard = props => {
     // states for star
-    const [starred, setStarred] = useState((props.starred) ? true : false);
+    const [starred, setStarred] = useState((props.isStarred) ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
     const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 
-    // states for bell
-    const [notif, setNotif] = useState(false);
-    const [bellName, setBellName] = useState('bell-outline');
-    const [bellColor, setBellColor] = useState('#BCBCBC');
-
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
+
+    // list of machines
+    let allWashers = [];
+    let allDryers = [];
+    let availWashers = 0;
+    let availDryers = 0;
 
     // when star is pressed
     const starHandler = () => {
@@ -35,17 +45,7 @@ const LaundryCard = props => {
 
     // when bell is pressed
     const bellHandler = () => {
-        if (notif) {
-            setNotif(false);
-            setBellName('bell-outline');
-            setBellColor('#BCBCBC');
-            // remove notifications
-        } else {
-            setNotif(true);
-            setBellName('bell');
-            setBellColor('#949494');
-            // add notifications
-        }
+        // pass on to parent
     };
 
     // when down arrow is pressed
@@ -69,47 +69,50 @@ const LaundryCard = props => {
         }
     };
 
-    const pluralize = (num) => {
-        if (num > 1) {
-            return 's';
-        }
-    };
-
+    // creates summary for unexpanded laundry card
     const summaryHandler = () => {
-        let availWashers = 0;
-        let availDryers = 0;
-        props.card.machines.forEach(function (machine) {
-            if (machine.avail == true) {
-                if (machine.type == "WASHER") {
-                    availWashers++;
-                } else if (machine.type == "DRYER") {
-                    availDryers++;
-                }
-            }
-        });
-
         if (availWashers == 0 && availDryers == 0) {
-            return <Text style={styles.fail}>No available machines</Text>;
+            return <Text style={[styles.fail, styles.words]}>No available machines</Text>;
         } else if (availDryers == 0) {
             return (
-                <Text style={styles.success}>
-                    {availWashers} washer{pluralize(availWashers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availWashers, "washer")} available
                 </Text>
             );
         } else if (availWashers == 0) {
             return (
-                <Text style={styles.success}>
-                    {availDryers} dryer{pluralize(availDryers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availDryers, "dryer")} available
                 </Text>
             );
         } else {
             return (
-                <Text style={styles.success}>
-                    {availWashers} washer{pluralize(availWashers)}, {availDryers} dryer{pluralize(availDryers)} available
+                <Text style={[styles.success, styles.words]}>
+                    {pluralize(availWashers, "washer")}, {pluralize(availDryers, "dryer")} available
                 </Text>
             );
         }
     };
+
+    // parse room data when card is generated
+    const parseRoomData = () => {
+        props.card.machines.forEach(function (machine) {
+            if (machine.type == "WASHER") {
+                allWashers.push(machine);
+                if (machine.avail) {
+                    availWashers ++;
+                }
+            } else {
+                allDryers.push(machine);
+                if (machine.avail) {
+                    availDryers ++;
+                }
+            }
+        })
+    }
+
+    // parse room data when component is created
+    parseRoomData();
 
     return (
         <View style={styles.back}>
@@ -134,14 +137,14 @@ const LaundryCard = props => {
                 <Collapsible collapsed={collapsed}>
                     <View style={styles.collapsed}>
                         <View>
-                            <Text>Washer</Text>
-                            <Text>Washer</Text>
+                            {allWashers.map((washer) => 
+                                (<LaundryMachine machine={washer} key={washer.id}/>))}
                         </View>
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
-                                <Text>Dryer</Text>
-                                <Text>Dryer</Text>
+                                {allDryers.map((dryer) => 
+                                    (<LaundryMachine machine={dryer} key={dryer.id}/>))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
@@ -164,8 +167,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0000'
     },
     card: {
-        padding: 20,
-        borderRadius: 10,
+        padding: 25,
+        borderRadius: 15,
         // shadows for ios
         shadowColor: 'black',
         shadowRadius: 2,
@@ -182,11 +185,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontWeight: '500',
-        fontSize: 26,
+        fontWeight: '700',
+        fontSize: 28,
     },
     room: {
-        fontSize: 20,
+        fontSize: 22,
         color: 'gray',
     },
     header: {
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     uncollapsed: {
-        marginTop: 10,
+        marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -223,12 +226,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.7,
     },
     success: {
-        color: 'green',
-        fontSize: 16,
+        color: "#0F9960",
     },
     fail: {
-        color: 'red',
-        fontSize: 16,
+        color: "#CC0200",
+    },
+    words: {
+        fontSize: 19,
     },
 });
 

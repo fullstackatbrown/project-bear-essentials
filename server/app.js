@@ -2,6 +2,8 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 require("dotenv").config();
 
+const { getCafes } = require("./graphql/dining/diningQueries");
+
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -14,6 +16,8 @@ app.use(
     graphiql: true,
   })
 );
+
+getCafes();
 
 app.listen(port, () => {
   console.log(process.env.PORT)

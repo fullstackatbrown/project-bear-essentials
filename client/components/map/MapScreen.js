@@ -2,33 +2,48 @@ import React, { useState } from "react";
 import {
   Text,
   View,
+  ScrollView,
   StyleSheet,
+  CheckBox,
   Modal,
   TouchableHighlight,
-  CheckBox,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { connect } from "react-redux";
 import { INITIAL_REGION, FLAGS, FLAGS_COLORS, MAP_STYLE } from "./MapConfig";
 import { BUILDINGS } from "../../data/mapdata/parsedBuildings";
+import { addFlag, deleteFlag } from "../../redux/ActionCreators";
 
-export default function MapScreen(props) {
+const mapStateToProps = state => {
+  return {
+    flags: state.maps.flags,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  addFlag: flag => dispatch(addFlag(flag)),
+  deleteFlag: flag => dispatch(deleteFlag(flag)),
+});
+
+const MapScreen = props => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [flags, setFlags] = useState([]);
 
   const RenderFlags = () => {
-    console.log(flags);
     return (
       <>
-        {FLAGS.map(e => (
-          <View style={styles.row}>
+        {FLAGS.map((e, i) => (
+          <View style={styles.row} key={i}>
             <CheckBox
-              value={flags.includes(e)}
+              value={props.flags.includes(e)}
               onChange={() => {
-                if (flags.includes(e)) {
-                  setFlags(flags.filter(f => f !== e));
+                console.log(props.flags);
+                if (props.flags.includes(e)) {
+                  props.deleteFlag(e);
                 } else {
-                  setFlags(flags.concat(e));
+                  props.addFlag(e);
                 }
               }}
             />
@@ -42,7 +57,7 @@ export default function MapScreen(props) {
   const RenderMarkers = () => {
     return (
       <>
-        {BUILDINGS.filter(e => flags.includes(e.use)).map(e => (
+        {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e => (
           <Marker
             coordinate={{ latitude: e.latitude, longitude: e.longitude }}
             key={e.id}
@@ -55,7 +70,7 @@ export default function MapScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.app}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={{ ...StyleSheet.absoluteFillObject }}
@@ -66,40 +81,67 @@ export default function MapScreen(props) {
       <Button
         buttonStyle={styles.button}
         icon={() => (
-          <Icon reverse name="map-marker" type="font-awesome" color="red" />
+          <Icon
+            reverse
+            name="map-marker"
+            type="font-awesome"
+            color="transparent"
+          />
         )}
         onPress={() => setModalVisible(true)}
       />
       <Button
         buttonStyle={styles.button}
         icon={() => (
-          <Icon reverse name="location-arrow" type="font-awesome" color="red" />
+          <Icon
+            reverse
+            name="location-arrow"
+            type="font-awesome"
+            color="transparent"
+          />
         )}
       />
       <Modal
         animationType="slide"
         visible={modalVisible}
+        transparent={true}
         onRequestClose={() => setModalVisible(false)}
       >
-        <TouchableHighlight onPress={() => setModalVisible(false)}>
-          <Text style={styles.modalTitle}>X</Text>
-        </TouchableHighlight>
-        <View style={styles.modal}>
-          <Text style={styles.modalTitle}>Flags</Text>
-          <RenderFlags />
-        </View>
+        <TouchableOpacity
+          style={styles.container}
+          activeOpacity={1}
+          onPressOut={() => setModalVisible(false)}
+        >
+          <View style={styles.modal}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.modalContent}>
+                <View style={styles.modalTop}>
+                  <Text style={styles.modalTitle}>Flags</Text>
+                </View>
+                <View
+                  style={{ height: "85%" }}
+                  onStartShouldSetResponder={() => true}
+                >
+                  <ScrollView>
+                    <RenderFlags />
+                  </ScrollView>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableOpacity>
       </Modal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
     alignItems: "flex-end",
     justifyContent: "flex-start",
   },
-  map: {
+  container: {
     flex: 1,
   },
   button: {
@@ -108,15 +150,45 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     width: 50,
     height: 50,
+    shadowColor: "black",
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 10,
   },
   modal: {
     flex: 1,
+    justifyContent: "flex-end",
     alignItems: "center",
-    justifyContent: "flex-start",
     padding: 20,
   },
   modalTitle: {
     fontSize: 30,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginBottom: 50,
+    textAlign: "center",
+    width: "90%",
+    height: "50%",
+    padding: 10,
+    shadowColor: "black",
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 5,
+  },
+  modalTop: {
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   row: {
     flexDirection: "row",
@@ -127,3 +199,5 @@ const styles = StyleSheet.create({
 MapScreen.navigationOptions = {
   header: null,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);

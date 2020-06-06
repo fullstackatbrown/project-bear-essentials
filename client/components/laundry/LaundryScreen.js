@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,20 +7,30 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import LaundryCard from "./LaundryCard";
+import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import LaundryCard from "./LaundryCard";
 import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint";
+import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 
-export default class LaundryScreen extends React.Component {
+const mapStateToProps = state => {
+  return {
+    starred: state.laundry.starred,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  addStarred: flag => dispatch(addStarred(flag)),
+  deleteStarred: flag => dispatch(deleteStarred(flag)),
+});
+
+class LaundryScreen extends Component {
   constructor(props) {
     super(props);
-
-    this.cards = LAUNDRY_DATA;
-
     this.state = {
+      cards: LAUNDRY_DATA,
       emptySearchBar: true,
       suggestions: [],
-      starred: new Set(["125-127 WATERMAN STREET 003", "MILLER HALL"]),
       notifications: new Set(),
     };
 
@@ -30,13 +40,11 @@ export default class LaundryScreen extends React.Component {
 
   // Called when a card is starred or unstarred
   onStarChanged = card => {
-    const starred = this.state.starred;
-    if (starred.has(card)) {
-      starred.delete(card);
+    if (this.props.starred.includes(card)) {
+      this.props.deleteStarred(card);
     } else {
-      starred.add(card);
+      this.props.addStarred(card);
     }
-    this.setState(() => ({})); // re-renders LaundryScreen
   };
 
   // Called on search bar text change
@@ -45,9 +53,9 @@ export default class LaundryScreen extends React.Component {
     let newSuggestions = [];
     if (text.length > 0) {
       emptySearchBar = false;
-      newSuggestions = Object.keys(this.cards)
-        .sort()
-        .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1);
+      newSuggestions = Object.keys(this.state.cards)
+        .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
+        .sort();
     }
     this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
@@ -59,8 +67,8 @@ export default class LaundryScreen extends React.Component {
         {toMap.map(card => (
           <LaundryCard
             key={card}
-            card={this.cards[card]}
-            starred={this.state.starred.has(card)}
+            card={this.state.cards[card]}
+            isStarred={this.props.starred.includes(card)}
             starAction={() => this.onStarChanged(card)}
           />
         ))}
@@ -71,17 +79,18 @@ export default class LaundryScreen extends React.Component {
   // Returns search bar results, starred laundry rooms, or no results message
   renderSuggestions() {
     const { emptySearchBar, suggestions } = this.state;
-    const starredArr = Array.from(this.state.starred).sort();
+    let starred = this.props.starred.sort();
+
     if (suggestions.length === 0) {
       if (emptySearchBar) {
-        if (starredArr.length === 0) {
+        if (starred.length === 0) {
           return (
             <Text style={styles.textCentered}>
               No starred laundry rooms yet.
             </Text>
           );
         }
-        return this.mapToCards(starredArr);
+        return this.mapToCards(starred);
       }
       return <Text style={styles.textCentered}>No search results found.</Text>;
     }
@@ -98,12 +107,13 @@ export default class LaundryScreen extends React.Component {
           onPress={() => {
             this.textInput.clear();
             this.onTextChanged("");
-          }}>
+          }}
+        >
           <AntDesign
             style={styles.crossIcon}
-            name='close'
+            name="close"
             size={24}
-            color='#A9A9A9'
+            color="#A9A9A9"
           />
         </TouchableOpacity>
       );
@@ -116,21 +126,20 @@ export default class LaundryScreen extends React.Component {
         <View style={styles.searchBar}>
           <Ionicons
             style={styles.searchIcon}
-            name='ios-search'
+            name="ios-search"
             size={24}
-            color='gray'
+            color="gray"
           />
           <TextInput
             style={styles.textInput}
             ref={input => {
               this.textInput = input;
             }}
-            placeholder='Search laundry'
+            placeholder="Search laundry"
             onChangeText={text => this.onTextChanged(text)}
           />
           {this.crossHandler()}
         </View>
-
         {this.renderSuggestions()}
       </View>
     );
@@ -188,3 +197,6 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
 });
+
+// connect to redux
+export default connect(mapStateToProps, mapDispatchToProps)(LaundryScreen);

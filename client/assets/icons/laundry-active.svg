@@ -1,0 +1,15 @@
+<svg id="Laundry_Icon_Active" data-name="Laundry Icon Active" xmlns="http://www.w3.org/2000/svg" width="25" height="30" viewBox="0 0 25 30">
+  <g id="Frame" fill="#cc0200" stroke="#cc0200" stroke-width="1.5">
+    <rect width="25" height="30" rx="3" stroke="none"/>
+    <rect x="0.75" y="0.75" width="23.5" height="28.5" rx="2.25" fill="none"/>
+  </g>
+  <g id="Door" transform="translate(5 10.5)" fill="#fff" stroke="#fff" stroke-width="1">
+    <circle cx="7.5" cy="7.5" r="7.5" stroke="none"/>
+    <circle cx="7.5" cy="7.5" r="7" fill="none"/>
+  </g>
+  <path id="Separator" d="M1908.688-208.654h25" transform="translate(-1908.688 215.654)" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <g id="Controls" transform="translate(3 2)" fill="#fff">
+    <path d="M 6.625 2.625 L 0.375 2.625 L 0.375 0.375 L 6.625 0.375 L 6.625 2.625 Z" stroke="none"/>
+    <path d="M 0.75 0.75 L 0.75 2.25 L 6.25 2.25 L 6.25 0.75 L 0.75 0.75 M 0 0 L 7 0 L 7 3 L 0 3 L 0 0 Z" stroke="none" fill="#fff"/>
+  </g>
+</svg>
