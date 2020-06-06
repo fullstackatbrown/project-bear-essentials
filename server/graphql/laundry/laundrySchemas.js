@@ -48,7 +48,7 @@ const LaundryRooms = new GraphQLObjectType({
   }),
 });
 
-// Endpoint for /laundry/room/<room_id>
+// Endpoint for /laundry/rooms/<room_id>
 // Returned by getLaundryRoom(room_id, details=false)
 const LaundryRoom = new GraphQLObjectType({
   name: "LaundryRoom",
@@ -58,7 +58,7 @@ const LaundryRoom = new GraphQLObjectType({
   }),
 });
 
-// Endpoint for /laundry/room/<room_id>?get_status=true
+// Endpoint for /laundry/rooms/<room_id>?get_status=true
 // Returned by getLaundryRoom(room_id, details=true)
 const LaundryRoomDetailed = new GraphQLObjectType({
   name: "LaundryRoomDetailed",
@@ -68,7 +68,7 @@ const LaundryRoomDetailed = new GraphQLObjectType({
   }),
 });
 
-//Endpoint for /laundry/room/<room_id>/machines/<machine_id>
+//Endpoint for /laundry/rooms/<room_id>/machines/<machine_id>
 // Returned by getLaundryMachine(room_id, machine_id, details=false)
 const LaundryMachine = new GraphQLObjectType({
   name: "LaundryMachine",
@@ -77,7 +77,7 @@ const LaundryMachine = new GraphQLObjectType({
   }),
 });
 
-//Endpoint for /laundry/room/<room_id>/machines/<machine_id>?get_status=true
+//Endpoint for /laundry/rooms/<room_id>/machines/<machine_id>?get_status=true
 // Returned by getLaundryMachine(room_id, machine_id, details=true)
 const LaundryMachineDetailed = new GraphQLObjectType({
   name: "LaundryMachineDetailed",
