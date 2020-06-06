@@ -4,19 +4,19 @@ import {
     View, 
     Text, 
     TouchableOpacity, 
-    FlatList, 
     ToolbarAndroidComponent
 } from 'react-native';
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
 import LaundryMachine from './LaundryMachine';
-import { pluralize } from './LaundryUtils';
+import { pluralize} from './LaundryUtils';
+import Colors from '../../constants/Colors.js'
 
 const LaundryCard = props => {
     // states for star
-    const [starred, setStarred] = useState((props.isStarred) ? true : false);
+    const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
-    const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
+    const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
 
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
@@ -32,20 +32,15 @@ const LaundryCard = props => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
-            setStarColor('#BCBCBC'); //inactive color
+            setStarColor(Colors.inactiveIcon); //inactive color
         } else {
             setStarred(true);
             setStarName('star');
-            setStarColor('#FFEF26'); //star yellow
+            setStarColor(Colors.starYellow); //star yellow
         }
 
         // send changes to parent
         props.starAction()
-    };
-
-    // when bell is pressed
-    const bellHandler = () => {
-        // pass on to parent
     };
 
     // when down arrow is pressed
@@ -138,13 +133,21 @@ const LaundryCard = props => {
                     <View style={styles.collapsed}>
                         <View>
                             {allWashers.map((washer) => 
-                                (<LaundryMachine machine={washer} key={washer.id}/>))}
+                                (<LaundryMachine
+                                    key={washer.id}
+                                    machine={washer}
+                                    isNotif={props.notifList.includes(washer.id)}
+                                    notifAction={() => props.notifAction(washer.id)} />))}
                         </View>
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
                                 {allDryers.map((dryer) => 
-                                    (<LaundryMachine machine={dryer} key={dryer.id}/>))}
+                                    (<LaundryMachine
+                                        key={dryer.id}
+                                        machine={dryer}
+                                        isNotif={props.notifList.includes(dryer.id)}
+                                        notifAction={() => props.notifAction(dryer.id)} />))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
@@ -226,10 +229,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.7,
     },
     success: {
-        color: "#0F9960",
+        color: Colors.success,
     },
     fail: {
-        color: "#CC0200",
+        color: Colors.danger,
     },
     words: {
         fontSize: 19,

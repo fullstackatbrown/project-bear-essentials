@@ -13,9 +13,9 @@ export default {
   noticeText: '#fff',
   bearBrown: "#7d5125",
   starYellow: "#ffef26",
-  danger: "db3737",
+  danger: "#db3737",
   warning: "#d9822b",
   success: "#0f9960",
-  inactiveIcon: "ccc",
+  inactiveIcon: "#CCCCCC",
   activeIcon: "#949494"
 };

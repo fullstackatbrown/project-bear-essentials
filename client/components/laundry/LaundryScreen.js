@@ -11,15 +11,24 @@ import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LaundryCard from "./LaundryCard";
 import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint";
-import { addStarred, deleteStarred } from "../../redux/ActionCreators";
+import {
+  addNotification,
+  deleteNotification,
+  addStarred,
+  deleteStarred,
+} from "../../redux/ActionCreators";
 
 const mapStateToProps = state => {
   return {
     starred: state.laundry.starred,
+    notifications: state.notifications.notifications,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
+  addNotification: notification => dispatch(addNotification(notification)),
+  deleteNotification: notification =>
+    dispatch(deleteNotification(notification)),
   addStarred: flag => dispatch(addStarred(flag)),
   deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
@@ -35,6 +44,7 @@ class LaundryScreen extends Component {
     };
 
     this.onTextChanged = this.onTextChanged.bind(this);
+    this.onNotifChanged = this.onNotifChanged.bind(this);
     this.onStarChanged = this.onStarChanged.bind(this);
   }
 
@@ -44,6 +54,17 @@ class LaundryScreen extends Component {
       this.props.deleteStarred(card);
     } else {
       this.props.addStarred(card);
+    }
+  };
+
+  // Called when a machine's notification is set or unset
+  onNotifChanged = room => machine => {
+    const roomMachine = `${room}///${machine}`;
+
+    if (this.props.notifications.includes(roomMachine)) {
+      this.props.deleteNotification(roomMachine);
+    } else {
+      this.props.addNotification(roomMachine);
     }
   };
 
@@ -60,16 +81,21 @@ class LaundryScreen extends Component {
     this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
 
-  // Returns scrolling card view, given list of cards (keys) to be rendered
+  // Returns scrolling card view, given list of rooms (keys) to be rendered
   mapToCards(toMap) {
     return (
       <ScrollView>
-        {toMap.map(card => (
+        {toMap.map(room => (
           <LaundryCard
-            key={card}
-            card={this.state.cards[card]}
-            isStarred={this.props.starred.includes(card)}
-            starAction={() => this.onStarChanged(card)}
+            key={room}
+            card={this.state.cards[room]}
+            isStarred={this.props.starred.includes(room)}
+            notifList={this.props.notifications
+              .map(str => str.split("///"))     // split into [room, machine]
+              .filter(([r, _]) => (r === room)) // check room
+              .map(rm => Number(rm[1]))}                // extract machine
+            starAction={() => this.onStarChanged(room)}
+            notifAction={this.onNotifChanged(room)}
           />
         ))}
       </ScrollView>
