@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { pluralize } from './LaundryUtils';
+import { pluralize, COLORS } from './LaundryUtils';
 
 const LaundryMachine = props => {
 
-    const [notif, setNotif] = useState(false);
-    const [bellName, setBellName] = useState('bell-outline');
-    const [bellColor, setBellColor] = useState('#CCCCCC');
+    const [notif, setNotif] = useState(props.isNotif ? true : false);
+    const [bellName, setBellName] = useState(notif ? 'bell' : 'bell-outline');
+    const [bellColor, setBellColor] = useState(notif ? '#949494' : '#CCCCCC');
 
     const thisMachine = props.machine;
 
@@ -23,7 +23,7 @@ const LaundryMachine = props => {
             setNotif(true);
         }
 
-        //TODO: send to parent
+        props.notifAction()
     }
 
     //capitalize only first letter
@@ -32,7 +32,6 @@ const LaundryMachine = props => {
     }
 
     const renderMachine = () => {
-
         if (thisMachine.avail) {
             return (
                 <View style={styles.row}>
@@ -68,10 +67,10 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
     },
     used: {
-        color: "#CC0200",
+        color: COLORS.fail,
     },
     available: {
-        color: "#0F9960",
+        color: COLORS.success,
     },
     words: {
         marginLeft: 12,

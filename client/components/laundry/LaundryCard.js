@@ -10,11 +10,11 @@ import {
 import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
 import LaundryMachine from './LaundryMachine';
-import { pluralize } from './LaundryUtils';
+import { pluralize, COLORS } from './LaundryUtils';
 
 const LaundryCard = props => {
     // states for star
-    const [starred, setStarred] = useState((props.isStarred) ? true : false);
+    const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? 'star' : 'staro');
     const [starColor, setStarColor] = useState(starred ? '#FFEF26' : '#BCBCBC');
 
@@ -41,11 +41,6 @@ const LaundryCard = props => {
 
         // send changes to parent
         props.starAction()
-    };
-
-    // when bell is pressed
-    const bellHandler = () => {
-        // pass on to parent
     };
 
     // when down arrow is pressed
@@ -138,13 +133,21 @@ const LaundryCard = props => {
                     <View style={styles.collapsed}>
                         <View>
                             {allWashers.map((washer) => 
-                                (<LaundryMachine machine={washer} key={washer.id}/>))}
+                                (<LaundryMachine
+                                    key={washer.id}
+                                    machine={washer}
+                                    isNotif={props.notifList.includes(washer.id)}
+                                    notifAction={() => props.notifAction(washer.id)} />))}
                         </View>
                         <View style={styles.horizontalLine} />
                         <View style={styles.colSections}>
                             <View>
                                 {allDryers.map((dryer) => 
-                                    (<LaundryMachine machine={dryer} key={dryer.id}/>))}
+                                    (<LaundryMachine
+                                        key={dryer.id}
+                                        machine={dryer}
+                                        isNotif={props.notifList.includes(dryer.id)}
+                                        notifAction={() => props.notifAction(dryer.id)} />))}
                             </View>
                             <View style={styles.upArrow}>
                             <TouchableOpacity onPress={upArrowHandler}>
@@ -226,10 +229,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.7,
     },
     success: {
-        color: "#0F9960",
+        color: COLORS.success,
     },
     fail: {
-        color: "#CC0200",
+        color: COLORS.fail,
     },
     words: {
         fontSize: 19,

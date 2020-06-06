@@ -5,3 +5,8 @@ export const pluralize = (num, word) => {
         return `${num} ${word}`;
     }
 };
+
+export const COLORS = {
+	success: "#0F9960",
+	fail: "#CC0200",
+};

@@ -18,7 +18,7 @@ const LAUNDRY_DATA = {
       {
         id: 3,
         avail: false,
-        time_remaining: 2,
+        time_remaining: 1,
         type: "DRYER",
       },
       {

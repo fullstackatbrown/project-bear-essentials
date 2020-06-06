@@ -35,6 +35,7 @@ class LaundryScreen extends Component {
     };
 
     this.onTextChanged = this.onTextChanged.bind(this);
+    this.onNotifChanged = this.onNotifChanged.bind(this);
     this.onStarChanged = this.onStarChanged.bind(this);
   }
 
@@ -45,6 +46,20 @@ class LaundryScreen extends Component {
     } else {
       this.props.addStarred(card);
     }
+  };
+
+  // Called when a machine's notification is set or unset
+  onNotifChanged = room => machine => {
+    const notifications = this.state.notifications;
+    const roomMachine = `${room}///${machine}`;
+
+    if (notifications.has(roomMachine)) {
+      notifications.delete(roomMachine);
+    } else {
+      notifications.add(roomMachine);
+    }
+
+    this.setState(() => ({})); // re-renders LaundryScreen
   };
 
   // Called on search bar text change
@@ -60,16 +75,21 @@ class LaundryScreen extends Component {
     this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
   };
 
-  // Returns scrolling card view, given list of cards (keys) to be rendered
+  // Returns scrolling card view, given list of rooms (keys) to be rendered
   mapToCards(toMap) {
     return (
       <ScrollView>
-        {toMap.map(card => (
+        {toMap.map(room => (
           <LaundryCard
-            key={card}
-            card={this.state.cards[card]}
-            isStarred={this.props.starred.includes(card)}
-            starAction={() => this.onStarChanged(card)}
+            key={room}
+            card={this.state.cards[room]}
+            isStarred={this.props.starred.includes(room)}
+            notifList={Array.from(this.state.notifications)
+              .map(str => str.split("///"))     // split into [room, machine]
+              .filter(([r, _]) => (r === room)) // check room
+              .map(rm => Number(rm[1]))}                // extract machine
+            starAction={() => this.onStarChanged(room)}
+            notifAction={this.onNotifChanged(room)}
           />
         ))}
       </ScrollView>
