@@ -16,5 +16,6 @@ app.use(
 );
 
 app.listen(port, () => {
+  console.log(process.env.PORT)
   console.log("Hello world listening on port", port);
 });
