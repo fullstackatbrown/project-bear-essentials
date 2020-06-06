@@ -5,6 +5,7 @@ import logger from "redux-logger";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { laundry } from "./laundry";
+import { notifications } from "./notifications";
 import { maps } from "./maps";
 import { settings } from "./settings";
 
@@ -18,6 +19,7 @@ export const ConfigureStore = () => {
   const store = createStore(
     persistCombineReducers(config, {
       laundry,
+      notifications,
       maps,
       settings,
     }),

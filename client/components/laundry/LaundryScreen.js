@@ -59,16 +59,13 @@ class LaundryScreen extends Component {
 
   // Called when a machine's notification is set or unset
   onNotifChanged = room => machine => {
-    const notifications = this.state.notifications;
     const roomMachine = `${room}///${machine}`;
 
-    if (notifications.has(roomMachine)) {
-      notifications.delete(roomMachine);
+    if (this.props.notifications.includes(roomMachine)) {
+      this.props.deleteNotification(roomMachine);
     } else {
-      notifications.add(roomMachine);
+      this.props.addNotification(roomMachine);
     }
-
-    this.setState(() => ({})); // re-renders LaundryScreen
   };
 
   // Called on search bar text change
@@ -93,7 +90,7 @@ class LaundryScreen extends Component {
             key={room}
             card={this.state.cards[room]}
             isStarred={this.props.starred.includes(room)}
-            notifList={Array.from(this.state.notifications)
+            notifList={this.props.notifications
               .map(str => str.split("///"))     // split into [room, machine]
               .filter(([r, _]) => (r === room)) // check room
               .map(rm => Number(rm[1]))}                // extract machine
