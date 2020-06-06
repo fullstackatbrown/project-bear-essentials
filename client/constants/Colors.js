@@ -17,5 +17,6 @@ export default {
   warning: "#d9822b",
   success: "#0f9960",
   inactiveIcon: "#CCCCCC",
-  activeIcon: "#949494"
+  activeIcon: "#949494",
+  accentRed: "#CC0200"
 };

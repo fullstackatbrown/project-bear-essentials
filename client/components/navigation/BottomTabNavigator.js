@@ -11,16 +11,20 @@ import LaundryIcon from "./LaundryIcon";
 import DiningIcon from "./DiningIcon";
 import MapIcon from "./MapIcon";
 import SettingsIcon from "./SettingsIcon";
+//import colors
+import Colors from "../../constants/Colors";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-//TODO: Make colors not blue
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        activeTintColor: Colors.accentRed
+      }}>
       <BottomTab.Screen
         name="Dining"
         component={DiningScreen}
