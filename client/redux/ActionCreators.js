@@ -1,9 +1,13 @@
 import * as ActionTypes from "./ActionTypes";
 
-// Settings
+export const addNotification = notification => ({
+  type: ActionTypes.ADD_NOTIFICATION,
+  payload: notification,
+});
 
-export const toggleTheme = () => ({
-  type: ActionTypes.TOGGLE_THEME,
+export const deleteNotification = notification => ({
+  type: ActionTypes.DELETE_NOTIFICATION,
+  payload: notification,
 });
 
 export const addStarred = roomId => ({
@@ -24,4 +28,8 @@ export const addFlag = flag => ({
 export const deleteFlag = flag => ({
   type: ActionTypes.DELETE_FLAG,
   payload: flag,
+});
+
+export const toggleTheme = () => ({
+  type: ActionTypes.TOGGLE_THEME,
 });

@@ -11,15 +11,24 @@ import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LaundryCard from "./LaundryCard";
 import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint";
-import { addStarred, deleteStarred } from "../../redux/ActionCreators";
+import {
+  addNotification,
+  deleteNotification,
+  addStarred,
+  deleteStarred,
+} from "../../redux/ActionCreators";
 
 const mapStateToProps = state => {
   return {
     starred: state.laundry.starred,
+    notifications: state.notifications.notifications,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
+  addNotification: notification => dispatch(addNotification(notification)),
+  deleteNotification: notification =>
+    dispatch(deleteNotification(notification)),
   addStarred: flag => dispatch(addStarred(flag)),
   deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
