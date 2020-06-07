@@ -2,26 +2,20 @@ import React, {useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { pluralize} from './LaundryUtils';
-import Colors from '../../constants/Colors.js'
+import Colors from '../../constants/Colors.js';
+import BellIcon from './BellIcon';
 
 const LaundryMachine = props => {
 
     const [notif, setNotif] = useState(props.isNotif ? true : false);
-    const [bellName, setBellName] = useState(notif ? 'bell' : 'bell-outline');
-    const [bellColor, setBellColor] = 
-        useState(notif ? Colors.activeIcon : Colors.inactiveIcon);
 
     const thisMachine = props.machine;
 
     // when bell is pressed
     const bellHandler = () => {
         if (notif) {
-            setBellName('bell-outline');
-            setBellColor(Colors.inactiveIcon);
             setNotif(false);
         } else {
-            setBellName('bell');
-            setBellColor(Colors.activeIcon)
             setNotif(true);
         }
 
@@ -46,7 +40,7 @@ const LaundryMachine = props => {
             return (
                 <View style={styles.row}>
                 <TouchableOpacity onPress={bellHandler}>
-                    <MaterialCommunityIcons name={bellName} size={30} color={bellColor} /> 
+                    <BellIcon focused={notif}/>  
                 </TouchableOpacity>
                 <Text style={[styles.used, styles.words]}>
                     {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
