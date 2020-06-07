@@ -316,17 +316,142 @@ export const DINING_HOURS = {
   };
 
 export const DINING_MENU = {
-      "ANDREWS COMMONS" :{
-        tite: "Andrews Commons Menu",
-        date: "2020-06-01",
-        hours: [
-          {
-            start_time: "08:00",
-            end_time: "22:00",
-            id: "1533",
-            entree: ["Scrambled Eggs", "Turkey Sausage", "Ham Slices"],
-            dessert: ["Glazed Donuts", "Fudge Brownies", "Sugar Cookies"],
+  "results": {
+    "days": [
+      {
+        "cafes": {
+          "1531": {
+            "dayparts": [
+              {
+                "abbreviation": "B",
+                "endtime": "10:00",
+                "id": "1",
+                "label": "Breakfast",
+                "message": "",
+                "starttime": "08:00",
+                "stations": [
+                  {
+                    "id": "23586",
+                    "image": "",
+                    "items": [
+                      {
+                        "description": "along with cereal, fruit, hardboiled eggs, and breakfast pastry from the Brown Bakeshop",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390053",
+                        "kosher": false,
+                        "name": "yogurt",
+                        "vegan": false,
+                        "vegetarian": false
+                      },
+                      {
+                        "description": "along with cereal, fruit, and vegan breakfast pastry from the Brown Bakeshop",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390054",
+                        "kosher": false,
+                        "name": "oatmilk or soy yogurt",
+                        "vegan": true,
+                        "vegetarian": false
+                      }
+                    ],
+                    "label": "bagged breakfast",
+                    "note": "",
+                    "order_id": "0001-23586",
+                    "price": "",
+                    "soup": 0
+                  }
+                ]
+              },
+              {
+                "abbreviation": "L",
+                "endtime": "13:00",
+                "id": "3",
+                "label": "Lunch",
+                "message": "",
+                "starttime": "11:00",
+                "stations": [
+                  {
+                    "id": "23587",
+                    "image": "",
+                    "items": [
+                      {
+                        "description": "served with garlic bread and garden salad",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390055",
+                        "kosher": false,
+                        "name": "meat tortellini with house made marinara sauce",
+                        "vegan": false,
+                        "vegetarian": false
+                      },
+                      {
+                        "description": "served with garden salad and vegan garlic bread",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390056",
+                        "kosher": false,
+                        "name": "mushroom ravioli with house made marinara",
+                        "vegan": true,
+                        "vegetarian": false
+                      }
+                    ],
+                    "label": "bagged lunch",
+                    "note": "",
+                    "order_id": "0002-23587",
+                    "price": "",
+                    "soup": 0
+                  }
+                ]
+              },
+              {
+                "abbreviation": "D",
+                "endtime": "19:00",
+                "id": "4",
+                "label": "Dinner",
+                "message": "",
+                "starttime": "17:00",
+                "stations": [
+                  {
+                    "id": "23588",
+                    "image": "",
+                    "items": [
+                      {
+                        "description": "served with yellow rice and pigeon peas, fried plantains, Puerto rican style grilled cabbage salad, grilled onions & red peppers with sherry vinaigrette",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390057",
+                        "kosher": false,
+                        "name": "pernil style roast pork",
+                        "vegan": false,
+                        "vegetarian": false
+                      },
+                      {
+                        "description": "served with yellow rice and pigeon peas, fried plantains, Puerto rican style grilled cabbage salad, grilled onions & red peppers with sherry vinaigrette",
+                        "gluten_free": false,
+                        "halal": false,
+                        "id": "15390058",
+                        "kosher": false,
+                        "name": "pernil style seitan",
+                        "vegan": true,
+                        "vegetarian": false
+                      }
+                    ],
+                    "label": "bagged dinner",
+                    "note": "",
+                    "order_id": "0003-23588",
+                    "price": "",
+                    "soup": 0
+                  }
+                ]
+              }
+            ],
+            "menu_id": "300362",
+            "name": "Sharpe Refectory"
           }
-        ]
-      }     
-  };
+        },
+        "date": "2020-06-07"
+      }
+    ]
+  }
+}
