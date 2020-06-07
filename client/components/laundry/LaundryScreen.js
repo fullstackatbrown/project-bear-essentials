@@ -136,7 +136,6 @@ class LaundryScreen extends Component {
           }}
         >
           <AntDesign
-            style={styles.crossIcon}
             name="close"
             size={24}
             color="#A9A9A9"
@@ -151,7 +150,6 @@ class LaundryScreen extends Component {
       <View style={styles.screen}>
         <View style={styles.searchBar}>
           <Ionicons
-            style={styles.searchIcon}
             name="ios-search"
             size={24}
             color="gray"
@@ -201,6 +199,7 @@ const styles = StyleSheet.create({
     width: "88%",
     flexDirection: "row",
     alignSelf: "center",
+    alignItems: "center",
 
     // shadows for ios
     shadowColor: "black",
@@ -214,14 +213,7 @@ const styles = StyleSheet.create({
 
     // shadows for android
     elevation: 5,
-  },
-  searchIcon: {
-    marginTop: 2,
-  },
-  crossIcon: {
-    marginTop: 2,
-    marginRight: 3,
-  },
+  }
 });
 
 // connect to redux

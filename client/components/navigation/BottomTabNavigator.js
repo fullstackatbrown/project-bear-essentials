@@ -1,28 +1,37 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
-import TabBarIcon from "./TabBarIcon";
 import DiningScreen from "../dining/DiningScreen";
 import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
 import SettingsScreen from "../settings/SettingsScreen";
 
+// import icons
+import LaundryIcon from "./LaundryIcon";
+import DiningIcon from "./DiningIcon";
+import MapIcon from "./MapIcon";
+import SettingsIcon from "./SettingsIcon";
+//import colors
+import Colors from "../../constants/Colors";
+
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-//TODO: Make colors not blue
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        activeTintColor: Colors.accentRed
+      }}>
       <BottomTab.Screen
         name="Dining"
         component={DiningScreen}
         options={{
           title: "Dining",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-pizza" />
+            <DiningIcon focused={focused}/>
           ),
         }}
       />
@@ -32,7 +41,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: "Laundry",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-basket" />
+            <LaundryIcon focused={focused}/>
           ),
         }}
       />
@@ -42,7 +51,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: "Map",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-map" />
+            <MapIcon focused={focused}/>
           ),
         }}
       />
@@ -52,7 +61,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: "Settings",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-settings" />
+            <SettingsIcon focused={focused} />
           ),
         }}
       />
