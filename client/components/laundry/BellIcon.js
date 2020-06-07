@@ -6,11 +6,11 @@ import BellActive from "../../assets/icons/bell-active.svg";
 export default function BellIcon(props) {
     if (props.focused) {
         return(
-            <BellActive />
+            <BellActive width={30}/>
         );
     } else {
         return(
-            <Bell />
+            <Bell width={30}/>
         );
     }
 }
