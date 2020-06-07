@@ -10,7 +10,7 @@ const {
 const RoomType = new GraphQLObjectType({
   name: "RoomType",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
     name: { type: GraphQLString },
   }),
 });
@@ -32,7 +32,7 @@ const MachineDetailedType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     room_id: { type: GraphQLInt },
     avail: { type: GraphQLBoolean },
-    average_tun_time: { type: GraphQLInt },
+    average_run_time: { type: GraphQLInt },
     time_remaining: { type: GraphQLInt },
     type: { type: GraphQLString },
   }),
