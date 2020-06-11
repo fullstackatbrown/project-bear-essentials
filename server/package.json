@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "type": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +16,10 @@
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "graphql": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.36",
+    "@types/react-dom": "^16.9.8",
+    "typescript": "^3.9.5"
   }
 }
