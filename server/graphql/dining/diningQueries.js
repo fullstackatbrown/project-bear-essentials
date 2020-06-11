@@ -16,31 +16,31 @@ CAFE_MAP.set("cafecarts", 1538);
  * @param {string} cafe cafe for which to return information for.
  */
 const getCafe = async cafe => {
-  let cafe_id = CAFE_MAP.get(cafe);
-  let endpoint =
+    let cafe_id = CAFE_MAP.get(cafe);
+    let endpoint =
     brownapi +
     `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let res = data.results.cafes[cafe_id];
-  res.id = cafe_id;
-  return res;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let res = data.results.cafes[cafe_id];
+    res.id = cafe_id;
+    return res;
 };
 
 /**
  * Returns information for all cafes.
  */
 const getCafes = async () => {
-  let cafe_ids = Array.from(CAFE_MAP.values());
-  let keys = cafe_ids.join(",");
-  let endpoint =
+    let cafe_ids = Array.from(CAFE_MAP.values());
+    let keys = cafe_ids.join(",");
+    let endpoint =
     brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let res = cafe_ids.map(cafe_id => {
-    let cafe = data.results.cafes[cafe_id];
-    cafe.id = cafe_id;
-    return cafe;
-  });
-  return res;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let res = cafe_ids.map(cafe_id => {
+        let cafe = data.results.cafes[cafe_id];
+        cafe.id = cafe_id;
+        return cafe;
+    });
+    return res;
 };
 
 /**
@@ -48,32 +48,32 @@ const getCafes = async () => {
  * @param {string} cafe cafe for which to return today's menu.
  */
 const getMenu = async cafe => {
-  let cafe_id = CAFE_MAP.get(cafe);
-  let endpoint =
+    let cafe_id = CAFE_MAP.get(cafe);
+    let endpoint =
     brownapi +
     `dining/cafe/${cafe_id}/menu?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let res = data.results.days[0].cafes[cafe_id];
-  res.cafe_id = cafe_id;
-  return res;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let res = data.results.days[0].cafes[cafe_id];
+    res.cafe_id = cafe_id;
+    return res;
 };
 
 /**
  * Returns today's menus for all cafes.
  */
 const getMenus = async () => {
-  let cafe_ids = Array.from(CAFE_MAP.values());
-  let keys = cafe_ids.join(",");
-  let endpoint =
+    let cafe_ids = Array.from(CAFE_MAP.values());
+    let keys = cafe_ids.join(",");
+    let endpoint =
     brownapi +
     `dining/cafe/${keys}/menu?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let res = cafe_ids.map(cafe_id => {
-    let menu = data.results.days[0].cafes[cafe_id];
-    menu.cafe_id = cafe_id;
-    return menu;
-  });
-  return res;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let res = cafe_ids.map(cafe_id => {
+        let menu = data.results.days[0].cafes[cafe_id];
+        menu.cafe_id = cafe_id;
+        return menu;
+    });
+    return res;
 };
 
 /**
@@ -82,26 +82,26 @@ const getMenus = async () => {
  * @param {Array<Date>} dates dates for which to return menus for.
  */
 const getMenuOnDays = async (cafe, dates) => {
-  let cafe_id = CAFE_MAP.get(cafe)
-  dates = dates.map(date => date.toISOString().split('T')[0])
-  let endpoint =
+    let cafe_id = CAFE_MAP.get(cafe);
+    dates = dates.map(date => date.toISOString().split("T")[0]);
+    let endpoint =
     brownapi +
     `dining/cafe/${cafe_id}/menu/${date.join(",")}?client_id=${
-    process.env.CLIENT_ID
+        process.env.CLIENT_ID
     }`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let res = data.results.days.map(day => {
-    let menu = day.cafes[cafe_id];
-    menu.cafe_id = cafe_id;
-    return menu;
-  });
-  return data.results.days;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let res = data.results.days.map(day => {
+        let menu = day.cafes[cafe_id];
+        menu.cafe_id = cafe_id;
+        return menu;
+    });
+    return data.results.days;
 };
 
 module.exports = {
-  getCafe: getCafe,
-  getCafes: getCafes,
-  getMenu: getMenu,
-  getMenus: getMenus,
-  getMenuOnDays: getMenuOnDays,
+    getCafe: getCafe,
+    getCafes: getCafes,
+    getMenu: getMenu,
+    getMenus: getMenus,
+    getMenuOnDays: getMenuOnDays,
 };

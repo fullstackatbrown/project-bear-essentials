@@ -14,45 +14,45 @@ import { ConfigureStore } from "./redux/configureStore";
 const { persistor, store } = ConfigureStore();
 
 export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
+    const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+    const [initialNavigationState, setInitialNavigationState] = React.useState();
+    const containerRef = React.useRef();
+    const { getInitialState } = useLinking(containerRef);
 
-  React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHide();
-        setInitialNavigationState(await getInitialState());
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        SplashScreen.hide();
-        setLoadingComplete(true);
-      }
+    React.useEffect(() => {
+        async function loadResourcesAndDataAsync() {
+            try {
+                SplashScreen.preventAutoHide();
+                setInitialNavigationState(await getInitialState());
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                SplashScreen.hide();
+                setLoadingComplete(true);
+            }
+        }
+        loadResourcesAndDataAsync();
+    }, []);
+
+    if (!isLoadingComplete && !props.skipLoadingScreen) {
+        return null;
+    } else {
+        return (
+            <Provider store={store}>
+                <PersistGate persistor={persistor}>
+                    <View style={{ flex: 1 }}>
+                        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+                        <NavigationContainer
+                            ref={containerRef}
+                            initialState={initialNavigationState}
+                        >
+                            <Stack.Navigator>
+                                <Stack.Screen name="Root" component={BottomTabNavigator} />
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    </View>
+                </PersistGate>
+            </Provider>
+        );
     }
-    loadResourcesAndDataAsync();
-  }, []);
-
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return null;
-  } else {
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <View style={{ flex: 1 }}>
-            {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-            <NavigationContainer
-              ref={containerRef}
-              initialState={initialNavigationState}
-            >
-              <Stack.Navigator>
-                <Stack.Screen name="Root" component={BottomTabNavigator} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
-        </PersistGate>
-      </Provider>
-    );
-  }
 }

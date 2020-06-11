@@ -10,16 +10,16 @@ const port = process.env.PORT || 8080;
 const schema = require("./graphql/schema");
 
 app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    graphiql: true,
-  })
+    "/graphql",
+    graphqlHTTP({
+        schema: schema,
+        graphiql: true,
+    }) 
 );
 
 getCafes();
 
 app.listen(port, () => {
-  console.log(process.env.PORT)
-  console.log("Hello world listening on port", port);
+    console.log(process.env.PORT);
+    console.log("Hello world listening on port", port);
 });

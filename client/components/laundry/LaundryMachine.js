@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { pluralize} from './LaundryUtils';
-import Colors from '../../constants/Colors.js';
-import BellIcon from './BellIcon';
+import React, {useState} from "react";
+import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { pluralize} from "./LaundryUtils";
+import Colors from "../../constants/Colors.js";
+import BellIcon from "./BellIcon";
 
 const LaundryMachine = props => {
 
@@ -19,13 +19,13 @@ const LaundryMachine = props => {
             setNotif(true);
         }
 
-        props.notifAction()
-    }
+        props.notifAction();
+    };
 
     //capitalize only first letter
     const formatMachineName = (name) => {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-    }
+    };
 
     const renderMachine = () => {
         if (thisMachine.avail) {
@@ -35,31 +35,31 @@ const LaundryMachine = props => {
                     <Text style={[styles.available, styles.words]}>
                         {formatMachineName(thisMachine.type)} {thisMachine.id}
                     </Text>
-                </View>)
+                </View>);
         } else {
             return (
                 <View style={styles.row}>
-                <TouchableOpacity onPress={bellHandler}>
-                    <BellIcon focused={notif}/>  
-                </TouchableOpacity>
-                <Text style={[styles.used, styles.words]}>
-                    {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
-                </Text>
-            </View>)
+                    <TouchableOpacity onPress={bellHandler}>
+                        <BellIcon focused={notif}/>  
+                    </TouchableOpacity>
+                    <Text style={[styles.used, styles.words]}>
+                        {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
+                    </Text>
+                </View>);
         }
-    }
+    };
 
     return (
         <View>
             {renderMachine()}
         </View>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         paddingVertical: 7,
     },
     used: {
@@ -72,5 +72,5 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         fontSize: 19,
     }
-})
+});
 export default LaundryMachine;

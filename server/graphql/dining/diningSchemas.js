@@ -38,7 +38,7 @@ const DayType = new GraphQLObjectType({
         message: { type: GraphQLString },
         status: { type: GraphQLString }
     })
-})
+});
 
 /**
  * CafeType describes a single dining hall, or cafe. It includes a description of the cafe, location information, and operational schedules.
@@ -102,7 +102,7 @@ const StationType = new GraphQLObjectType({
         price: { type: GraphQLString },
         soup: { type: GraphQLInt }
     })
-})
+});
 
 /**
  * DaypartType describes the menu for a single meal of the day at a dining cafe.
