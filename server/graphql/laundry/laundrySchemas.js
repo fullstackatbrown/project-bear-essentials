@@ -31,10 +31,13 @@ const MachineDetailedType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     room_id: { type: GraphQLInt },
+    type: { type: GraphQLString },
+    machine_no: { type: GraphQLInt },
     avail: { type: GraphQLBoolean },
+    ext_cycle: { type: GraphQLBoolean },
+    offline: { type: GraphQLBoolean },
     average_run_time: { type: GraphQLInt },
     time_remaining: { type: GraphQLInt },
-    type: { type: GraphQLString },
   }),
 });
 
@@ -53,7 +56,8 @@ const LaundryRooms = new GraphQLObjectType({
 const LaundryRoom = new GraphQLObjectType({
   name: "LaundryRoom",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
     machines: { type: new GraphQLList(MachineType) },
   }),
 });
@@ -63,7 +67,8 @@ const LaundryRoom = new GraphQLObjectType({
 const LaundryRoomDetailed = new GraphQLObjectType({
   name: "LaundryRoomDetailed",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
     machines: { type: new GraphQLList(MachineDetailedType) },
   }),
 });
