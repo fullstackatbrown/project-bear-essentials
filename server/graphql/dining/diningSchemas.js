@@ -46,22 +46,22 @@ const DayType = new GraphQLObjectType({
 const CafeType = new GraphQLObjectType({
     name: "Cafe",
     fields: () => ({
-        address = { type: GraphQLString },
-        city = { type: GraphQLString },
-        days = { type: new GraphQLList(DayType) },
-        description = { type: GraphQLString },
-        eod = { type: GraphQLString },
-        id = { type: GraphQLID },
-        latitude = { type: GraphQLString },
-        location_detail = { type: GraphQLString },
-        longitude = { type: GraphQLString },
-        menu_html = { type: GraphQLString },
-        menu_type = { type: GraphQLString },
-        message = { type: GraphQLString },
-        name = { type: GraphQLString },
-        state = { type: GraphQLString },
-        weekly_schedule = { type: GraphQLString },
-        zip = { type: GraphQLString }
+        address : { type: GraphQLString },
+        city : { type: GraphQLString },
+        days : { type: new GraphQLList(DayType) },
+        description : { type: GraphQLString },
+        eod : { type: GraphQLString },
+        id : { type: GraphQLID },
+        latitude : { type: GraphQLString },
+        location_detail : { type: GraphQLString },
+        longitude : { type: GraphQLString },
+        menu_html : { type: GraphQLString },
+        menu_type : { type: GraphQLString },
+        message : { type: GraphQLString },
+        name : { type: GraphQLString },
+        state : { type: GraphQLString },
+        weekly_schedule : { type: GraphQLString },
+        zip : { type: GraphQLString }
     })
 });
 
@@ -110,13 +110,13 @@ const StationType = new GraphQLObjectType({
 const MealType = new GraphQLObjectType({
     name: "meal",
     fields: () => ({
-        abbreviation = { type: GraphQLString },
-        endtime = { type: GraphQLString },
-        id = { type: GraphQLString },
-        label = { type: GraphQLString },
-        message = { type: GraphQLString },
-        starttime = { type: GraphQLString },
-        stations = { type: new GraphQLList(StationType) }
+        abbreviation : { type: GraphQLString },
+        endtime : { type: GraphQLString },
+        id : { type: GraphQLString },
+        label : { type: GraphQLString },
+        message : { type: GraphQLString },
+        starttime : { type: GraphQLString },
+        stations : { type: new GraphQLList(StationType) }
     })
 });
 

@@ -91,7 +91,7 @@ const RootQueryType = new GraphQLObjectType({
     },
     menusOnDays: {
       type: new GraphQLList(MenuType),
-      args: { id: { type: GraphQLString }, dates: { type: new GraphQLList(Date) } },
+      args: { id: { type: GraphQLString }, dates: { type: new GraphQLList(GraphQLString) } },
       resolve(_, args) {
         return getMenuOnDays(args.id, args.dates);
       }
