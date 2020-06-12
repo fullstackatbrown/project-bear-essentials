@@ -31,8 +31,7 @@ const LaundryMachine = props => {
         if (thisMachine.avail) {
             return (
                 <View style={styles.row}>
-                    <MaterialCommunityIcons name='bell-outline' size={30} color='transparent' />
-                    <Text style={[styles.available, styles.words]}>
+                    <Text style={[styles.words, styles.available]}>
                         {formatMachineName(thisMachine.type)} {thisMachine.id}
                     </Text>
                 </View>);
@@ -42,7 +41,7 @@ const LaundryMachine = props => {
                     <TouchableOpacity onPress={bellHandler}>
                         <BellIcon focused={notif}/>  
                     </TouchableOpacity>
-                    <Text style={[styles.used, styles.words]}>
+                    <Text style={[styles.words, styles.used]}>
                         {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
                     </Text>
                 </View>);
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
     },
     available: {
         color: Colors.success,
+        marginLeft: 42,
     },
     words: {
         marginLeft: 12,

@@ -40,7 +40,6 @@ class LaundryScreen extends Component {
             cards: LAUNDRY_DATA,
             emptySearchBar: true,
             suggestions: [],
-            notifications: new Set(),
         };
 
         this.onTextChanged = this.onTextChanged.bind(this);
