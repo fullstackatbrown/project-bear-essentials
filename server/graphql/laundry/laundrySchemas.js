@@ -46,7 +46,7 @@ const MachineDetailedType = new GraphQLObjectType({
 const LaundryRooms = new GraphQLObjectType({
     name: "LaundryRooms",
     fields: () => ({
-        num_result: { type: GraphQLInt },
+        num_results: { type: GraphQLInt },
         results: { type: new GraphQLList(RoomType) },
     }),
 });
