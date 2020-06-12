@@ -8,7 +8,7 @@
     "eject": "expo eject",
     "test": "jest --watchAll",
     "type": "tsc",
-    "lint": "eslint ."
+    "lint": "eslint \"src/**/*.js\" \"src/**/*.ts\" \"src/**/*.tsx\""
   },
   "jest": {
     "preset": "jest-expo"
