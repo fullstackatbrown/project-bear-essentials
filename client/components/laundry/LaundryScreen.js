@@ -47,126 +47,125 @@ class LaundryScreen extends Component {
         this.onStarChanged = this.onStarChanged.bind(this);
     }
 
-  // Called when a card is starred or unstarred
-  onStarChanged = card => {
-      if (this.props.starred.includes(card)) {
-          this.props.deleteStarred(card);
-      } else {
-          this.props.addStarred(card);
-      }
-  };
+    // Called when a card is starred or unstarred
+    onStarChanged = card => {
+        if (this.props.starred.includes(card)) {
+            this.props.deleteStarred(card);
+        } else {
+            this.props.addStarred(card);
+        }
+    };
 
-  // Called when a machine's notification is set or unset
-  onNotifChanged = room => machine => {
-      const roomMachine = `${room}///${machine}`;
+    // Called when a machine's notification is set or unset
+    onNotifChanged = room => machine => {
+        const roomMachine = `${room}///${machine}`;
+        if (this.props.notifications.includes(roomMachine)) {
+            this.props.deleteNotification(roomMachine);
+        } else {
+            this.props.addNotification(roomMachine);
+        }
+    };
 
-      if (this.props.notifications.includes(roomMachine)) {
-          this.props.deleteNotification(roomMachine);
-      } else {
-          this.props.addNotification(roomMachine);
-      }
-  };
+    // Called on search bar text change
+    onTextChanged = text => {
+        let emptySearchBar = true;
+        let newSuggestions = [];
+        if (text.length > 0) {
+            emptySearchBar = false;
+            newSuggestions = Object.keys(this.state.cards)
+                .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
+                .sort();
+        }
+        this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
+    };
 
-  // Called on search bar text change
-  onTextChanged = text => {
-      let emptySearchBar = true;
-      let newSuggestions = [];
-      if (text.length > 0) {
-          emptySearchBar = false;
-          newSuggestions = Object.keys(this.state.cards)
-              .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
-              .sort();
-      }
-      this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
-  };
+    // Returns scrolling card view, given list of rooms (keys) to be rendered
+    mapToCards(toMap) {
+        return (
+            <ScrollView>
+                {toMap.map(room => (
+                    <LaundryCard
+                        key={room}
+                        card={this.state.cards[room]}
+                        isStarred={this.props.starred.includes(room)}
+                        notifList={this.props.notifications
+                            .map(str => str.split("///"))     // split into [room, machine]
+                            .filter(([r, _]) => (r === room)) // check room
+                            .map(rm => Number(rm[1]))}                // extract machine
+                        starAction={() => this.onStarChanged(room)}
+                        notifAction={this.onNotifChanged(room)}
+                    />
+                ))}
+            </ScrollView>
+        );
+    }
 
-  // Returns scrolling card view, given list of rooms (keys) to be rendered
-  mapToCards(toMap) {
-      return (
-          <ScrollView>
-              {toMap.map(room => (
-                  <LaundryCard
-                      key={room}
-                      card={this.state.cards[room]}
-                      isStarred={this.props.starred.includes(room)}
-                      notifList={this.props.notifications
-                          .map(str => str.split("///"))     // split into [room, machine]
-                          .filter(([r, _]) => (r === room)) // check room
-                          .map(rm => Number(rm[1]))}                // extract machine
-                      starAction={() => this.onStarChanged(room)}
-                      notifAction={this.onNotifChanged(room)}
-                  />
-              ))}
-          </ScrollView>
-      );
-  }
+    // Returns search bar results, starred laundry rooms, or no results message
+    renderSuggestions() {
+        const { emptySearchBar, suggestions } = this.state;
+        let starred = this.props.starred.sort();
 
-  // Returns search bar results, starred laundry rooms, or no results message
-  renderSuggestions() {
-      const { emptySearchBar, suggestions } = this.state;
-      let starred = this.props.starred.sort();
+        if (suggestions.length === 0) {
+            if (emptySearchBar) {
+                if (starred.length === 0) {
+                    return (
+                        <Text style={styles.textCentered}>
+                        No starred laundry rooms yet.
+                        </Text>
+                    );
+                }
+                return this.mapToCards(starred);
+            }
+            return <Text style={styles.textCentered}>No search results found.</Text>;
+        }
 
-      if (suggestions.length === 0) {
-          if (emptySearchBar) {
-              if (starred.length === 0) {
-                  return (
-                      <Text style={styles.textCentered}>
-              No starred laundry rooms yet.
-                      </Text>
-                  );
-              }
-              return this.mapToCards(starred);
-          }
-          return <Text style={styles.textCentered}>No search results found.</Text>;
-      }
+        return this.mapToCards(suggestions);
+    }
 
-      return this.mapToCards(suggestions);
-  }
+    // Returns search bar's clear button when there is text in the search box
+    crossHandler() {
+        const { emptySearchBar } = this.state;
+        if (!emptySearchBar) {
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+                        this.textInput.clear();
+                        this.onTextChanged("");
+                    }}
+                >
+                    <AntDesign
+                        name="close"
+                        size={24}
+                        color="#A9A9A9"
+                    />
+                </TouchableOpacity>
+            );
+        }
+    }
 
-  // Returns search bar's clear button when there is text in the search box
-  crossHandler() {
-      const { emptySearchBar } = this.state;
-      if (!emptySearchBar) {
-          return (
-              <TouchableOpacity
-                  onPress={() => {
-                      this.textInput.clear();
-                      this.onTextChanged("");
-                  }}
-              >
-                  <AntDesign
-                      name="close"
-                      size={24}
-                      color="#A9A9A9"
-                  />
-              </TouchableOpacity>
-          );
-      }
-  }
-
-  render() {
-      return (
-          <View style={styles.screen}>
-              <View style={styles.searchBar}>
-                  <Ionicons
-                      name="ios-search"
-                      size={24}
-                      color="gray"
-                  />
-                  <TextInput
-                      style={styles.textInput}
-                      ref={input => {
-                          this.textInput = input;
-                      }}
-                      placeholder="Search laundry"
-                      onChangeText={text => this.onTextChanged(text)}
-                  />
-                  {this.crossHandler()}
-              </View>
-              {this.renderSuggestions()}
-          </View>
-      );
-  }
+    render() {
+        return (
+            <View style={styles.screen}>
+                <View style={styles.searchBar}>
+                    <Ionicons
+                        name="ios-search"
+                        size={24}
+                        color="gray"
+                    />
+                    <TextInput
+                        style={styles.textInput}
+                        ref={input => {
+                            this.textInput = input;
+                        }}
+                        placeholder="Search laundry"
+                        onChangeText={text => this.onTextChanged(text)}
+                    />
+                    {this.crossHandler()}
+                </View>
+                {this.renderSuggestions()}
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
