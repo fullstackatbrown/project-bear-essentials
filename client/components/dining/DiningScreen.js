@@ -7,9 +7,27 @@ import {
     CheckBox,
 } from "react-native";
 import { Ionicons, AntDesign} from "@expo/vector-icons";
-import { addStarred, deleteStarred } from "../../redux/ActionCreators";
+import { addStarred, deleteStarred, } from "../../redux/ActionCreators";
+import { connect } from "react-redux";
 import { SearchBar, } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
+
+// const mapStateToProps = state => {
+//     return {
+//         starred: state.dining.starred,
+//     };
+// };
+
+const mapDispatchToProps = dispatch => ({
+    addStarred: flag => dispatch(addStarred(flag)),
+    deleteStarred: flag => dispatch(deleteStarred(flag)),
+});
+
+const DINING_HALL = "Sharpe Refrectory"
+const DiningStack = createStackNavigator();
 
 class DiningScreen extends Component {
     constructor(props) {
@@ -17,35 +35,64 @@ class DiningScreen extends Component {
 
         this.state = {
             search: "",
+            cards: DINING_DATA,
         };
+
+        this.starChanged = this.starChanged.bind(this);
     }
 
-  // replaces query with text user searches
-  updateSearch = search => {
-      this.setState({ search });
-  };
+    // updates star's state when clicked
+    starChanged = card => {
+        if(!this.props.starred.includes(card)){
+            this.props.addStarred(card);
+        } else {
+            this.props.deleteStarred(card);
+        }
+    };
 
-  render() { 
-      const { search } = this.state;
+    // replaces query with text user searches
+    updateSearch = search => {
+        this.setState({ search });
+    };
 
-      return (
-          <View style={styles.screen}>
-              <ScrollView> 
-                  <SearchBar
-                      round lightTheme
-                      placeholder="Type Here..." 
-                      onChangeText = {this.updateSearch} 
-                      value = {search}
-                  />
-                  <DiningCard style={styles.inputContainer}>
-                      <Text style ={styles.title}> Dining Hall                   <AntDesign name="staro" size={24} color="black"/>
-                      </Text>
+    // creates individual dining cards
+    mapDiningCard(starred) {
+        return (
+            <ScrollView>
+                {starred.map(diningHall => (
+                <DiningCard
+                diningCard = {this.state.cards[diningHall]}
+                starPressed = {() => this.starChanges(diningHall)}
+                isStarred = {this.props.starred.includes(diningHall)}
+                />
+                ))}
+            </ScrollView>
+        )
+    };
 
-                  </DiningCard>
-              </ScrollView>
-          </View>
-      );
-  }
+    render() { 
+        const { search } = this.state;
+
+        return (
+
+            //TODO: set up navgation from card to menu 
+            < View style={styles.screen}>
+                <ScrollView> 
+                    <SearchBar
+                    round lightTheme
+                    inputStyle={{backgroundColor: 'white'}}
+                    containerStyle={{backgroundColor: 'white', borderWidth: 0, borderRadius: 0}}
+                    placeholderTextColor={"#g5g5g5"}
+                    placeholder={"Type Here"}
+                    onChangeText = {this.updateSearch} 
+                    value = {search}
+                    />
+                    <DiningCard style={styles.inputContainer}> 
+                    </DiningCard>
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -53,7 +100,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#fafafa",
+    },
+    header:{
+        minWidth: "100",
     },
     title:{
         fontSize: 25,
@@ -67,4 +117,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DiningScreen;
+export default connect(mapDispatchToProps)(DiningScreen);
