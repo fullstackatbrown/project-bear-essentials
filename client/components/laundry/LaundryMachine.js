@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { pluralize} from './LaundryUtils';
-import Colors from '../../constants/Colors.js';
-import BellIcon from './BellIcon';
+import React, {useState} from "react";
+import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { pluralize} from "./LaundryUtils";
+import Colors from "../../constants/Colors.js";
+import BellIcon from "./BellIcon";
 
 const LaundryMachine = props => {
 
@@ -19,47 +19,51 @@ const LaundryMachine = props => {
             setNotif(true);
         }
 
-        props.notifAction()
-    }
+        props.notifAction();
+    };
 
-    //capitalize only first letter
-    const formatMachineName = (name) => {
-        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    if (thisMachine.offline) {
+        return (
+            <View style={styles.row}>
+                <Text style={[styles.words, styles.offline]}>
+                    {props.name} {thisMachine.machine_no} (offline)
+                </Text>
+            </View>);
     }
-
-    const renderMachine = () => {
-        if (thisMachine.avail) {
-            return (
-                <View style={styles.row}>
-                    <MaterialCommunityIcons name='bell-outline' size={30} color='transparent' />
-                    <Text style={[styles.available, styles.words]}>
-                        {formatMachineName(thisMachine.type)} {thisMachine.id}
-                    </Text>
-                </View>)
-        } else {
-            return (
-                <View style={styles.row}>
+    if (thisMachine.ext_cycle) {
+        return (
+            <View style={styles.row}>
                 <TouchableOpacity onPress={bellHandler}>
                     <BellIcon focused={notif}/>  
                 </TouchableOpacity>
-                <Text style={[styles.used, styles.words]}>
-                    {formatMachineName(thisMachine.type)} {thisMachine.id} ({pluralize(thisMachine.time_remaining, "minute")})
+                <Text style={[styles.words, styles.used]}>
+                    {props.name} {thisMachine.machine_no} (ext. cycle)
                 </Text>
-            </View>)
-        }
+            </View>);
     }
-
+    if (thisMachine.avail) {
+        return (
+            <View style={styles.row}>
+                <Text style={[styles.words, styles.available]}>
+                    {props.name} {thisMachine.machine_no}
+                </Text>
+            </View>);
+    }
     return (
-        <View>
-            {renderMachine()}
-        </View>
-    )
+        <View style={styles.row}>
+            <TouchableOpacity onPress={bellHandler}>
+                <BellIcon focused={notif}/>  
+            </TouchableOpacity>
+            <Text style={[styles.words, styles.used]}>
+                {props.name} {thisMachine.machine_no} ({pluralize(thisMachine.time_remaining, "minute")} rem.)
+            </Text>
+        </View>);
 };
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         paddingVertical: 7,
     },
     used: {
@@ -67,10 +71,15 @@ const styles = StyleSheet.create({
     },
     available: {
         color: Colors.success,
+        marginLeft: 42,
+    },
+    offline: {
+        color: "#909090",
+        marginLeft: 42,
     },
     words: {
         marginLeft: 12,
         fontSize: 19,
-    }
-})
+    },
+});
 export default LaundryMachine;

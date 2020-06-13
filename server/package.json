@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app",
     "type": "tsc",
-    "lint": "eslint ."
+    "lint": "eslint \"src/**/*.js\" \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "",

@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import { 
     View, 
     StyleSheet, 
     TouchableOpacity 
-} from 'react-native';
+} from "react-native";
 
 const DiningCard = props => {
     
     // dining informations and times
     let diningMenu = [];
     let openStatus = true;
-    let startHour = '0:00';
+    let startHour = "0:00";
 
     // curr time
     let date = new Date();
@@ -21,24 +21,24 @@ const DiningCard = props => {
     const diningHandler = () => {
         if (openStatus == true) {
         }
-    }
+    };
 
     // styles can be overidden from outside components
     return <View style={{...styles.diningCard, ...props.style}}>
         <TouchableOpacity>
-        {props.children}
+            {props.children}
         </TouchableOpacity>
-        </View>
-    };
+    </View>;
+};
 
 const styles = StyleSheet.create({
     diningCard: {
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowOffset: { width: 0, height: 1 },
         shadowRadius: .6,
         shadowOpacity: 0.25,
         elevation: 8,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         padding: 20,
         borderRadius: 10,
     },

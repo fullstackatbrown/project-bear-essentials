@@ -1,21 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState} from "react";
 import {
     StyleSheet, 
     View, 
     Text, 
     TouchableOpacity, 
     ToolbarAndroidComponent
-} from 'react-native';
-import { AntDesign, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import Collapsible from 'react-native-collapsible';
-import LaundryMachine from './LaundryMachine';
-import { pluralize} from './LaundryUtils';
-import Colors from '../../constants/Colors.js'
+} from "react-native";
+import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import Collapsible from "react-native-collapsible";
+import LaundryMachine from "./LaundryMachine";
+import { pluralize} from "./LaundryUtils";
+import Colors from "../../constants/Colors.js";
 
 const LaundryCard = props => {
     // states for star
     const [starred, setStarred] = useState(props.isStarred ? true : false);
-    const [starName, setStarName] = useState(starred ? 'star' : 'staro');
+    const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
 
     // states for collapsible
@@ -31,16 +31,16 @@ const LaundryCard = props => {
     const starHandler = () => {
         if (starred) {
             setStarred(false);
-            setStarName('staro');
+            setStarName("staro");
             setStarColor(Colors.inactiveIcon); //inactive color
         } else {
             setStarred(true);
-            setStarName('star');
+            setStarName("star");
             setStarColor(Colors.starYellow); //star yellow
         }
 
         // send changes to parent
-        props.starAction()
+        props.starAction();
     };
 
     // when down arrow is pressed
@@ -91,20 +91,20 @@ const LaundryCard = props => {
 
     // parse room data when card is generated
     const parseRoomData = () => {
-        props.card.machines.forEach(function (machine) {
-            if (machine.type == "WASHER") {
+        props.card.machines.forEach(machine => {
+            if (machine.type == "wash") {
                 allWashers.push(machine);
-                if (machine.avail) {
+                if (machine.avail && !machine.offline && !machine.ext_cycle) {
                     availWashers ++;
                 }
-            } else {
+            } else if (machine.type == "dry") {
                 allDryers.push(machine);
-                if (machine.avail) {
+                if (machine.avail && !machine.offline && !machine.ext_cycle) {
                     availDryers ++;
                 }
             }
-        })
-    }
+        });
+    };
 
     // parse room data when component is created
     parseRoomData();
@@ -113,11 +113,11 @@ const LaundryCard = props => {
         <View style={styles.back}>
             <View style={styles.card}>
                 <View style={styles.header}>
-                    <View style={{ maxWidth: '80%' }}>
+                    <View style={{ maxWidth: "80%" }}>
                         <Text style={styles.title}>{props.card.title}</Text>
                         {roomHandler()}
                     </View>
-                    <TouchableOpacity onPress={starHandler}>
+                    <TouchableOpacity style={styles.starArea} onPress={starHandler}>
                         <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
                     </TouchableOpacity>
                 </View>
@@ -135,6 +135,7 @@ const LaundryCard = props => {
                             {allWashers.map((washer) => 
                                 (<LaundryMachine
                                     key={washer.id}
+                                    name="Washer"
                                     machine={washer}
                                     isNotif={props.notifList.includes(washer.id)}
                                     notifAction={() => props.notifAction(washer.id)} />))}
@@ -145,15 +146,16 @@ const LaundryCard = props => {
                                 {allDryers.map((dryer) => 
                                     (<LaundryMachine
                                         key={dryer.id}
+                                        name="Dryer"
                                         machine={dryer}
                                         isNotif={props.notifList.includes(dryer.id)}
                                         notifAction={() => props.notifAction(dryer.id)} />))}
                             </View>
                             <View style={styles.upArrow}>
-                            <TouchableOpacity onPress={upArrowHandler}>
-                                <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity onPress={upArrowHandler}>
+                                    <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>                    
                 </Collapsible>
@@ -167,54 +169,54 @@ const LaundryCard = props => {
 const styles = StyleSheet.create({
     back: {
         padding: 5,
-        backgroundColor: '#0000'
+        backgroundColor: "#0000"
     },
     card: {
         padding: 25,
         borderRadius: 15,
         // shadows for ios
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowRadius: 2,
         shadowOpacity: 0.25,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         shadowOffset: {
             width: 0,
             height: 1
         },
-        width: '90%',
-        alignSelf: 'center',
+        width: "90%",
+        alignSelf: "center",
 
         // shadows for android
         elevation: 5,
     },
     title: {
-        fontWeight: '700',
+        fontWeight: "700",
         fontSize: 28,
     },
     room: {
         fontSize: 22,
-        color: 'gray',
+        color: "gray",
     },
     header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     uncollapsed: {
         marginTop: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     collapsed: {
         marginTop: 10,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
     colSections: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     upArrow: {
-        justifyContent: 'flex-end'
+        justifyContent: "flex-end"
     },
     arrow: {
         marginBottom: -10,
@@ -223,9 +225,9 @@ const styles = StyleSheet.create({
     horizontalLine: {
         marginTop: 10,
         marginBottom: 10,
-        alignSelf: 'center',
-        width: '100%',
-        borderBottomColor: '#AEAEAE',
+        alignSelf: "center",
+        width: "100%",
+        borderBottomColor: "#AEAEAE",
         borderBottomWidth: 0.7,
     },
     success: {
@@ -236,6 +238,9 @@ const styles = StyleSheet.create({
     },
     words: {
         fontSize: 19,
+    },
+    starArea: {
+        height: 32,
     },
 });
 

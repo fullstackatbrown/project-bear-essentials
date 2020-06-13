@@ -10,22 +10,22 @@ import { maps } from "./maps";
 import { settings } from "./settings";
 
 export const ConfigureStore = () => {
-  const config = {
-    key: "root",
-    storage: AsyncStorage,
-    debug: true,
-  };
+    const config = {
+        key: "root",
+        storage: AsyncStorage,
+        debug: true,
+    };
 
-  const store = createStore(
-    persistCombineReducers(config, {
-      laundry,
-      notifications,
-      maps,
-      settings,
-    }),
-    applyMiddleware(thunk, logger)
-  );
+    const store = createStore(
+        persistCombineReducers(config, {
+            laundry,
+            notifications,
+            maps,
+            settings,
+        }),
+        applyMiddleware(thunk, logger)
+    );
 
-  const persistor = persistStore(store);
-  return { persistor, store };
+    const persistor = persistStore(store);
+    return { persistor, store };
 };

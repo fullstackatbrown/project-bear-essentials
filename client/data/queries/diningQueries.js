@@ -14,51 +14,51 @@ CAFE_MAP.set("cafecarts", 1538);
 
 // Returns a single JS Object containing all cafe data.
 const getCafe = async cafe => {
-  let cafe_id = CAFE_MAP.get(cafe);
-  let endpoint =
+    let cafe_id = CAFE_MAP.get(cafe);
+    let endpoint =
     brownapi + `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  return data.results.cafes[cafe_id];
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    return data.results.cafes[cafe_id];
 };
 
 // Returns an array of cafes
 const getCafes = async () => {
-  let keys = "";
-  CAFE_MAP.forEach(e => (keys += e + ","));
-  let endpoint =
+    let keys = "";
+    CAFE_MAP.forEach(e => (keys += e + ","));
+    let endpoint =
     brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  let ret = [];
-  CAFE_MAP.forEach(e => ret.push(data.results.cafes[e]));
-  return ret;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    let ret = [];
+    CAFE_MAP.forEach(e => ret.push(data.results.cafes[e]));
+    return ret;
 };
 
 // Returns menus.
 const getMenu = async cafe => {
-  let endpoint =
+    let endpoint =
     brownapi +
     `dining/cafe/${CAFE_MAP.get(cafe)}/menu?client_id=${process.env.CLIENT_ID}`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  console.log(data.results.days);
-  return data.results.days;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    console.log(data.results.days);
+    return data.results.days;
 };
 
 // Returns menus.
 //TODO: This one is weirdly formatted
 //use yourDate.toISOString().split('T')[0]
 const getMenuOnDay = async (cafe, date) => {
-  let endpoint =
+    let endpoint =
     brownapi +
     `dining/cafe/${CAFE_MAP.get(cafe)}/${date}?client_id=${
-      process.env.CLIENT_ID
+        process.env.CLIENT_ID
     }`;
-  let { data } = await axios.get(endpoint).catch(e => console.log(e));
-  return data.results.days;
+    let { data } = await axios.get(endpoint).catch(e => console.log(e));
+    return data.results.days;
 };
 
 module.exports = {
-  getCafe: getCafe,
-  getCafes: getCafes,
-  getMenu: getMenu,
-  getMenuOnDay: getMenuOnDay,
+    getCafe: getCafe,
+    getCafes: getCafes,
+    getMenu: getMenu,
+    getMenuOnDay: getMenuOnDay,
 };
