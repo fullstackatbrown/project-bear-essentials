@@ -91,15 +91,15 @@ const LaundryCard = props => {
 
     // parse room data when card is generated
     const parseRoomData = () => {
-        props.card.machines.forEach(function (machine) {
-            if (machine.type == "WASHER") {
+        props.card.machines.forEach(machine => {
+            if (machine.type == "wash") {
                 allWashers.push(machine);
-                if (machine.avail) {
+                if (machine.avail && !machine.offline && !machine.ext_cycle) {
                     availWashers ++;
                 }
-            } else {
+            } else if (machine.type == "dry") {
                 allDryers.push(machine);
-                if (machine.avail) {
+                if (machine.avail && !machine.offline && !machine.ext_cycle) {
                     availDryers ++;
                 }
             }
@@ -117,7 +117,7 @@ const LaundryCard = props => {
                         <Text style={styles.title}>{props.card.title}</Text>
                         {roomHandler()}
                     </View>
-                    <TouchableOpacity onPress={starHandler}>
+                    <TouchableOpacity style={styles.starArea} onPress={starHandler}>
                         <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
                     </TouchableOpacity>
                 </View>
@@ -135,6 +135,7 @@ const LaundryCard = props => {
                             {allWashers.map((washer) => 
                                 (<LaundryMachine
                                     key={washer.id}
+                                    name="Washer"
                                     machine={washer}
                                     isNotif={props.notifList.includes(washer.id)}
                                     notifAction={() => props.notifAction(washer.id)} />))}
@@ -145,6 +146,7 @@ const LaundryCard = props => {
                                 {allDryers.map((dryer) => 
                                     (<LaundryMachine
                                         key={dryer.id}
+                                        name="Dryer"
                                         machine={dryer}
                                         isNotif={props.notifList.includes(dryer.id)}
                                         notifAction={() => props.notifAction(dryer.id)} />))}
@@ -236,6 +238,9 @@ const styles = StyleSheet.create({
     },
     words: {
         fontSize: 19,
+    },
+    starArea: {
+        height: 32,
     },
 });
 

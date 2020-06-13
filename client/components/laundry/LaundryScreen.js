@@ -91,7 +91,7 @@ class LaundryScreen extends Component {
                         notifList={this.props.notifications
                             .map(str => str.split("///"))     // split into [room, machine]
                             .filter(([r, _]) => (r === room)) // check room
-                            .map(rm => Number(rm[1]))}                // extract machine
+                            .map(rm => Number(rm[1]))}        // extract machine
                         starAction={() => this.onStarChanged(room)}
                         notifAction={this.onNotifChanged(room)}
                     />
