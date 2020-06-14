@@ -5,15 +5,17 @@ import {
     View, 
     StyleSheet, 
     CheckBox,
+    TextInput
 } from "react-native";
 import { Ionicons, AntDesign} from "@expo/vector-icons";
-import { addStarred, deleteStarred, } from "../../redux/ActionCreators";
+import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 import { connect } from "react-redux";
-import { SearchBar, } from "react-native-elements";
+import { SearchBar } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
+import Colors from "../../constants/Colors.js";
 
 // const mapStateToProps = state => {
 //     return {
@@ -21,10 +23,12 @@ import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 //     };
 // };
 
-const mapDispatchToProps = dispatch => ({
-    addStarred: flag => dispatch(addStarred(flag)),
-    deleteStarred: flag => dispatch(deleteStarred(flag)),
-});
+const mapDispatchToProps = dispatch => {
+    return {
+        addStarred: flag => dispatch(addStarred(flag)),
+        deleteStarred: flag => dispatch(deleteStarred(flag)),
+    }
+}
 
 const DINING_HALL = "Sharpe Refrectory"
 const DiningStack = createStackNavigator();
@@ -74,21 +78,14 @@ class DiningScreen extends Component {
         const { search } = this.state;
 
         return (
-
-            //TODO: set up navgation from card to menu 
+            //TODO: set up navigation from card to menu 
             < View style={styles.screen}>
-                <ScrollView> 
-                    <SearchBar
-                    round lightTheme
-                    inputStyle={{backgroundColor: 'white'}}
-                    containerStyle={{backgroundColor: 'white', borderWidth: 0, borderRadius: 0}}
-                    placeholderTextColor={"#g5g5g5"}
-                    placeholder={"Type Here"}
-                    onChangeText = {this.updateSearch} 
-                    value = {search}
-                    />
-                    <DiningCard style={styles.inputContainer}> 
-                    </DiningCard>
+                <ScrollView style={styles.scroll}> 
+                    <View style={styles.search}>
+                        <Ionicons name="ios-search" size={24} color="gray" />
+                        <TextInput style={styles.textInput} placeholder="Search dining halls"/>
+                    </View>
+                    <DiningCard style={styles.inputContainer} title={"Dining Hall"} />
                 </ScrollView>
             </View>
         );
@@ -98,12 +95,44 @@ class DiningScreen extends Component {
 const styles = StyleSheet.create({
     screen:{
         flex: 1,
-        padding: 10,
         alignItems: "center",
         backgroundColor: "#fafafa",
     },
+    scroll: {
+        width: "100%"
+    },
+    search: {
+        borderWidth: 0,
+        borderRadius: 25,
+        borderColor: "#BCBCBC",
+        padding: 10,
+        paddingLeft: 12,
+        margin: 12,
+        width: "88%",
+        flexDirection: "row",
+        alignSelf: "center",
+        alignItems: "center",
+
+        // shadows for ios
+        shadowColor: "black",
+        shadowRadius: 2,
+        shadowOpacity: 0.25,
+        backgroundColor: "white",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        }
+    },
+    textInput: {
+        borderWidth: 0,
+        marginLeft: 10,
+        marginRight: 10,
+        flex: 1,
+        fontSize: 18,
+        color: "#9C9C9C",
+    },
     header:{
-        minWidth: "100",
+        minWidth: "100%",
     },
     title:{
         fontSize: 25,
