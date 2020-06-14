@@ -40,11 +40,16 @@ const DiningCard = props => {
     when dining hall is open/closed, should check open status and use it to change color of sign and text. 
     (make color and border color js variables that are adjusted in this method)
     should also return correct variable that inputs the text for closes and opens times
-    requires another function that changes openStatus
+    requires another function that changes openStatus.
+    maybe we can create new function that can act as a component (replace styles.info). within this function,
+    we can render correct information and just call function below
     */
     let text = "";
     const diningHandler = () => {
-        if (openStatus == true) {
+        if (openStatus) {
+
+        } else {
+            
         }
     };
 
@@ -57,7 +62,7 @@ const DiningCard = props => {
                 </TouchableOpacity>
             </View>
             <View style={styles.info}>
-                <Text style={styles.sign}>Open</Text>
+                <Text style={styles.sign}>{openStatus ? "Open" : "Closed"}</Text>
                 <Text style={styles.text}>Closes at 8:00 PM</Text>
             </View>
     </View>
