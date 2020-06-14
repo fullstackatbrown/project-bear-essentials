@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {
     StyleSheet, 
     View, 
@@ -11,8 +11,14 @@ import Collapsible from "react-native-collapsible";
 import LaundryMachine from "./LaundryMachine";
 import { pluralize} from "./LaundryUtils";
 import Colors from "../../constants/Colors.js";
+import { fetchLaundryRoomDetailed } from "../../data/queries/laundryQueries";
 
 const LaundryCard = props => {
+
+    // list of machine details, to be updated periodically with api calls
+    const [machineInfo, setMachineInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     // states for star
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
@@ -22,10 +28,10 @@ const LaundryCard = props => {
     const [collapsed, setCollapsed] = useState(true);
 
     // list of machines
-    let allWashers = [];
-    let allDryers = [];
-    let availWashers = 0;
-    let availDryers = 0;
+    const [allWashers, setAllWashers] = useState([]);
+    const [allDryers, setAllDryers] = useState([]);
+    const [numAvailWashers, setNumAvailWashers] = useState(0);
+    const [numAvailDryers, setNumAvailDryers] = useState(0);
 
     // when star is pressed
     const starHandler = () => {
@@ -66,48 +72,88 @@ const LaundryCard = props => {
 
     // creates summary for unexpanded laundry card
     const summaryHandler = () => {
-        if (availWashers == 0 && availDryers == 0) {
+        if (loading) {
+            return <Text style={[styles.loading, styles.words]}>Loading...</Text>;
+        } else if (numAvailWashers == 0 && numAvailDryers == 0) {
             return <Text style={[styles.fail, styles.words]}>No available machines</Text>;
-        } else if (availDryers == 0) {
+        } else if (numAvailDryers == 0) {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(availWashers, "washer")} available
+                    {pluralize(numAvailWashers, "washer")} available
                 </Text>
             );
-        } else if (availWashers == 0) {
+        } else if (numAvailWashers == 0) {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(availDryers, "dryer")} available
+                    {pluralize(numAvailDryers, "dryer")} available
                 </Text>
             );
         } else {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(availWashers, "washer")}, {pluralize(availDryers, "dryer")} available
+                    {pluralize(numAvailWashers, "washer")}, {pluralize(numAvailDryers, "dryer")} available
                 </Text>
             );
         }
     };
 
-    // parse room data when card is generated
-    const parseRoomData = () => {
-        props.card.machines.forEach(machine => {
-            if (machine.type == "wash") {
-                allWashers.push(machine);
-                if (machine.avail && !machine.offline && !machine.ext_cycle) {
-                    availWashers ++;
-                }
-            } else if (machine.type == "dry") {
-                allDryers.push(machine);
-                if (machine.avail && !machine.offline && !machine.ext_cycle) {
-                    availDryers ++;
+    // get initial data, set repeating timer for updates
+    useEffect(
+        () => {
+            let mounted = true;
+            const fetchData = async (isInitial) => {
+                const fetchedMachineData = await fetchLaundryRoomDetailed(props.card.id);
+                setMachineInfo(fetchedMachineData.data.laundryRoomDetailed.machines);
+                if (isInitial) setLoading(false);
+            };
+
+            if (mounted) fetchData(true);
+
+            let interval = setInterval(() => fetchData(false), 60000);
+
+            return () => {
+                mounted = false;
+                clearInterval(interval);
+            };
+        },
+        [],
+    );
+
+    // re-parse room data when LaundryCard updates
+    useEffect(
+        () => {
+            let mounted = true;              
+            if (!loading) {              
+                let newWashers = [];
+                let newDryers = [];
+                let newNumAvailWashers = 0;
+                let newNumAvailDryers = 0;
+
+                machineInfo.forEach(machine => {
+                    if (machine.type == "wash") {
+                        newWashers.push(machine);
+                        if (machine.avail && !machine.offline && !machine.ext_cycle) {
+                            newNumAvailWashers ++;
+                        }
+                    } else if (machine.type == "dry") {
+                        newDryers.push(machine);
+                        if (machine.avail && !machine.offline && !machine.ext_cycle) {
+                            newNumAvailDryers ++;
+                        }
+                    }
+                });
+
+                if (mounted) {
+                    setAllWashers(newWashers);
+                    setAllDryers(newDryers);
+                    setNumAvailWashers(newNumAvailWashers);
+                    setNumAvailDryers(newNumAvailDryers);
                 }
             }
-        });
-    };
-
-    // parse room data when component is created
-    parseRoomData();
+            return () => mounted = false;
+        },
+        [machineInfo, loading],
+    );
 
     return (
         <View style={styles.back}>
@@ -227,7 +273,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         alignSelf: "center",
         width: "100%",
-        borderBottomColor: "#AEAEAE",
+        borderBottomColor: "#D3D3D3",
         borderBottomWidth: 0.7,
     },
     success: {
@@ -235,6 +281,9 @@ const styles = StyleSheet.create({
     },
     fail: {
         color: Colors.danger,
+    },
+    loading: {
+        color: "#9A9A9A",
     },
     words: {
         fontSize: 19,

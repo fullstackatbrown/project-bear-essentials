@@ -1,4 +1,4 @@
-export default const roomInfo = {
+export const roomInfo = {
     "111 BROWN ST RM106": {
         queryText: "111 BROWN STREET 106",
         title: "111 Brown Street",
@@ -15,12 +15,12 @@ export default const roomInfo = {
         room: "009",
     },
     "ANDREWS E RM154": { // swapped with ANDREWS W
-        queryText: "WEST ANDREWS WEST 160",
+        queryText: "ANDREWS WEST 160",
         title: "Andrews West",
         room: "160",
     },
     "ANDREWS W RM160": { // swapped with ANDREWS E
-        queryText: "EAST ANDREWS EAST 154",
+        queryText: "ANDREWS EAST 154",
         title: "Andrews East",
         room: "154",
     },

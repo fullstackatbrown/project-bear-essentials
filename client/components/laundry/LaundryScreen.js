@@ -10,13 +10,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LaundryCard from "./LaundryCard";
-import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint";
 import {
     addNotification,
     deleteNotification,
     addStarred,
     deleteStarred,
 } from "../../redux/ActionCreators";
+import { fetchLaundryAll } from "../../data/queries/laundryQueries";
 
 const mapStateToProps = state => {
     return {
@@ -37,15 +37,29 @@ class LaundryScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cards: LAUNDRY_DATA,
+            cards: null,
+            loading: true, // initial loading of cards data
             emptySearchBar: true,
             suggestions: [],
         };
 
+        this.fetchCards = this.fetchCards.bind(this);
         this.onTextChanged = this.onTextChanged.bind(this);
         this.onNotifChanged = this.onNotifChanged.bind(this);
         this.onStarChanged = this.onStarChanged.bind(this);
-    }
+    };
+
+    componentDidMount() {
+        this.fetchCards();
+    };
+
+    fetchCards = async () => {
+        if (!this.state.loading) {
+            this.setState({ loading: true });
+        }
+        const fetchedCards = await fetchLaundryAll();
+        this.setState({ cards: fetchedCards, loading: false });
+    };
 
     // Called when a card is starred or unstarred
     onStarChanged = card => {
@@ -144,6 +158,9 @@ class LaundryScreen extends Component {
     }
 
     render() {
+        if (this.state.loading) {
+            return <Text>Loading... please wait.</Text>;
+        }
         return (
             <View style={styles.screen}>
                 <View style={styles.searchBar}>

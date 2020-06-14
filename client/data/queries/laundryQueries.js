@@ -1,10 +1,10 @@
-const roomInfo = require("../laundrydata/roomInfo")
+const { roomInfo } = require("../laundrydata/roomInfo")
 const { createApolloFetch } = require("apollo-fetch");
 
 const uri = "https://api-2cu446h72q-uc.a.run.app/graphql";
 const fetch = createApolloFetch({ uri });
 
-function fetchLaundryRooms() {
+const fetchLaundryRooms = () => {
     return fetch({
         query: `{
             laundryRooms {
@@ -17,7 +17,7 @@ function fetchLaundryRooms() {
     });
 };
 
-function fetchLaundryRoomDetailed(id) {
+const fetchLaundryRoomDetailed = (id) => {
     return fetch({
         query: `{
             laundryRoomDetailed (id: ${id}) {
@@ -35,7 +35,7 @@ function fetchLaundryRoomDetailed(id) {
     });
 };
 
-async function fetchLaundryAll() {
+const fetchLaundryAll = async () => {
     let nameIds = await fetchLaundryRooms();
     nameIds = nameIds.data.laundryRooms.results;
 
@@ -44,7 +44,8 @@ async function fetchLaundryAll() {
         allRoomsDetailed[roomInfo[v.name].queryText] = {
             title: roomInfo[v.name].title,
             room: roomInfo[v.name].room,
-            machines: fetchLaundryRoomDetailed(v.id),
+            id: v.id,
+            // machines: fetchLaundryRoomDetailed(v.id),
         };
     });
 
@@ -60,4 +61,4 @@ async function fetchLaundryAll() {
     //     }), {});
 };
 
-export { fetchLaundryAll };
+export { fetchLaundryRoomDetailed, fetchLaundryAll };

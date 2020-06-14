@@ -2,6 +2,7 @@ const LAUNDRY_DATA = {
     "125-127 WATERMAN STREET 003": {
         title: "125-127 Waterman Street",
         room: "003",
+        id: 1429265,
         machines: [
             {
             id: 66757,
@@ -80,6 +81,7 @@ const LAUNDRY_DATA = {
     "ANDREWS WEST 160": {
         title: "Andrews West",
         room: "160",
+        id: 14292350,
         machines: [
             {
             id: 66757,
@@ -158,6 +160,7 @@ const LAUNDRY_DATA = {
     "METCALF HALL": {
         title: "Metcalf Hall",
         room: "",
+        id: 1429229,
         machines: [
             {
             id: 66757,
@@ -236,6 +239,7 @@ const LAUNDRY_DATA = {
     "MILLER HALL": {
         title: "Miller Hall",
         room: null,
+        id: 1429230,
         machines: [
             {
             id: 66757,
