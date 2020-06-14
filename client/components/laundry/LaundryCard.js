@@ -103,11 +103,13 @@ const LaundryCard = props => {
             let mounted = true;
             const fetchData = async (isInitial) => {
                 const fetchedMachineData = await fetchLaundryRoomDetailed(props.card.id);
-                setMachineInfo(fetchedMachineData.data.laundryRoomDetailed.machines);
-                if (isInitial) setLoading(false);
+                if (mounted) {
+                    setMachineInfo(fetchedMachineData.data.laundryRoomDetailed.machines);
+                    if (isInitial) setLoading(false);
+                }
             };
 
-            if (mounted) fetchData(true);
+            fetchData(true);
 
             let interval = setInterval(() => fetchData(false), 60000);
 

@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     available: {
         color: Colors.success,
         marginLeft: 42,
+        fontWeight: "700",
     },
     offline: {
         color: "#909090",
