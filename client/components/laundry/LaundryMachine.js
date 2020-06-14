@@ -1,14 +1,19 @@
 import React, {useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
 import { pluralize} from "./LaundryUtils";
-import Colors from "../../constants/Colors.js";
 import BellIcon from "./BellIcon";
+import Colors from "../../constants/Colors.js";
 
+
+// Component representing an individual laundry machine
 const LaundryMachine = props => {
-
+    // are push notifications toggled for this machine?
     const [notif, setNotif] = useState(props.isNotif ? true : false);
 
+    // machine details
     const thisMachine = props.machine;
 
     // when bell is pressed
@@ -22,6 +27,7 @@ const LaundryMachine = props => {
         props.notifAction();
     };
 
+    // machine is either offline, ext. cycle, available, or in use
     if (thisMachine.offline) {
         return (
             <View style={styles.row}>

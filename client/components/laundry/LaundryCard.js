@@ -8,11 +8,15 @@ import {
 } from "react-native";
 import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
-import LaundryMachine from "./LaundryMachine";
-import { pluralize} from "./LaundryUtils";
-import Colors from "../../constants/Colors.js";
-import { fetchLaundryRoomDetailed } from "../../data/queries/laundryQueries";
 
+
+import { pluralize} from "./LaundryUtils";
+import { fetchLaundryRoomDetailed } from "./LaundryQueries";
+import LaundryMachine from "./LaundryMachine";
+import Colors from "../../constants/Colors.js";
+
+
+// Component representing an individual laundry room
 const LaundryCard = props => {
 
     // list of machine details, to be updated periodically with api calls
@@ -97,7 +101,7 @@ const LaundryCard = props => {
         }
     };
 
-    // get initial data, set repeating timer for updates
+    // (executed once) get initial data, set repeating timer for updates
     useEffect(
         () => {
             let mounted = true;
@@ -121,7 +125,7 @@ const LaundryCard = props => {
         [],
     );
 
-    // re-parse room data when LaundryCard updates
+    // re-parse room data on changes in machineInfo or loading states
     useEffect(
         () => {
             let mounted = true;              

@@ -1,4 +1,4 @@
-const { roomInfo } = require("../laundrydata/roomInfo")
+const { roomInfo } = require("./LaundryUtils")
 const { createApolloFetch } = require("apollo-fetch");
 
 const uri = "https://api-2cu446h72q-uc.a.run.app/graphql";
@@ -35,30 +35,23 @@ const fetchLaundryRoomDetailed = (id) => {
     });
 };
 
+// returns object containing **roomInfo** information for all laundry rooms
 const fetchLaundryAll = async () => {
     let nameIds = await fetchLaundryRooms();
     nameIds = nameIds.data.laundryRooms.results;
 
     const allRoomsDetailed = {};
     nameIds.forEach(v => {
-        allRoomsDetailed[roomInfo[v.name].queryText] = {
-            title: roomInfo[v.name].title,
-            room: roomInfo[v.name].room,
+        const thisRoom = roomInfo[v.name];
+        allRoomsDetailed[thisRoom.queryText] = {
+            title: thisRoom.title,
+            room: thisRoom.room,
             id: v.id,
             // machines: fetchLaundryRoomDetailed(v.id),
         };
     });
 
     return allRoomsDetailed;
-
-    // return nameIds
-    //     .reduce((a, v) => ({...a,
-    //         [roomInfo[v.name].queryText]: {
-    //             title: roomInfo[v.name].title,
-    //             room: roomInfo[v.name].room,
-    //             machines: fetchLaundryRoomDetailed(v.id)
-    //         }
-    //     }), {});
 };
 
 export { fetchLaundryRoomDetailed, fetchLaundryAll };

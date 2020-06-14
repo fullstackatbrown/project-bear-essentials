@@ -9,14 +9,17 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import LaundryCard from "./LaundryCard";
+
+
 import {
     addNotification,
     deleteNotification,
     addStarred,
     deleteStarred,
 } from "../../redux/ActionCreators";
-import { fetchLaundryAll } from "../../data/queries/laundryQueries";
+import LaundryCard from "./LaundryCard";
+import { fetchLaundryAll } from "./LaundryQueries";
+
 
 const mapStateToProps = state => {
     return {
@@ -33,12 +36,14 @@ const mapDispatchToProps = dispatch => ({
     deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
 
+
+// Component representing the laundry screen
 class LaundryScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cards: null,
-            loading: true, // initial loading of cards data
+            cards: null, // to be fetched
+            loading: true,
             emptySearchBar: true,
             suggestions: [],
         };
@@ -49,10 +54,12 @@ class LaundryScreen extends Component {
         this.onStarChanged = this.onStarChanged.bind(this);
     };
 
+    // fetch cards when mounted
     componentDidMount() {
         this.fetchCards();
     };
 
+    // fetches cards during loading state
     fetchCards = async () => {
         if (!this.state.loading) {
             this.setState({ loading: true });
