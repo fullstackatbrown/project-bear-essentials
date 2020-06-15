@@ -10,8 +10,8 @@ import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
 import Collapsible from "react-native-collapsible";
 
 
-import { pluralize} from "./LaundryUtils";
-import { fetchLaundryRoomDetailed } from "./LaundryQueries";
+import { pluralize } from "./utils";
+import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
 
@@ -63,8 +63,8 @@ const LaundryCard = props => {
         setCollapsed(true);
     };
 
-    // returns formatted room, if it exists
-    const roomHandler = () => {
+    // returns formatted room number, if it exists
+    const roomNumberHandler = () => {
         if (props.card.room) {
             return (
                 <Text style={styles.room}>
@@ -164,10 +164,10 @@ const LaundryCard = props => {
     return (
         <View style={styles.back}>
             <View style={styles.card}>
-                <View style={styles.header}>
+                <View style={styles.colSections}>
                     <View style={{ maxWidth: "80%" }}>
                         <Text style={styles.title}>{props.card.title}</Text>
-                        {roomHandler()}
+                        {roomNumberHandler()}
                     </View>
                     <TouchableOpacity style={styles.starArea} onPress={starHandler}>
                         <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
@@ -175,10 +175,12 @@ const LaundryCard = props => {
                 </View>
                 <Collapsible collapsed={!collapsed}>
                     <View style={styles.uncollapsed}>
-                        <Text>{summaryHandler()}</Text>
-                        <TouchableOpacity onPress={downArrowHandler}>
-                            <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
-                        </TouchableOpacity>
+                        {summaryHandler()}
+                        {!loading &&
+                            <TouchableOpacity onPress={downArrowHandler}>
+                                <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
+                            </TouchableOpacity>
+                        }
                     </View>
                 </Collapsible>
                 <Collapsible collapsed={collapsed}>
@@ -249,10 +251,6 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: "gray",
     },
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
     uncollapsed: {
         marginTop: 15,
         flexDirection: "row",
@@ -292,7 +290,8 @@ const styles = StyleSheet.create({
         color: "#9A9A9A",
     },
     words: {
-        fontSize: 19,
+        fontSize: 20,
+        marginBottom: 4,
     },
     starArea: {
         height: 32,

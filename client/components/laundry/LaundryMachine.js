@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
-import { pluralize} from "./LaundryUtils";
+import { pluralize } from "./utils";
 import BellIcon from "./BellIcon";
-import Colors from "../../constants/Colors.js";
+import Colors from "../../constants/Colors";
 
 
 // Component representing an individual laundry machine
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     },
     words: {
         marginLeft: 12,
-        fontSize: 19,
+        fontSize: 20,
     },
 });
 export default LaundryMachine;

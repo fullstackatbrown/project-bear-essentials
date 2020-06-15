@@ -18,7 +18,7 @@ import {
     deleteStarred,
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
-import { fetchLaundryAll } from "./LaundryQueries";
+import { fetchLaundryAll } from "./queries";
 
 
 const mapStateToProps = state => {
@@ -47,6 +47,8 @@ class LaundryScreen extends Component {
             emptySearchBar: true,
             suggestions: [],
         };
+
+        this.suggestionsLimit = 10;
 
         this.fetchCards = this.fetchCards.bind(this);
         this.onTextChanged = this.onTextChanged.bind(this);
@@ -104,7 +106,7 @@ class LaundryScreen extends Component {
     mapToCards(toMap) {
         return (
             <ScrollView>
-                {toMap.map(room => (
+                {toMap.slice(0, this.suggestionsLimit).map(room => (
                     <LaundryCard
                         key={room}
                         card={this.state.cards[room]}
@@ -117,6 +119,13 @@ class LaundryScreen extends Component {
                         notifAction={this.onNotifChanged(room)}
                     />
                 ))}
+                {toMap.length > this.suggestionsLimit &&
+                    <View>
+                        <Text style={styles.smallTextCentered}>
+                            Showing top {this.suggestionsLimit} rooms. If you do not see your laundry room above, try narrowing your search.
+                        </Text>
+                    </View>
+                }
             </ScrollView>
         );
     }
@@ -131,15 +140,14 @@ class LaundryScreen extends Component {
                 if (starred.length === 0) {
                     return (
                         <Text style={styles.textCentered}>
-                        No starred laundry rooms yet.
+                        No starred laundry rooms saved.
                         </Text>
                     );
                 }
                 return this.mapToCards(starred);
             }
-            return <Text style={styles.textCentered}>No search results found.</Text>;
+            return <Text style={styles.textCentered}>No results found.</Text>;
         }
-
         return this.mapToCards(suggestions);
     }
 
@@ -207,8 +215,14 @@ const styles = StyleSheet.create({
     },
     textCentered: {
         marginTop: 20,
-        alignSelf: "center",
-        fontSize: 18,
+        textAlign: "center",
+        fontSize: 20,
+        color: "#9C9C9C",
+    },
+    smallTextCentered: {
+        margin: 18,
+        textAlign: "center",
+        fontSize: 16,
         color: "#9C9C9C",
     },
     searchBar: {
