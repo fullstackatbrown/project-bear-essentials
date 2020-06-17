@@ -10,7 +10,7 @@ import Colors from "../../constants/Colors.js";
 import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 
 const DiningCard = props => {
-    const [openStatus, setOpenStatus] = useState(props.isOpen ? true : false);
+    const [openStatus, setOpenStatus] = useState(true , false);
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
@@ -18,6 +18,11 @@ const DiningCard = props => {
     // retrieves the current time in XX:XX format
     let date = new Date();
     let currTime = `${date.getHours()}:${date.getMinutes()}`;
+
+    // hard coded for samples
+    let openTime = "07:00";
+    let closeTime = "22:00";
+
     if (date.getHours() < 10) {
         currTime = "0" + currTime;
     }
@@ -45,11 +50,38 @@ const DiningCard = props => {
     we can render correct information and just call function below
     */
     let text = "";
-    const diningHandler = () => {
-        if (openStatus) {
 
+    /*
+    TODO: figure out how to call hoursHandler w/o rerendering too many times and use 
+    GraphQL query functions for API calls
+    */ 
+     const hoursHandler = () => {
+        let curr = Date.parse(currTime);
+        let open = Date.parse(openTime);
+        let close = Date.parse(closeTime);
+        if (curr > open && curr < close) {
+            setOpenStatus(true);
         } else {
-            
+            setOpenStatus(false);
+        }
+    }
+
+    // handles open/close sign color and text color
+    const signColorHandler = () => {
+        if (openStatus) {
+            return (
+                <React.Fragment>
+                <Text style={styles.openSign}>Open</Text>
+                <Text style={styles.closeText}>Closes at 8:00 PM</Text>
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <Text style={styles.closeSign}>Closed</Text>
+                    <Text style={styles.openText}>Opens at 8:00 AM</Text>
+                </React.Fragment> 
+            );
         }
     };
 
@@ -61,9 +93,7 @@ const DiningCard = props => {
                         <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
                 </TouchableOpacity>
             </View>
-            <View style={styles.info}>
-                <Text style={styles.sign}>{openStatus ? "Open" : "Closed"}</Text>
-                <Text style={styles.text}>Closes at 8:00 PM</Text>
+            <View style={styles.info}>{signColorHandler()}
             </View>
     </View>
     );
@@ -102,7 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 25
     },
-    sign: {
+    openSign: {
         textTransform: "uppercase",
         fontSize: 18,
         color: Colors.success,
@@ -113,9 +143,26 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         fontWeight: "500",
     },
-    text: {
+    closeSign: {
+        textTransform: "uppercase",
+        fontSize: 18,
+        color: Colors.danger,
+        borderWidth: 2,
+        borderRadius: 12,
+        borderColor: Colors.danger,
+        paddingHorizontal: 12,
+        paddingVertical: 3,
+        fontWeight: "500",
+    },
+    openText: {
         fontSize: 18,
         color: Colors.success,
+        paddingVertical: 5,
+        fontWeight: "500",
+    },
+    closeText: {
+        fontSize: 18,
+        color: Colors.danger,
         paddingVertical: 5,
         fontWeight: "500",
     }

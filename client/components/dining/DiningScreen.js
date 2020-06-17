@@ -4,7 +4,7 @@ import {
     Text,
     View, 
     StyleSheet, 
-    CheckBox,
+
     TextInput
 } from "react-native";
 import { Ionicons, AntDesign} from "@expo/vector-icons";
