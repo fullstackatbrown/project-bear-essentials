@@ -35,9 +35,9 @@ export const roomInfo = {
         room: "154",
     },
     "ARCHIBALD-BRONSON RMA103": {
-        queryText: "ARCHIBALD BRONSON 103",
-        title: "Archibald Bronson",
-        room: "103",
+        queryText: "ARCHIBALD-BRONSON A103",
+        title: "Archibald-Bronson",
+        room: "A103",
     },
     "BARBOUR APTS RM070": {
         queryText: "BARBOUR APARTMENTS 070",
@@ -80,13 +80,13 @@ export const roomInfo = {
         room: "106",
     },
     "EVERETT-POLAND RME243": {
-        queryText: "EVERETT POLAND E243",
-        title: "Everett Poland",
+        queryText: "EVERETT-POLAND E243",
+        title: "Everett-Poland",
         room: "E243",
     },
-    "EVERETT-POLAND-RME166": {
+    "EVERETT-POLAND-RME166": { // extra '-'
         queryText: "EVERETT-POLAND E166",
-        title: "Everett Poland",
+        title: "Everett-Poland",
         room: "E166",
     },
     "GOODARD HOUSE RM018": { // name typo
@@ -140,9 +140,9 @@ export const roomInfo = {
         room: "015",
     },
     "JAMISON-MEAD RMJ055": { // name typo
-        queryText: "JAMESON-MEAD 055",
+        queryText: "JAMESON-MEAD J055",
         title: "Jameson Mead",
-        room: "055",
+        room: "J055",
     },
     "KING HOUSE RM007": {
         queryText: "KING HOUSE 007",
@@ -165,12 +165,12 @@ export const roomInfo = {
         room: "028",
     },
     "METCALF HALL": {
-        queryText: "METCALF HALL",
+        queryText: "METCALF HALL 007",
         title: "Metcalf Hall",
         room: "007",
     },
     "MILLER HALL": {
-        queryText: "MILLER HALL",
+        queryText: "MILLER HALL 007",
         title: "Miller Hall",
         room: "007",
     },
