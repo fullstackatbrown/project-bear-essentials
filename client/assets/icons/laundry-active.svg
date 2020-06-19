@@ -1,15 +1,1 @@
-<svg id="Laundry_Icon_Active" data-name="Laundry Icon Active" xmlns="http://www.w3.org/2000/svg" width="25" height="30" viewBox="0 0 25 30">
-  <g id="Frame" fill="#cc0200" stroke="#cc0200" stroke-width="1.5">
-    <rect width="25" height="30" rx="3" stroke="none"/>
-    <rect x="0.75" y="0.75" width="23.5" height="28.5" rx="2.25" fill="none"/>
-  </g>
-  <g id="Door" transform="translate(5 10.5)" fill="#fff" stroke="#fff" stroke-width="1">
-    <circle cx="7.5" cy="7.5" r="7.5" stroke="none"/>
-    <circle cx="7.5" cy="7.5" r="7" fill="none"/>
-  </g>
-  <path id="Separator" d="M1908.688-208.654h25" transform="translate(-1908.688 215.654)" fill="none" stroke="#fff" stroke-width="1.5"/>
-  <g id="Controls" transform="translate(3 2)" fill="#fff">
-    <path d="M 6.625 2.625 L 0.375 2.625 L 0.375 0.375 L 6.625 0.375 L 6.625 2.625 Z" stroke="none"/>
-    <path d="M 0.75 0.75 L 0.75 2.25 L 6.25 2.25 L 6.25 0.75 L 0.75 0.75 M 0 0 L 7 0 L 7 3 L 0 3 L 0 0 Z" stroke="none" fill="#fff"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="30" viewBox="0 0 25 30"><g transform="translate(-81 -217.5)"><g transform="translate(81 217.5)" fill="#cc0200"><path d="M 22 29.25 L 3 29.25 C 1.759349942207336 29.25 0.75 28.24065017700195 0.75 27 L 0.75 3 C 0.75 1.759349942207336 1.759349942207336 0.75 3 0.75 L 22 0.75 C 23.24065017700195 0.75 24.25 1.759349942207336 24.25 3 L 24.25 27 C 24.25 28.24065017700195 23.24065017700195 29.25 22 29.25 Z" stroke="none"/><path d="M 3 1.5 C 2.17289924621582 1.5 1.5 2.17289924621582 1.5 3 L 1.5 27 C 1.5 27.82710075378418 2.17289924621582 28.5 3 28.5 L 22 28.5 C 22.82710075378418 28.5 23.5 27.82710075378418 23.5 27 L 23.5 3 C 23.5 2.17289924621582 22.82710075378418 1.5 22 1.5 L 3 1.5 M 3 0 L 22 0 C 23.65685081481934 0 25 1.3431396484375 25 3 L 25 27 C 25 28.65685081481934 23.65685081481934 30 22 30 L 3 30 C 1.3431396484375 30 0 28.65685081481934 0 27 L 0 3 C 0 1.3431396484375 1.3431396484375 0 3 0 Z" stroke="none" fill="#cc0200"/></g><g transform="translate(86 228)" fill="#fff" stroke="#cc0200" stroke-width="1"><circle cx="7.5" cy="7.5" r="7.5" stroke="none"/><circle cx="7.5" cy="7.5" r="7" fill="none"/></g><path d="M1908.688-208.654h23.584" transform="translate(-1827 433.154)" fill="none" stroke="#fff" stroke-width="1"/><g transform="translate(84 219.5)" fill="#fff"><path d="M 6.75 2.75 L 0.25 2.75 L 0.25 0.25 L 6.75 0.25 L 6.75 2.75 Z" stroke="none"/><path d="M 0.5 0.5 L 0.5 2.5 L 6.5 2.5 L 6.5 0.5 L 0.5 0.5 M 0 0 L 7 0 L 7 3 L 0 3 L 0 0 Z" stroke="none" fill="#cc0200"/></g></g></svg>

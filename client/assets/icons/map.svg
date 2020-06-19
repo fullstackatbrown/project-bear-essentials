@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="26.5" height="31.5" viewBox="0 0 26.5 31.5">
-  <g id="Pin_Icon" data-name="Pin Icon" transform="translate(0.75 0.75)">
-    <path id="Pin" d="M29.5,13.773C29.5,23.318,17,31.5,17,31.5S4.5,23.318,4.5,13.773A12.388,12.388,0,0,1,17,1.5,12.388,12.388,0,0,1,29.5,13.773Z" transform="translate(-4.5 -1.5)" fill="none" stroke="#a1a1a1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Hole" d="M21.685,14.593A4.093,4.093,0,1,1,17.593,10.5a4.093,4.093,0,0,1,4.093,4.093Z" transform="translate(-5.093 -2.32)" fill="none" stroke="#949494" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-  </g>
-</svg>

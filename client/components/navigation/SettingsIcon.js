@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import SettingsIcon from "../../assets/icons/settings.svg";
+import SettingsInactive from "../../assets/icons/settings-inactive.svg";
 import SettingsActive from "../../assets/icons/settings-active.svg";
 
 export default function TabBarIcon(props) {
@@ -10,7 +10,7 @@ export default function TabBarIcon(props) {
         );
     } else {
         return(
-            <SettingsIcon style={{ marginBottom: -3 }}/>
+            <SettingsInactive style={{ marginBottom: -3 }}/>
         );
     }
 }

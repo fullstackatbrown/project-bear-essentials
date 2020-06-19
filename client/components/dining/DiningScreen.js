@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import DiningCard from "./DiningCard";
-import { 
+import {
     Text,
-    View, 
-    StyleSheet, 
+    View,
+    StyleSheet,
 
     TextInput
 } from "react-native";
@@ -75,13 +75,13 @@ class DiningScreen extends Component {
         )
     };
 
-    render() { 
+    render() {
         const { search } = this.state;
 
         return (
-            //TODO: set up navigation from card to menu 
+            //TODO: set up navigation from card to menu
             < View style={styles.screen}>
-                <ScrollView style={styles.scroll}> 
+                <ScrollView style={styles.scroll}>
                     <View style={styles.search}>
                         <Ionicons name="ios-search" size={24} color="gray" />
                         <TextInput style={styles.textInput} placeholder="Search dining halls"/>
