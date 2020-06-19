@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
+import { fetchDiningDetailed } from "./dinQueries";
 import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 
 const DiningCard = props => {

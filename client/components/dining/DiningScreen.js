@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
+import { fetchCafes } from "./dinQueries";
 import Colors from "../../constants/Colors.js";
 
 // const mapStateToProps = state => {
