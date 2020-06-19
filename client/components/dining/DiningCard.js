@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
 import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
+import { fetchDiningDetailed } from "./DinQueries";
+import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
@@ -29,7 +31,7 @@ const DiningCard = props => {
     const hoursHandler = () => {
         // retrieves the current time in XX:XX format
         let date = new Date();
-        let currTime = `${date.getHours()}:${date.getMinutes()}`;
+        let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;        
         if (date.getHours() < 10) {
             currTime = "0" + currTime;
         }
@@ -45,6 +47,7 @@ const DiningCard = props => {
             return false;
         }
     }
+    
 
     // handles open/close sign color and text color
     const signColorHandler = () => {
@@ -64,27 +67,6 @@ const DiningCard = props => {
             );
         }
     };
-
-    // useEffect(
-    //     () => {
-    //         let date = new Date();
-    //         let currTime = `${date.getHours()}:${date.getMinutes()}`;
-    //         if (date.getHours() < 10) {
-    //             currTime = "0" + currTime;
-    //         }
-    //         let openTime = "07:00";
-    //         let closeTime = "22:00";
-    //         let curr = Date.parse(currTime);
-    //         let open = Date.parse(openTime);
-    //         let close = Date.parse(closeTime);
-    //         if (curr > open && curr < close) {
-    //             setOpenStatus(true);
-    //         } else {
-    //             setOpenStatus(false);
-    //         }
-    //         signColorHandler()
-    //     }
-    // );
 
     return (
     <View style={styles.card}>
