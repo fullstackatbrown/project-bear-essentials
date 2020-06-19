@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
-import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import { fetchDiningDetailed } from "./DinQueries";
-import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+import fetchHours from "./DinQueries";
+
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
+    const [hallHours, setHallHours] = useState({});
 
-    // if star is pressed
-    const starHandler = props => {
+    /* 
+    deal with the lowercase and the josiah error in the search bar component of the diningscene.js
+    dont need this for inital generating of cards but will
+    need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
+    */
+    const id = {
+        "Sharpe Refectory": "1531",
+        "Verney-Wooley": "1532",
+        "Andrews Commons": "1533",
+        "Blue Room": "1534",
+        "Josiah's": "1535",
+        "Ivy Room": "1536",
+        "Gourmet To Go": "1537",
+        "Café Carts": "1538"
+    }
+
+    // handles changes to star icon if pressed
+    const starHandler = () => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
@@ -24,34 +41,26 @@ const DiningCard = props => {
         // props.starPressed(); //will trigger action in diningscreen file
     };
 
-    /*
-    TODO: figure out how to call hoursHandler w/o rerendering too many times and use 
-    GraphQL query functions for API calls
-    */ 
-    const hoursHandler = () => {
-        // retrieves the current time in XX:XX format
+    // compares the current time w/ the time from the api
+    const hoursCompare = () => {
         let date = new Date();
-        let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;        
-        if (date.getHours() < 10) {
-            currTime = "0" + currTime;
-        }
-        // hard coded for samples
-        let openTime = "21:00";
-        let closeTime = "22:00";
+        let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;
+        let openTime = "11/11/11 06:00"
+        let closeTime = "11/11/11 22:00"
+        // let openTime = `11/11/11 ${hallHours.starttime}`;
+        // let closeTime = `11/11/11 ${hallHours.endtime}`;
         let curr = Date.parse(currTime);
         let open = Date.parse(openTime);
         let close = Date.parse(closeTime);
         if (curr > open && curr < close) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-    
 
-    // handles open/close sign color and text color
+    // toggles open/close sign color and text color
     const signColorHandler = () => {
-        if (hoursHandler) {
+        if (hoursCompare()) {
             return (
                 <React.Fragment>
                 <Text style={[styles.open, styles.sign]}>Open</Text>
@@ -68,12 +77,19 @@ const DiningCard = props => {
         }
     };
 
+    // useEffect(
+    //     () => {
+    //         const time = fetchHours(id[props.name])
+    //         setHallHours(time.data.cafe.days.dayparts)
+    //     }
+    // );
+
     return (
     <View style={styles.card}>
             <View style={styles.header}>
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={styles.title}>{props.name}</Text>
                 <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                        <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
+                    <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
                 </TouchableOpacity>
             </View>
             <View style={styles.info}>
@@ -103,7 +119,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "600",
-        fontSize: 37,
+        fontSize: 35,
     },
     info: {
         flexDirection: "row",
@@ -120,7 +136,7 @@ const styles = StyleSheet.create({
     },
     sign: {
         textTransform: "uppercase",
-        fontSize: 18,
+        fontSize: 17,
         borderWidth: 2,
         borderRadius: 12,
         paddingHorizontal: 12,
@@ -128,7 +144,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     text: {
-        fontSize: 18,
+        fontSize: 17,
         borderColor: "white",
         paddingVertical: 5,
         fontWeight: "500",

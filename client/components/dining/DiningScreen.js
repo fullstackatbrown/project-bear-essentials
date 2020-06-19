@@ -86,7 +86,7 @@ class DiningScreen extends Component {
                         <Ionicons name="ios-search" size={24} color="gray" />
                         <TextInput style={styles.textInput} placeholder="Search dining halls"/>
                     </View>
-                    <DiningCard style={styles.inputContainer} title={"Dining Hall"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
                 </ScrollView>
             </View>
         );

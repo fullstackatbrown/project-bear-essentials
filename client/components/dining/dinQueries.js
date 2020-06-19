@@ -14,12 +14,11 @@ const fetchCafes = () => {
     });
 };
 
-const fetchHours = () => {
+const fetchHours = (id) => {
     return fetch({
         query: `{
-            cafes {
+            cafe (id: ${id}) {
                 name
-                id
                 days {
                     date
                     status
@@ -33,7 +32,7 @@ const fetchHours = () => {
     });
 };
 
-const fetchDiningDetailed = (id) => {
+const fetchMenuDetailed = (id) => {
     return fetch({
         query: `{
             menu (id: ${id}) {
@@ -55,4 +54,4 @@ const fetchDiningDetailed = (id) => {
     });
 };
 
-export { fetchCafes, fetchDiningDetailed, fetchHours };
+export { fetchCafes, fetchMenuDetailed, fetchHours };
