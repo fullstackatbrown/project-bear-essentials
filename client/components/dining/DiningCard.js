@@ -1,34 +1,34 @@
-import React, {useState} from "react";
-import { 
-    View, 
-    StyleSheet, 
-    TouchableOpacity,
-    Text, 
-} from "react-native";
-import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+import fetchHours from "./DinQueries";
+
 
 const DiningCard = props => {
-    const [openStatus, setOpenStatus] = useState(true , false);
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
+    const [hallHours, setHallHours] = useState({});
 
-    // retrieves the current time in XX:XX format
-    let date = new Date();
-    let currTime = `${date.getHours()}:${date.getMinutes()}`;
-
-    // hard coded for samples
-    let openTime = "07:00";
-    let closeTime = "22:00";
-
-    if (date.getHours() < 10) {
-        currTime = "0" + currTime;
+    /* 
+    deal with the lowercase and the josiah error in the search bar component of the diningscene.js
+    dont need this for inital generating of cards but will
+    need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
+    */
+    const id = {
+        "Sharpe Refectory": "1531",
+        "Verney-Wooley": "1532",
+        "Andrews Commons": "1533",
+        "Blue Room": "1534",
+        "Josiah's": "1535",
+        "Ivy Room": "1536",
+        "Gourmet To Go": "1537",
+        "Café Carts": "1538"
     }
 
-    // if star is pressed
-    const starHandler = props => {
+    // handles changes to star icon if pressed
+    const starHandler = () => {
         if (starred) {
             setStarred(false);
             setStarName('staro');
@@ -41,59 +41,59 @@ const DiningCard = props => {
         // props.starPressed(); //will trigger action in diningscreen file
     };
 
-    /*
-    when dining hall is open/closed, should check open status and use it to change color of sign and text. 
-    (make color and border color js variables that are adjusted in this method)
-    should also return correct variable that inputs the text for closes and opens times
-    requires another function that changes openStatus.
-    maybe we can create new function that can act as a component (replace styles.info). within this function,
-    we can render correct information and just call function below
-    */
-    let text = "";
-
-    /*
-    TODO: figure out how to call hoursHandler w/o rerendering too many times and use 
-    GraphQL query functions for API calls
-    */ 
-     const hoursHandler = () => {
+    // compares the current time w/ the time from the api
+    const hoursCompare = () => {
+        let date = new Date();
+        let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;
+        let openTime = "11/11/11 06:00"
+        let closeTime = "11/11/11 22:00"
+        // let openTime = `11/11/11 ${hallHours.starttime}`;
+        // let closeTime = `11/11/11 ${hallHours.endtime}`;
         let curr = Date.parse(currTime);
         let open = Date.parse(openTime);
         let close = Date.parse(closeTime);
         if (curr > open && curr < close) {
-            setOpenStatus(true);
-        } else {
-            setOpenStatus(false);
+            return true;
         }
+        return false;
     }
 
-    // handles open/close sign color and text color
+    // toggles open/close sign color and text color
     const signColorHandler = () => {
-        if (openStatus) {
+        if (hoursCompare()) {
             return (
                 <React.Fragment>
-                <Text style={styles.openSign}>Open</Text>
-                <Text style={styles.closeText}>Closes at 8:00 PM</Text>
+                <Text style={[styles.open, styles.sign]}>Open</Text>
+                <Text style={[styles.closed, styles.text]}>Closes at 8:00 PM</Text>
                 </React.Fragment>
             );
         } else {
             return (
                 <React.Fragment>
-                    <Text style={styles.closeSign}>Closed</Text>
-                    <Text style={styles.openText}>Opens at 8:00 AM</Text>
+                    <Text style={[styles.closed, styles.sign]}>Closed</Text>
+                    <Text style={[styles.open, styles.text]}>Opens at 8:00 AM</Text>
                 </React.Fragment> 
             );
         }
     };
 
+    // useEffect(
+    //     () => {
+    //         const time = fetchHours(id[props.name])
+    //         setHallHours(time.data.cafe.days.dayparts)
+    //     }
+    // );
+
     return (
     <View style={styles.card}>
             <View style={styles.header}>
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={styles.title}>{props.name}</Text>
                 <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                        <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
+                    <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
                 </TouchableOpacity>
             </View>
-            <View style={styles.info}>{signColorHandler()}
+            <View style={styles.info}>
+                {signColorHandler()}
             </View>
     </View>
     );
@@ -103,19 +103,13 @@ const styles = StyleSheet.create({
     card: {
         padding: 25,
         borderRadius: 15,
-        // shadows for ios
         shadowColor: "black",
         shadowRadius: 4,
         shadowOpacity: 0.25,
         backgroundColor: "white",
-        shadowOffset: {
-            width: 3,
-            height: 3
-        },
+        shadowOffset: { width: 3, height: 3},
         width: "90%",
         alignSelf: "center",
-
-        // shadows for android
         elevation: 5,
     },
     header: {
@@ -125,47 +119,36 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "600",
-        fontSize: 37,
+        fontSize: 35,
     },
     info: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 25
     },
-    openSign: {
-        textTransform: "uppercase",
-        fontSize: 18,
+    open: {
         color: Colors.success,
+        borderColor: Colors.success
+    },
+    closed: {
+        color: Colors.danger,
+        borderColor: Colors.danger
+    },
+    sign: {
+        textTransform: "uppercase",
+        fontSize: 17,
         borderWidth: 2,
         borderRadius: 12,
-        borderColor: Colors.success,
         paddingHorizontal: 12,
         paddingVertical: 3,
         fontWeight: "500",
     },
-    closeSign: {
-        textTransform: "uppercase",
-        fontSize: 18,
-        color: Colors.danger,
-        borderWidth: 2,
-        borderRadius: 12,
-        borderColor: Colors.danger,
-        paddingHorizontal: 12,
-        paddingVertical: 3,
-        fontWeight: "500",
-    },
-    openText: {
-        fontSize: 18,
-        color: Colors.success,
+    text: {
+        fontSize: 17,
+        borderColor: "white",
         paddingVertical: 5,
         fontWeight: "500",
     },
-    closeText: {
-        fontSize: 18,
-        color: Colors.danger,
-        paddingVertical: 5,
-        fontWeight: "500",
-    }
 });
 
 export default DiningCard;
