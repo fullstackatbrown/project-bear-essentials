@@ -17,6 +17,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
 
+      - name: Install modules
+        run: yarn
+
       - name: Lint Client
         run: |-
           cd client
