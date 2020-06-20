@@ -43,6 +43,7 @@ jobs:
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
+          cd server
           gcloud builds submit \
             --quiet \
             --tag gcr.io/$PROJECT_ID/$SERVICE_NAME
@@ -50,6 +51,7 @@ jobs:
       # Deploy image to Cloud Run
       - name: Deploy
         run: |-
+          cd server
           gcloud run deploy $SERVICE_NAME \
             --quiet \
             --region $RUN_REGION \
