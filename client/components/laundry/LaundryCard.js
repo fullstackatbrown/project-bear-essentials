@@ -84,8 +84,10 @@ const LaundryCard = props => {
                             autoPlay 
                             loop 
                             style={{
+                                marginTop: -32,
+                                marginBottom: -96,
                                 width:'auto',
-                                height: 100,
+                                height: 160,
                                 alignSelf: 'center'
                             }}/>
             </View>);
