@@ -12,7 +12,6 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LottieView from 'lottie-react-native';
 
 
-
 import {
     addNotification,
     deleteNotification,
@@ -183,7 +182,7 @@ class LaundryScreen extends Component {
                                 loop 
                                 style={{
                                     width:'100%',
-                                    height: 'auto'
+                                    height: 'auto',
                                 }}/>
                 </View>);
         }
