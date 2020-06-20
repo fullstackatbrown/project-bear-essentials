@@ -9,6 +9,8 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import LottieView from 'lottie-react-native';
+
 
 
 import {
@@ -174,7 +176,16 @@ class LaundryScreen extends Component {
 
     render() {
         if (this.state.loading) {
-            return <Text>Loading... please wait.</Text>;
+            return (
+                <View style={styles.loading}>
+                    <LottieView source={require('./animations/dotted-loader.json')} 
+                                autoPlay 
+                                loop 
+                                style={{
+                                    width:'100%',
+                                    height: 'auto'
+                                }}/>
+                </View>);
         }
         return (
             <View style={styles.screen}>
@@ -249,6 +260,10 @@ const styles = StyleSheet.create({
 
         // shadows for android
         elevation: 5,
+    },
+    loading: {
+        flex: 1,
+        justifyContent: "center"
     }
 });
 

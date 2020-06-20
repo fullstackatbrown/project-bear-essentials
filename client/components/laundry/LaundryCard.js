@@ -6,8 +6,9 @@ import {
     TouchableOpacity, 
     ToolbarAndroidComponent
 } from "react-native";
-import { AntDesign, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
+import LottieView from 'lottie-react-native';
 
 
 import { pluralize } from "./utils";
@@ -77,7 +78,17 @@ const LaundryCard = props => {
     // creates summary for unexpanded laundry card
     const summaryHandler = () => {
         if (loading) {
-            return <Text style={[styles.loading, styles.words]}>Loading...</Text>;
+            return (
+            <View style={{width: '100%'}}>
+                <LottieView source={require('./animations/small-loader.json')} 
+                            autoPlay 
+                            loop 
+                            style={{
+                                width:'auto',
+                                height: 100,
+                                alignSelf: 'center'
+                            }}/>
+            </View>);
         } else if (numAvailWashers == 0 && numAvailDryers == 0) {
             return <Text style={[styles.fail, styles.words]}>No available machines</Text>;
         } else if (numAvailDryers == 0) {
