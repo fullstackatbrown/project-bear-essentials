@@ -13,24 +13,27 @@ jobs:
     steps:
       - name: Checkout
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
 
       - name: Lint Client
+        uses: actions/setup-node@v1
         run: |-
           cd client
           yarn lint
 
       - name: Type Client
+        uses: actions/setup-node@v1
         run: |-
           cd client
           yarn type
 
       - name: Lint Server
+        uses: actions/setup-node@v1
         run: |-
           cd server
           yarn lint
 
       - name: Type Server
+        uses: actions/setup-node@v1
         run: |-
           cd server
           yarn type
