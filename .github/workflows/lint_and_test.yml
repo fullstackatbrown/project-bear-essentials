@@ -23,19 +23,23 @@ jobs:
       - name: Lint Client
         run: |-
           cd client
+          yarn
           yarn lint
 
       - name: Type Client
         run: |-
           cd client
+          yarn
           yarn type
 
       - name: Lint Server
         run: |-
           cd server
+          yarn
           yarn lint
 
       - name: Type Server
         run: |-
           cd server
+          yarn
           yarn type
