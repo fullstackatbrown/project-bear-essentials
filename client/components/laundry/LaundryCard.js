@@ -187,14 +187,13 @@ const LaundryCard = props => {
                     </TouchableOpacity>
                 </View>
                 <Collapsible collapsed={!collapsed}>
-                    <View style={styles.uncollapsed}>
-                        {summaryHandler()}
-                        {!loading &&
-                            <TouchableOpacity onPress={downArrowHandler}>
-                                <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
-                            </TouchableOpacity>
-                        }
-                    </View>
+                    <TouchableOpacity onPress={downArrowHandler}>
+                        <View style={styles.uncollapsed}>
+                            {summaryHandler()}
+                            {!loading &&
+                                <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />}
+                        </View>
+                    </TouchableOpacity>
                 </Collapsible>
                 <Collapsible collapsed={collapsed}>
                     <View style={styles.collapsed}>
