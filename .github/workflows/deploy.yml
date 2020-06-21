@@ -52,6 +52,7 @@ jobs:
       - name: Deploy
         run: |-
           cd server
+          gcloud components install beta -q
           gcloud beta run deploy $SERVICE_NAME \
             --quiet \
             --region $RUN_REGION \
