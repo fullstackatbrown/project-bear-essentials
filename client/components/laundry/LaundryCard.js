@@ -54,14 +54,9 @@ const LaundryCard = props => {
         props.starAction();
     };
 
-    // when down arrow is pressed
-    const downArrowHandler = () => {
-        setCollapsed(false);
-    };
-
-    // when up arrow is pressed
-    const upArrowHandler = () => {
-        setCollapsed(true);
+    // when arrow is pressed, update collapsed
+    const arrowHandler = () => {
+        if (!loading) setCollapsed(!collapsed);
     };
 
     // returns formatted room number, if it exists
@@ -177,54 +172,52 @@ const LaundryCard = props => {
     return (
         <View style={styles.back}>
             <View style={styles.card}>
-                <View style={styles.colSections}>
-                    <View style={{ maxWidth: "80%" }}>
-                        <Text style={styles.title}>{props.card.title}</Text>
-                        {roomNumberHandler()}
+                <TouchableOpacity activeOpacity={0.60} onPress={arrowHandler}>
+                    <View style={styles.colSections}>
+                        <View style={{ maxWidth: "80%" }}>
+                            <Text style={styles.title}>{props.card.title}</Text>
+                            {roomNumberHandler()}
+                        </View>
+                        <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                            <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                        <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
-                    </TouchableOpacity>
-                </View>
-                <Collapsible collapsed={!collapsed}>
-                    <TouchableOpacity onPress={downArrowHandler}>
+                    <Collapsible collapsed={!collapsed}>
                         <View style={styles.uncollapsed}>
                             {summaryHandler()}
                             {!loading &&
                                 <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />}
                         </View>
-                    </TouchableOpacity>
-                </Collapsible>
-                <Collapsible collapsed={collapsed}>
-                    <View style={styles.collapsed}>
-                        <View>
-                            {allWashers.map((washer) => 
-                                (<LaundryMachine
-                                    key={washer.id}
-                                    name="Washer"
-                                    machine={washer}
-                                    isNotif={props.notifList.includes(washer.id)}
-                                    notifAction={() => props.notifAction(washer.id)} />))}
-                        </View>
-                        <View style={styles.horizontalLine} />
-                        <View style={styles.colSections}>
+                    </Collapsible>
+                    <Collapsible collapsed={collapsed}>
+                        <View style={styles.collapsed}>
                             <View>
-                                {allDryers.map((dryer) => 
+                                {allWashers.map((washer) => 
                                     (<LaundryMachine
-                                        key={dryer.id}
-                                        name="Dryer"
-                                        machine={dryer}
-                                        isNotif={props.notifList.includes(dryer.id)}
-                                        notifAction={() => props.notifAction(dryer.id)} />))}
+                                        key={washer.id}
+                                        name="Washer"
+                                        machine={washer}
+                                        isNotif={props.notifList.includes(washer.id)}
+                                        notifAction={() => props.notifAction(washer.id)} />))}
                             </View>
-                            <View style={styles.upArrow}>
-                                <TouchableOpacity onPress={upArrowHandler}>
+                            <View style={styles.horizontalLine} />
+                            <View style={styles.colSections}>
+                                <View>
+                                    {allDryers.map((dryer) => 
+                                        (<LaundryMachine
+                                            key={dryer.id}
+                                            name="Dryer"
+                                            machine={dryer}
+                                            isNotif={props.notifList.includes(dryer.id)}
+                                            notifAction={() => props.notifAction(dryer.id)} />))}
+                                </View>
+                                <View style={styles.upArrow}>
                                     <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
-                                </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                    </View>                    
-                </Collapsible>
+                        </View>                    
+                    </Collapsible>
+                </TouchableOpacity>
             </View>
         </View>
     );
