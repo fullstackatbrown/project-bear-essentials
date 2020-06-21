@@ -62,12 +62,20 @@ class LaundryScreen extends Component {
         this.fetchCards();
     };
 
-    // fetches cards during loading state
+    // fetches cards and then cleans this.props.starred during loading state
     fetchCards = async () => {
         if (!this.state.loading) {
             this.setState({ loading: true });
         }
         const fetchedCards = await fetchLaundryAll();
+        const fetchedCardsKeys = Object.keys(fetchedCards);
+        console.log(fetchedCardsKeys);
+        this.props.starred.forEach(s => {
+            if (!fetchedCardsKeys.includes(s)) {
+                this.props.deleteStarred(s);
+            }
+        });
+
         this.setState({ cards: fetchedCards, loading: false });
     };
 
