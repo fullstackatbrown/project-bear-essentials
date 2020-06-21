@@ -20,6 +20,7 @@ on:
       - master
 
 env:
+  API_KEY: ${{ secrets.API_KEY }}
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: us-central1
   SERVICE_NAME: api
@@ -40,6 +41,11 @@ jobs:
           service_account_key: ${{ secrets.SA_KEY }}
           project_id: ${{ secrets.RUN_PROJECT }}
 
+      - name: Create .env
+        run: |-
+          cd server
+          echo CLIENT_ID=$API_KEY > .env
+
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
@@ -52,7 +58,8 @@ jobs:
       - name: Deploy
         run: |-
           cd server
-          gcloud run deploy $SERVICE_NAME \
+          gcloud components install beta -q
+          gcloud beta run deploy $SERVICE_NAME \
             --quiet \
             --region $RUN_REGION \
             --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
