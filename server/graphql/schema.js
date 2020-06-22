@@ -21,6 +21,7 @@ const {
 const {
     getCafe,
     getCafes,
+    getMenu,
     getMenus,
     getMenuOnDays
 } = require("./dining/diningQueries");
