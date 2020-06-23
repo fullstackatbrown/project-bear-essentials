@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,6 +9,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import LottieView from 'lottie-react-native';
 
 
 import {
@@ -61,12 +62,19 @@ class LaundryScreen extends Component {
         this.fetchCards();
     };
 
-    // fetches cards during loading state
+    // fetches cards and then cleans this.props.starred during loading state
     fetchCards = async () => {
         if (!this.state.loading) {
             this.setState({ loading: true });
         }
         const fetchedCards = await fetchLaundryAll();
+        const fetchedCardsKeys = Object.keys(fetchedCards);
+        this.props.starred.forEach(s => {
+            if (!fetchedCardsKeys.includes(s)) {
+                this.props.deleteStarred(s);
+            }
+        });
+
         this.setState({ cards: fetchedCards, loading: false });
     };
 
@@ -105,7 +113,7 @@ class LaundryScreen extends Component {
     // Returns scrolling card view, given list of rooms (keys) to be rendered
     mapToCards(toMap) {
         return (
-            <ScrollView>
+            <Fragment>
                 {toMap.slice(0, this.suggestionsLimit).map(room => (
                     <LaundryCard
                         key={room}
@@ -126,7 +134,7 @@ class LaundryScreen extends Component {
                         </Text>
                     </View>
                 }
-            </ScrollView>
+            </Fragment>
         );
     }
 
@@ -138,17 +146,48 @@ class LaundryScreen extends Component {
         if (suggestions.length === 0) {
             if (emptySearchBar) {
                 if (starred.length === 0) {
+                    // 0 starred, empty search bar
                     return (
-                        <Text style={styles.textCentered}>
-                        No starred laundry rooms saved.
-                        </Text>
+                        <Fragment>
+                            <Text style={styles.textCentered}>
+                            No starred laundry rooms to show. Starred rooms will appear at the top.
+                            </Text>
+                            <View style={styles.horizontalLine} />
+                            {this.mapToCards(Object.keys(this.state.cards))}
+                        </Fragment>
                     );
                 }
-                return this.mapToCards(starred);
+                // 1+ starred, empty search bar
+                return (
+                    <Fragment>
+                        {this.mapToCards(starred)}
+                        <View style={styles.horizontalLine} />
+                        {this.mapToCards(Object.keys(this.state.cards)
+                            .filter(card => !starred.includes(card)))}
+                    </Fragment>
+                );
             }
-            return <Text style={styles.textCentered}>No results found.</Text>;
+            // no results for search
+            return (
+                <Fragment>
+                    <Text style={styles.textCentered}>No results found.</Text>
+                    {starred.length !== 0 &&
+                        <View style={styles.horizontalLine} />}
+                    {this.mapToCards(starred)}
+                </Fragment>
+            );
         }
-        return this.mapToCards(suggestions);
+        // 1+ results for search
+        return (
+            <Fragment>
+                {this.mapToCards(suggestions
+                    .filter(card => starred.includes(card)))}
+                {starred.length !== 0 &&
+                    <View style={styles.horizontalLine} />}
+                {this.mapToCards(suggestions
+                    .filter(card => !starred.includes(card)))}
+            </Fragment>
+        );
     }
 
     // Returns search bar's clear button when there is text in the search box
@@ -174,7 +213,16 @@ class LaundryScreen extends Component {
 
     render() {
         if (this.state.loading) {
-            return <Text>Loading... please wait.</Text>;
+            return (
+                <View style={styles.loading}>
+                    <LottieView source={require('./animations/dotted-loader.json')} 
+                                autoPlay 
+                                loop 
+                                style={{
+                                    width:'100%',
+                                    height: 'auto',
+                                }}/>
+                </View>);
         }
         return (
             <View style={styles.screen}>
@@ -194,7 +242,7 @@ class LaundryScreen extends Component {
                     />
                     {this.crossHandler()}
                 </View>
-                {this.renderSuggestions()}
+                <ScrollView>{this.renderSuggestions()}</ScrollView>
             </View>
         );
     }
@@ -214,7 +262,10 @@ const styles = StyleSheet.create({
         color: "#9C9C9C",
     },
     textCentered: {
-        marginTop: 20,
+        marginLeft: 18,
+        marginRight: 18,
+        marginTop: 4,
+        marginBottom: 4,
         textAlign: "center",
         fontSize: 20,
         color: "#9C9C9C",
@@ -249,7 +300,19 @@ const styles = StyleSheet.create({
 
         // shadows for android
         elevation: 5,
-    }
+    },
+    loading: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    horizontalLine: {
+        marginTop: 14,
+        marginBottom: 14,
+        alignSelf: "center",
+        width: "86%",
+        borderBottomColor: "#D3D3D3",
+        borderBottomWidth: 1,
+    },
 });
 
 // connect to redux

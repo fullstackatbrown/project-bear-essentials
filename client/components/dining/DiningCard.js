@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import fetchHours from "./DinQueries";
+import fetchHours from "./dinQueries";
 
 
 const DiningCard = props => {

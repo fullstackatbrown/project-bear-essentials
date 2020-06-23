@@ -1,16 +1,16 @@
 import * as React from "react";
 
-import DiningIcon from "../../assets/icons/dining.svg";
-import DiningActive from "../../assets/icons/dining-active.svg";
+import DiningInactiveIcon from "../../assets/icons/dining-inactive.svg";
+import DiningActiveIcon from "../../assets/icons/dining-active.svg";
 
 export default function TabBarIcon(props) {
     if (props.focused) {
         return(
-            <DiningActive style={{ marginBottom: -3 }}/>
+            <DiningActiveIcon style={{ marginBottom: -3 }}/>
         );
     } else {
         return(
-            <DiningIcon style={{ marginBottom: -3 }}/>
+            <DiningInactiveIcon style={{ marginBottom: -3 }}/>
         );
     }
 }

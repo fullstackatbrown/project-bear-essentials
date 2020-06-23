@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="17.121" height="17.121" viewBox="0 0 17.121 17.121">
-  <g id="Cross_Icon" data-name="Cross Icon" transform="translate(1.061 1.061)">
-    <path id="Diagonal_2" data-name="Diagonal 2" d="M33,13.5l-15,15" transform="translate(-18 -13.5)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Diagonal_1" data-name="Diagonal 1" d="M18,13.5l15,15" transform="translate(-18 -13.5)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="19.121" height="19.121" viewBox="0 0 19.121 19.121"><g transform="translate(-94.439 -541.439)"><line x2="17" y2="17" transform="translate(95.5 542.5)" fill="none" stroke="#666" stroke-linecap="round" stroke-width="1.5"/><line x1="17" y2="17" transform="translate(95.5 542.5)" fill="none" stroke="#666" stroke-linecap="round" stroke-width="1.5"/></g></svg>

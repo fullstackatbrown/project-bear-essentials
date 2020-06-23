@@ -18,9 +18,11 @@ const {
     CafeType,
     MenuType,
 } = require("./dining/diningSchemas");
+
 const {
     getCafe,
     getCafes,
+    getMenu,
     getMenus,
     getMenuOnDays
 } = require("./dining/diningQueries");
