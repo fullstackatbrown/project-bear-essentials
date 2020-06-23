@@ -17,14 +17,14 @@ const DiningCard = props => {
     need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
     */
     const id = {
-        "Sharpe Refectory": "1531",
-        "Verney-Wooley": "1532",
-        "Andrews Commons": "1533",
-        "Blue Room": "1534",
-        "Josiah's": "1535",
-        "Ivy Room": "1536",
-        "Gourmet To Go": "1537",
-        "Café Carts": "1538"
+        "Sharpe Refectory": "ratty",
+        "Verney-Wooley": "vdub",
+        "Andrews Commons": "andrews",
+        "Blue Room": "blueroom",
+        "Josiah's": "jos",
+        "Ivy Room": "ivyroom",
+        "Gourmet To Go": "campusmarket",
+        "Café Carts": "cafecarts"
     }
 
     // handles changes to star icon if pressed
