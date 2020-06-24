@@ -2,7 +2,7 @@
 
 Welcome to the Brown Essentials repository!
 
-TODO: Badges (Status, etc.)
+![Lint and Test](https://github.com/FullStackAtBrownTeam/brownessentials/workflows/Lint%20and%20Test/badge.svg) ![Deploy](https://github.com/FullStackAtBrownTeam/brownessentials/workflows/Deploy/badge.svg)
 
 ## Description
 
