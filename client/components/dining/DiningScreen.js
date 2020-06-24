@@ -28,10 +28,10 @@ const mapDispatchToProps = dispatch => {
     return {
         addStarred: flag => dispatch(addStarred(flag)),
         deleteStarred: flag => dispatch(deleteStarred(flag)),
-    }
-}
+    };
+};
 
-const DINING_HALL = "Sharpe Refrectory"
+const DINING_HALL = "Sharpe Refrectory";
 const DiningStack = createStackNavigator();
 
 class DiningScreen extends Component {
@@ -65,15 +65,15 @@ class DiningScreen extends Component {
         return (
             <ScrollView>
                 {starred.map(diningHall => (
-                <DiningCard
-                diningCard = {this.state.cards[diningHall]}
-                starPressed = {() => this.starChanges(diningHall)}
-                isStarred = {this.props.starred.includes(diningHall)}
-                />
+                    <DiningCard
+                        diningCard = {this.state.cards[diningHall]}
+                        starPressed = {() => this.starChanges(diningHall)}
+                        isStarred = {this.props.starred.includes(diningHall)}
+                    />
                 ))}
             </ScrollView>
-        )
-    };
+        );
+    }
 
     render() {
         const { search } = this.state;
@@ -86,6 +86,12 @@ class DiningScreen extends Component {
                         <Ionicons name="ios-search" size={24} color="gray" />
                         <TextInput style={styles.textInput} placeholder="Search dining halls"/>
                     </View>
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
                     <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
                 </ScrollView>
             </View>
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
         width: "100%"
     },
     search: {
+        flex: 1,
         borderWidth: 0,
         borderRadius: 25,
         borderColor: "#BCBCBC",

@@ -25,17 +25,17 @@ const DiningCard = props => {
         "Ivy Room": "1536",
         "Gourmet To Go": "1537",
         "Café Carts": "1538"
-    }
+    };
 
     // handles changes to star icon if pressed
     const starHandler = () => {
         if (starred) {
             setStarred(false);
-            setStarName('staro');
+            setStarName("staro");
             setStarColor(Colors.inactiveIcon);
         } else {
             setStarred(true);
-            setStarName('star');
+            setStarName("star");
             setStarColor(Colors.starYellow);
         }
         // props.starPressed(); //will trigger action in diningscreen file
@@ -45,8 +45,8 @@ const DiningCard = props => {
     const hoursCompare = () => {
         let date = new Date();
         let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;
-        let openTime = "11/11/11 06:00"
-        let closeTime = "11/11/11 22:00"
+        let openTime = "11/11/11 06:00";
+        let closeTime = "11/11/11 22:00";
         // let openTime = `11/11/11 ${hallHours.starttime}`;
         // let closeTime = `11/11/11 ${hallHours.endtime}`;
         let curr = Date.parse(currTime);
@@ -56,15 +56,15 @@ const DiningCard = props => {
             return true;
         }
         return false;
-    }
+    };
 
     // toggles open/close sign color and text color
     const signColorHandler = () => {
         if (hoursCompare()) {
             return (
                 <React.Fragment>
-                <Text style={[styles.open, styles.sign]}>Open</Text>
-                <Text style={[styles.closed, styles.text]}>Closes at 8:00 PM</Text>
+                    <Text style={[styles.open, styles.sign]}>Open</Text>
+                    <Text style={[styles.closed, styles.text]}>Closes at 8:00 PM</Text>
                 </React.Fragment>
             );
         } else {
@@ -85,7 +85,7 @@ const DiningCard = props => {
     // );
 
     return (
-    <View style={styles.card}>
+        <View style={styles.card}>
             <View style={styles.header}>
                 <Text style={styles.title}>{props.name}</Text>
                 <TouchableOpacity style={styles.starArea} onPress={starHandler}>
@@ -95,13 +95,14 @@ const DiningCard = props => {
             <View style={styles.info}>
                 {signColorHandler()}
             </View>
-    </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
         padding: 25,
+        marginBottom: 20,
         borderRadius: 15,
         shadowColor: "black",
         shadowRadius: 4,
