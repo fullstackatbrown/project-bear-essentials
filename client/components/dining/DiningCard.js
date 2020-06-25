@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import fetchHours from "./dinQueries";
+import fetchHours from "./DinQueries";
 
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
-    const [hallHours, setHallHours] = useState({});
+    const [hallHours, setHallHours] = useState("");
 
     /* 
     deal with the lowercase and the josiah error in the search bar component of the diningscene.js
@@ -63,7 +63,7 @@ const DiningCard = props => {
         if (hoursCompare()) {
             return (
                 <React.Fragment>
-                <Text style={[styles.open, styles.sign]}>Open</Text>
+                <Text style={[styles.open, styles.sign]}>{hallHours}</Text>
                 <Text style={[styles.closed, styles.text]}>Closes at 8:00 PM</Text>
                 </React.Fragment>
             );
@@ -77,12 +77,18 @@ const DiningCard = props => {
         }
     };
 
-    // useEffect(
-    //     () => {
-    //         const time = fetchHours(id[props.name])
-    //         setHallHours(time.data.cafe.days.dayparts)
-    //     }
-    // );
+    useEffect(
+        () => {
+            const fetchData = async () => {
+                const time = await fetchHours(id[props.name]);
+                setHallHours(time.data.cafe.name)
+                console.log("****************")
+                console.log(time)
+            }
+            fetchData();
+        },
+        [],
+    );
 
     return (
     <View style={styles.card}>
