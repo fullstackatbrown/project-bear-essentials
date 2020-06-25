@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import fetchHours from "./DinQueries";
+import { fetchHours } from "./DinQueries";
 
 
 const DiningCard = props => {
@@ -78,14 +78,9 @@ const DiningCard = props => {
     };
 
     useEffect(
-        () => {
-            const fetchData = async () => {
-                const time = await fetchHours(id[props.name]);
-                setHallHours(time.data.cafe.name)
-                console.log("****************")
-                console.log(time)
-            }
-            fetchData();
+        async () => {
+            const time = await fetchHours(id[props.name]);
+            setHallHours(time.data.cafe.name);
         },
         [],
     );

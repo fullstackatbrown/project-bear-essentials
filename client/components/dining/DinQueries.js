@@ -17,7 +17,7 @@ const fetchCafes = () => {
 const fetchHours = async (id) => {
     return await fetch({
         query: `{
-            cafe (id: ${id}) {
+            cafe (id: "${id}") {
                 name
                 days {
                     date
