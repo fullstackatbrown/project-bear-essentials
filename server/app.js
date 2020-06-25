@@ -14,12 +14,12 @@ app.use(
     graphqlHTTP({
         schema: schema,
         graphiql: true,
-    }) 
+    })
 );
 
+// TODO: Figure out why this is here?
 getCafes();
 
 app.listen(port, () => {
-    console.log(process.env.PORT);
     console.log("Hello world listening on port", port);
 });

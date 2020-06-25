@@ -46,7 +46,21 @@ export default function App(props) {
                             ref={containerRef}
                             initialState={initialNavigationState}
                         >
-                            <Stack.Navigator>
+                            <Stack.Navigator screenOptions={{
+                                cardShadowEnabled: false,
+                                headerStyle: {
+                                    height: 110,
+                                    backgroundColor: "#f9f9f9",
+                                    elevation: 0,
+                                    shadowOpacity: 0,
+                                },
+                                headerTitleStyle: {
+                                    color: "#cc0200",
+                                    padding: 10,
+                                    fontSize: 40,
+                                    fontWeight: "bold"
+                                },
+                            }}>
                                 <Stack.Screen name="Root" component={BottomTabNavigator} />
                             </Stack.Navigator>
                         </NavigationContainer>
