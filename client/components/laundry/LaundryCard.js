@@ -64,7 +64,7 @@ const LaundryCard = props => {
         if (props.card.room) {
             return (
                 <Text style={styles.room}>
-                    {"(Room " + props.card.room + ")"}
+                    {"Room " + props.card.room}
                 </Text>
             );
         }
@@ -112,11 +112,87 @@ const LaundryCard = props => {
     // (executed once) get initial data, set repeating timer for updates
     useEffect(
         () => {
+            const fakedata = [
+            {
+            id: 66757,
+            type: 'wash',
+            machine_no: 1,
+            avail: true,
+            ext_cycle: false,
+            offline: false,
+            time_remaining: 16
+          },
+          {
+            id: 66758,
+            type: 'wash',
+            machine_no: 2,
+            avail: false,
+            ext_cycle: false,
+            offline: false,
+            time_remaining: 1
+          },
+          {
+            id: 66759,
+            type: 'wash',
+            machine_no: 3,
+            avail: false,
+            ext_cycle: false,
+            offline: false,
+            time_remaining: 19
+          },
+          {
+            id: 66760,
+            type: 'wash',
+            machine_no: 4,
+            avail: true,
+            ext_cycle: false,
+            offline: false,
+            time_remaining: 40
+          },
+          {
+            id: 66761,
+            type: 'dry',
+            machine_no: 5,
+            avail: false,
+            ext_cycle: true,
+            offline: false,
+            time_remaining: 0
+          },
+          {
+            id: 66762,
+            type: 'dry',
+            machine_no: 6,
+            avail: true,
+            ext_cycle: false,
+            offline: true,
+            time_remaining: 28
+          },
+          {
+            id: 66763,
+            type: 'dry',
+            machine_no: 7,
+            avail: false,
+            ext_cycle: false,
+            offline: false,
+            time_remaining: 12
+          },
+          {
+            id: 66764,
+            type: 'dry',
+            machine_no: 8,
+            avail: true,
+            ext_cycle: true,
+            offline: true,
+            time_remaining: 60
+          }
+        ];
             let mounted = true;
             const fetchData = async (isInitial) => {
                 const fetchedMachineData = await fetchLaundryRoomDetailed(props.card.id);
                 if (mounted) {
-                    setMachineInfo(fetchedMachineData.data.laundryRoomDetailed.machines);
+                    setMachineInfo(fakedata
+                        .sort((a, b) => a.machine_no - b.machine_no)
+                    );
                     if (isInitial) setLoading(false);
                 }
             };
@@ -186,7 +262,15 @@ const LaundryCard = props => {
                         <View style={styles.uncollapsed}>
                             {summaryHandler()}
                             {!loading &&
-                                <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />}
+                                <View style={styles.colSections}>
+                                    <View>
+                                        <Text style={styles.tapText}>Tap to expand</Text>
+                                    </View>
+                                    <View style={styles.upArrow}>
+                                        <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
+                                    </View>
+                                </View>
+                            }
                         </View>
                     </Collapsible>
                     <Collapsible collapsed={collapsed}>
@@ -201,18 +285,21 @@ const LaundryCard = props => {
                                         notifAction={() => props.notifAction(washer.id)} />))}
                             </View>
                             <View style={styles.horizontalLine} />
+                            <View>
+                                {allDryers.map((dryer) => 
+                                    (<LaundryMachine
+                                        key={dryer.id}
+                                        name="Dryer"
+                                        machine={dryer}
+                                        isNotif={props.notifList.includes(dryer.id)}
+                                        notifAction={() => props.notifAction(dryer.id)} />))}
+                            </View>
                             <View style={styles.colSections}>
                                 <View>
-                                    {allDryers.map((dryer) => 
-                                        (<LaundryMachine
-                                            key={dryer.id}
-                                            name="Dryer"
-                                            machine={dryer}
-                                            isNotif={props.notifList.includes(dryer.id)}
-                                            notifAction={() => props.notifAction(dryer.id)} />))}
+                                    <Text style={styles.tapText}>Tap to collapse</Text>
                                 </View>
                                 <View style={styles.upArrow}>
-                                    <Ionicons style={styles.arrow} name="ios-arrow-up" size={36} color="#CCCCCC" />
+                                    <Ionicons style={styles.arrow} name="ios-arrow-up" size={40} color="#CCCCCC" />
                                 </View>
                             </View>
                         </View>                    
@@ -228,11 +315,12 @@ const LaundryCard = props => {
 const styles = StyleSheet.create({
     back: {
         padding: 5,
+        marginBottom: 12,
         backgroundColor: "#0000"
     },
     card: {
-        padding: 25,
-        borderRadius: 15,
+        padding: 22,
+        borderRadius: 8,
         // shadows for ios
         shadowColor: "black",
         shadowRadius: 2,
@@ -242,23 +330,23 @@ const styles = StyleSheet.create({
             width: 0,
             height: 1
         },
-        width: "90%",
+        width: "88%",
         alignSelf: "center",
 
         // shadows for android
         elevation: 5,
     },
     title: {
-        fontWeight: "700",
+        fontWeight: "bold", // medium
         fontSize: 28,
     },
     room: {
+        fontWeight: "bold", // medium
         fontSize: 22,
-        color: "gray",
     },
     uncollapsed: {
         marginTop: 15,
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "space-between",
     },
     collapsed: {
@@ -278,8 +366,7 @@ const styles = StyleSheet.create({
         marginRight: 2
     },
     horizontalLine: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginVertical: 6,
         alignSelf: "center",
         width: "100%",
         borderBottomColor: "#D3D3D3",
@@ -295,12 +382,17 @@ const styles = StyleSheet.create({
         color: "#9A9A9A",
     },
     words: {
-        fontSize: 20,
+        fontSize: 19,
         marginBottom: 4,
     },
     starArea: {
         height: 32,
     },
+    tapText: {
+        paddingTop: 6,
+        fontStyle: "italic",
+        fontSize: 16,
+    }
 });
 
 export default LaundryCard;

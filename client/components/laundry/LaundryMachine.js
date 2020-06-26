@@ -39,9 +39,6 @@ const LaundryMachine = props => {
     if (thisMachine.ext_cycle) {
         return (
             <View style={styles.row}>
-                <TouchableOpacity onPress={bellHandler}>
-                    <BellIcon focused={notif}/>  
-                </TouchableOpacity>
                 <Text style={[styles.words, styles.used]}>
                     {props.name} {thisMachine.machine_no} (ext. cycle)
                 </Text>
@@ -57,36 +54,33 @@ const LaundryMachine = props => {
     }
     return (
         <View style={styles.row}>
-            <TouchableOpacity onPress={bellHandler}>
-                <BellIcon focused={notif}/>  
-            </TouchableOpacity>
             <Text style={[styles.words, styles.used]}>
                 {props.name} {thisMachine.machine_no} ({pluralize(thisMachine.time_remaining, "minute")} rem.)
             </Text>
+            <TouchableOpacity onPress={bellHandler}>
+                <BellIcon focused={notif}/>  
+            </TouchableOpacity>
         </View>);
 };
 
 const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
+        justifyContent: "space-between",
         alignItems: "center",
-        paddingVertical: 7,
+        paddingVertical: 4,
     },
     used: {
         color: Colors.danger,
     },
     available: {
         color: Colors.success,
-        marginLeft: 42,
-        fontWeight: "700",
     },
     offline: {
         color: "#909090",
-        marginLeft: 42,
     },
     words: {
-        marginLeft: 12,
-        fontSize: 20,
+        fontSize: 19,
     },
 });
 export default LaundryMachine;

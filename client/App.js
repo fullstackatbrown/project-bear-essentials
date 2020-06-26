@@ -56,7 +56,7 @@ export default function App(props) {
                                 },
                                 headerTitleStyle: {
                                     color: "#cc0200",
-                                    padding: 10,
+                                    paddingLeft: 12,
                                     fontSize: 40,
                                     fontWeight: "bold"
                                 },
