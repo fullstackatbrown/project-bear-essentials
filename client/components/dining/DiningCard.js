@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import fetchHours from "./DinQueries";
+import { fetchHours } from "./DinQueries";
 
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
-    const [hallHours, setHallHours] = useState("");
+    const [hallHours, setHallHours] = useState("loading...");
 
     /* 
     deal with the lowercase and the josiah error in the search bar component of the diningscene.js
@@ -79,15 +79,13 @@ const DiningCard = props => {
 
     useEffect(
         () => {
-            const fetchData = async () => {
+            const effectFunction = async () => {
                 const time = await fetchHours(id[props.name]);
-                setHallHours(time.data.cafe.name)
-                console.log("****************")
-                console.log(time)
-            }
-            fetchData();
+                setHallHours(time.data.cafe.days[0].dayparts[0].starttime);
+            };
+            effectFunction();
         },
-        [],
+        []
     );
 
     return (
