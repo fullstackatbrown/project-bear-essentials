@@ -47,6 +47,7 @@ export default function App(props) {
                             initialState={initialNavigationState}
                         >
                             <Stack.Navigator screenOptions={{
+                                headerShown: false,
                                 cardShadowEnabled: false,
                                 headerStyle: {
                                     height: 110,

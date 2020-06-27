@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TextInput} from 'react-native';
+import {StyleSheet, View, Text, TextInput, StatusBar} from 'react-native';
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from "../../constants/Colors";
@@ -17,7 +17,8 @@ const LaundryHeader = (props) => {
     }
 
     const inputHandler = inputText => {
-        setEnteredValue(inputText)
+        setEnteredValue(inputText);
+        props.onChangeText(inputText);
     }
 
     const crossHandler = () => {
@@ -36,7 +37,8 @@ const LaundryHeader = (props) => {
 
     if (searchEnabled) {
         return(
-            <View style={styles.searchHeader}>
+            <View style={styles.header}>
+               <View style={styles.searchHeader}>
                 <View style={styles.searchBar}>
                     <Ionicons name="ios-search" size={24} color={Colors.activeIcon} />
                     <TextInput
@@ -52,7 +54,9 @@ const LaundryHeader = (props) => {
                         <Text>Cancel</Text>  
                     </TouchableOpacity>
 
-                </View>)
+                </View> 
+            </View>
+            )
     }
     else {
         return(
@@ -69,13 +73,15 @@ const LaundryHeader = (props) => {
 
 const styles = StyleSheet.create({
     header: {
-        height: 'auto',
+        height: 110,
         backgroundColor: "#f9f9f9",
         elevation: 0,
         shadowOpacity: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 15,
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
     },
     headerTitle: {
         color: "#cc0200",
