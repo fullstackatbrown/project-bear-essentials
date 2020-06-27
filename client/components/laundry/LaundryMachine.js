@@ -1,12 +1,10 @@
-import React, {useState} from "react";
-import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 
 import { pluralize } from "./utils";
 import BellIcon from "./BellIcon";
 import Colors from "../../constants/Colors";
-
 
 // Component representing an individual laundry machine
 const LaundryMachine = props => {
@@ -34,7 +32,8 @@ const LaundryMachine = props => {
                 <Text style={[styles.words, styles.offline]}>
                     {props.name} {thisMachine.machine_no} (offline)
                 </Text>
-            </View>);
+            </View>
+        );
     }
     if (thisMachine.ext_cycle) {
         return (
@@ -42,7 +41,8 @@ const LaundryMachine = props => {
                 <Text style={[styles.words, styles.used]}>
                     {props.name} {thisMachine.machine_no} (ext. cycle)
                 </Text>
-            </View>);
+            </View>
+        );
     }
     if (thisMachine.avail) {
         return (
@@ -50,17 +50,20 @@ const LaundryMachine = props => {
                 <Text style={[styles.words, styles.available]}>
                     {props.name} {thisMachine.machine_no}
                 </Text>
-            </View>);
+            </View>
+        );
     }
     return (
         <View style={styles.row}>
             <Text style={[styles.words, styles.used]}>
-                {props.name} {thisMachine.machine_no} ({pluralize(thisMachine.time_remaining, "minute")} rem.)
+                {props.name} {thisMachine.machine_no} (
+                {pluralize(thisMachine.time_remaining, "minute")} rem.)
             </Text>
             <TouchableOpacity onPress={bellHandler}>
-                <BellIcon focused={notif}/>  
+                <BellIcon focused={notif} />
             </TouchableOpacity>
-        </View>);
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({

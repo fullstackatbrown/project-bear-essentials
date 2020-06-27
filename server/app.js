@@ -21,5 +21,5 @@ app.use(
 getCafes();
 
 app.listen(port, () => {
-    console.log("Hello world listening on port", port);
+    console.log("Brown Essentials server listening on port", port);
 });

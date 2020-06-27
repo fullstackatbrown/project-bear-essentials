@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity,Text, } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
 import { fetchHours } from "./DinQueries";
 
-
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
-    const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
+    const [starColor, setStarColor] = useState(
+        starred ? Colors.starYellow : Colors.inactiveIcon
+    );
     const [hallHours, setHallHours] = useState("loading...");
 
     /* 
@@ -24,8 +25,8 @@ const DiningCard = props => {
         "Josiah's": "jos",
         "Ivy Room": "ivyroom",
         "Gourmet To Go": "campusmarket",
-        "Café Carts": "cafecarts"
-    }
+        "Café Carts": "cafecarts",
+    };
 
     // handles changes to star icon if pressed
     const starHandler = () => {
@@ -63,42 +64,46 @@ const DiningCard = props => {
         if (hoursCompare()) {
             return (
                 <React.Fragment>
-                <Text style={[styles.open, styles.sign]}>{hallHours}</Text>
-                <Text style={[styles.closed, styles.text]}>Closes at 8:00 PM</Text>
+                    <Text style={[styles.open, styles.sign]}>{hallHours}</Text>
+                    <Text style={[styles.closed, styles.text]}>
+                        Closes at 8:00 PM
+                    </Text>
                 </React.Fragment>
             );
         } else {
             return (
                 <React.Fragment>
                     <Text style={[styles.closed, styles.sign]}>Closed</Text>
-                    <Text style={[styles.open, styles.text]}>Opens at 8:00 AM</Text>
-                </React.Fragment> 
+                    <Text style={[styles.open, styles.text]}>
+                        Opens at 8:00 AM
+                    </Text>
+                </React.Fragment>
             );
         }
     };
 
-    useEffect(
-        () => {
-            const effectFunction = async () => {
-                const time = await fetchHours(id[props.name]);
-                setHallHours(time.data.cafe.days[0].dayparts[0].starttime);
-            };
-            effectFunction();
-        },
-        []
-    );
+    useEffect(() => {
+        const effectFunction = async () => {
+            const time = await fetchHours(id[props.name]);
+            setHallHours(time.data.cafe.days[0].dayparts[0].starttime);
+        };
+        effectFunction();
+    }, []);
 
     return (
         <View style={styles.card}>
             <View style={styles.header}>
                 <Text style={styles.title}>{props.name}</Text>
                 <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                    <AntDesign style={styles.star} name={starName} size={30} color={starColor}/>  
+                    <AntDesign
+                        style={styles.star}
+                        name={starName}
+                        size={30}
+                        color={starColor}
+                    />
                 </TouchableOpacity>
             </View>
-            <View style={styles.info}>
-                {signColorHandler()}
-            </View>
+            <View style={styles.info}>{signColorHandler()}</View>
         </View>
     );
 };
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOpacity: 0.25,
         backgroundColor: "white",
-        shadowOffset: { width: 3, height: 3},
+        shadowOffset: { width: 3, height: 3 },
         width: "90%",
         alignSelf: "center",
         elevation: 5,
@@ -120,7 +125,6 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
-        
     },
     title: {
         fontWeight: "600",
@@ -129,15 +133,15 @@ const styles = StyleSheet.create({
     info: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 25
+        marginTop: 25,
     },
     open: {
         color: Colors.success,
-        borderColor: Colors.success
+        borderColor: Colors.success,
     },
     closed: {
         color: Colors.danger,
-        borderColor: Colors.danger
+        borderColor: Colors.danger,
     },
     sign: {
         textTransform: "uppercase",

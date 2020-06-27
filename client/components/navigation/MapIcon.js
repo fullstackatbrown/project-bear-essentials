@@ -5,12 +5,8 @@ import MapActiveIcon from "../../assets/icons/map-active.svg";
 
 export default function TabBarIcon(props) {
     if (props.focused) {
-        return(
-            <MapActiveIcon style={{ marginBottom: -3 }}/>
-        );
+        return <MapActiveIcon style={{ marginBottom: -3 }} />;
     } else {
-        return(
-            <MapInactiveIcon style={{ marginBottom: -3 }}/>
-        );
+        return <MapInactiveIcon style={{ marginBottom: -3 }} />;
     }
 }

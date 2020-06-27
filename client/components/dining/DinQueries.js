@@ -14,7 +14,7 @@ const fetchCafes = () => {
     });
 };
 
-const fetchHours = (id) => {
+const fetchHours = id => {
     return fetch({
         query: `{
             cafe (id: "${id}") {
@@ -32,7 +32,7 @@ const fetchHours = (id) => {
     });
 };
 
-const fetchMenuDetailed = (id) => {
+const fetchMenuDetailed = id => {
     return fetch({
         query: `{
             menu (id: ${id}) {

@@ -9,8 +9,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import LottieView from 'lottie-react-native';
-
+import LottieView from "lottie-react-native";
 
 import {
     addNotification,
@@ -20,7 +19,6 @@ import {
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
 import { fetchLaundryAll } from "./queries";
-
 
 const mapStateToProps = state => {
     return {
@@ -36,7 +34,6 @@ const mapDispatchToProps = dispatch => ({
     addStarred: flag => dispatch(addStarred(flag)),
     deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
-
 
 // Component representing the laundry screen
 class LaundryScreen extends Component {
@@ -55,12 +52,12 @@ class LaundryScreen extends Component {
         this.onTextChanged = this.onTextChanged.bind(this);
         this.onNotifChanged = this.onNotifChanged.bind(this);
         this.onStarChanged = this.onStarChanged.bind(this);
-    };
+    }
 
     // fetch cards when mounted
     componentDidMount() {
         this.fetchCards();
-    };
+    }
 
     // fetches cards and then cleans this.props.starred during loading state
     fetchCards = async () => {
@@ -120,20 +117,22 @@ class LaundryScreen extends Component {
                         card={this.state.cards[room]}
                         isStarred={this.props.starred.includes(room)}
                         notifList={this.props.notifications
-                            .map(str => str.split("///"))     // split into [room, machine]
-                            .filter(([r, _]) => (r === room)) // check room
-                            .map(rm => Number(rm[1]))}        // extract machine
+                            .map(str => str.split("///")) // split into [room, machine]
+                            .filter(([r, _]) => r === room) // check room
+                            .map(rm => Number(rm[1]))} // extract machine
                         starAction={() => this.onStarChanged(room)}
                         notifAction={this.onNotifChanged(room)}
                     />
                 ))}
-                {toMap.length > this.suggestionsLimit &&
+                {toMap.length > this.suggestionsLimit && (
                     <View>
                         <Text style={styles.smallTextCentered}>
-                            Showing top {this.suggestionsLimit} rooms. If you do not see your laundry room above, try narrowing your search.
+                            Showing top {this.suggestionsLimit} rooms. If you do
+                            not see your laundry room above, try narrowing your
+                            search.
                         </Text>
                     </View>
-                }
+                )}
             </Fragment>
         );
     }
@@ -150,7 +149,8 @@ class LaundryScreen extends Component {
                     return (
                         <Fragment>
                             <Text style={styles.textCentered}>
-                            No starred laundry rooms to show. Starred rooms will appear at the top.
+                                No starred laundry rooms to show. Starred rooms
+                                will appear at the top.
                             </Text>
                             <View style={styles.horizontalLine} />
                             {this.mapToCards(Object.keys(this.state.cards))}
@@ -162,8 +162,11 @@ class LaundryScreen extends Component {
                     <Fragment>
                         {this.mapToCards(starred)}
                         <View style={styles.horizontalLine} />
-                        {this.mapToCards(Object.keys(this.state.cards)
-                            .filter(card => !starred.includes(card)))}
+                        {this.mapToCards(
+                            Object.keys(this.state.cards).filter(
+                                card => !starred.includes(card)
+                            )
+                        )}
                     </Fragment>
                 );
             }
@@ -171,8 +174,9 @@ class LaundryScreen extends Component {
             return (
                 <Fragment>
                     <Text style={styles.textCentered}>No results found.</Text>
-                    {starred.length !== 0 &&
-                        <View style={styles.horizontalLine} />}
+                    {starred.length !== 0 && (
+                        <View style={styles.horizontalLine} />
+                    )}
                     {this.mapToCards(starred)}
                 </Fragment>
             );
@@ -180,12 +184,13 @@ class LaundryScreen extends Component {
         // 1+ results for search
         return (
             <Fragment>
-                {this.mapToCards(suggestions
-                    .filter(card => starred.includes(card)))}
-                {starred.length !== 0 &&
-                    <View style={styles.horizontalLine} />}
-                {this.mapToCards(suggestions
-                    .filter(card => !starred.includes(card)))}
+                {this.mapToCards(
+                    suggestions.filter(card => starred.includes(card))
+                )}
+                {starred.length !== 0 && <View style={styles.horizontalLine} />}
+                {this.mapToCards(
+                    suggestions.filter(card => !starred.includes(card))
+                )}
             </Fragment>
         );
     }
@@ -201,11 +206,7 @@ class LaundryScreen extends Component {
                         this.onTextChanged("");
                     }}
                 >
-                    <AntDesign
-                        name="close"
-                        size={24}
-                        color="#A9A9A9"
-                    />
+                    <AntDesign name="close" size={24} color="#A9A9A9" />
                 </TouchableOpacity>
             );
         }
@@ -215,23 +216,22 @@ class LaundryScreen extends Component {
         if (this.state.loading) {
             return (
                 <View style={styles.loading}>
-                    <LottieView source={require('./animations/dotted-loader.json')} 
-                                autoPlay 
-                                loop 
-                                style={{
-                                    width:'100%',
-                                    height: 'auto',
-                                }}/>
-                </View>);
+                    <LottieView
+                        source={require("./animations/dotted-loader.json")}
+                        autoPlay
+                        loop
+                        style={{
+                            width: "100%",
+                            height: "auto",
+                        }}
+                    />
+                </View>
+            );
         }
         return (
             <View style={styles.screen}>
                 <View style={styles.searchBar}>
-                    <Ionicons
-                        name="ios-search"
-                        size={24}
-                        color="gray"
-                    />
+                    <Ionicons name="ios-search" size={24} color="gray" />
                     <TextInput
                         style={styles.textInput}
                         ref={input => {
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     },
     loading: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: "center",
     },
     horizontalLine: {
         marginTop: 14,

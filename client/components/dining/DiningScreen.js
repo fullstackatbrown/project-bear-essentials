@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import DiningCard from "./DiningCard";
-import {
-    Text,
-    View,
-    StyleSheet,
-
-    TextInput
-} from "react-native";
-import { Ionicons, AntDesign} from "@expo/vector-icons";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
@@ -48,7 +42,7 @@ class DiningScreen extends Component {
 
     // updates star's state when clicked
     starChanged = card => {
-        if(!this.props.starred.includes(card)){
+        if (!this.props.starred.includes(card)) {
             this.props.addStarred(card);
         } else {
             this.props.deleteStarred(card);
@@ -66,9 +60,9 @@ class DiningScreen extends Component {
             <ScrollView>
                 {starred.map(diningHall => (
                     <DiningCard
-                        diningCard = {this.state.cards[diningHall]}
-                        starPressed = {() => this.starChanges(diningHall)}
-                        isStarred = {this.props.starred.includes(diningHall)}
+                        diningCard={this.state.cards[diningHall]}
+                        starPressed={() => this.starChanges(diningHall)}
+                        isStarred={this.props.starred.includes(diningHall)}
                     />
                 ))}
             </ScrollView>
@@ -80,19 +74,43 @@ class DiningScreen extends Component {
 
         return (
             //TODO: set up navigation from card to menu
-            < View style={styles.screen}>
+            <View style={styles.screen}>
                 <ScrollView style={styles.scroll}>
                     <View style={styles.search}>
                         <Ionicons name="ios-search" size={24} color="gray" />
-                        <TextInput style={styles.textInput} placeholder="Search dining halls"/>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Search dining halls"
+                        />
                     </View>
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-                    <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
+                    <DiningCard
+                        style={styles.inputContainer}
+                        name={"Sharpe Refectory"}
+                    />
                 </ScrollView>
             </View>
         );
@@ -100,13 +118,13 @@ class DiningScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    screen:{
+    screen: {
         flex: 1,
         alignItems: "center",
         backgroundColor: "#fafafa",
     },
     scroll: {
-        width: "100%"
+        width: "100%",
     },
     search: {
         flex: 1,
@@ -129,7 +147,7 @@ const styles = StyleSheet.create({
         shadowOffset: {
             width: 0,
             height: 1,
-        }
+        },
     },
     textInput: {
         borderWidth: 0,
@@ -139,14 +157,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#9C9C9C",
     },
-    header:{
+    header: {
         minWidth: "100%",
     },
-    title:{
+    title: {
         fontSize: 25,
         marginVertical: 10,
     },
-    inputContainer:{
+    inputContainer: {
         width: 332,
         maxWidth: "100%",
         height: 175,

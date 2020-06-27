@@ -5,12 +5,8 @@ import NotificationOnIcon from "../../assets/icons/notifications-on.svg";
 
 export default function BellIcon(props) {
     if (props.focused) {
-        return(
-            <NotificationOnIcon width={28}/>
-        );
+        return <NotificationOnIcon width={28} />;
     } else {
-        return(
-            <NotificationOffIcon width={28}/>
-        );
+        return <NotificationOffIcon width={28} />;
     }
 }

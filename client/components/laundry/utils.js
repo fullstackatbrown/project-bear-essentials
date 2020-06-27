@@ -24,12 +24,14 @@ export const roomInfo = {
         title: "315 Thayer Street",
         room: "009",
     },
-    "ANDREWS E RM154": { // swapped with ANDREWS W
+    "ANDREWS E RM154": {
+        // swapped with ANDREWS W
         queryText: "ANDREWS WEST 160",
         title: "Andrews West",
         room: "160",
     },
-    "ANDREWS W RM160": { // swapped with ANDREWS E
+    "ANDREWS W RM160": {
+        // swapped with ANDREWS E
         queryText: "ANDREWS EAST 154",
         title: "Andrews East",
         room: "154",
@@ -84,17 +86,20 @@ export const roomInfo = {
         title: "Everett-Poland",
         room: "E243",
     },
-    "EVERETT-POLAND-RME166": { // extra '-'
+    "EVERETT-POLAND-RME166": {
+        // extra '-'
         queryText: "EVERETT-POLAND E166",
         title: "Everett-Poland",
         room: "E166",
     },
-    "GOODARD HOUSE RM018": { // name typo
+    "GOODARD HOUSE RM018": {
+        // name typo
         queryText: "GODDARD HOUSE 018",
         title: "Goddard House",
         room: "018",
     },
-    "GOODARD HOUSE RM130": { // name typo
+    "GOODARD HOUSE RM130": {
+        // name typo
         queryText: "GODDARD HOUSE 130",
         title: "Goddard House",
         room: "130",
@@ -104,7 +109,8 @@ export const roomInfo = {
         title: "Grad Center A",
         room: "120",
     },
-    "GRAD CENTER B RM113": { // room typo
+    "GRAD CENTER B RM113": {
+        // room typo
         queryText: "GRAD CENTER B 133",
         title: "Grad Center B",
         room: "133",
@@ -129,7 +135,8 @@ export const roomInfo = {
         title: "Harkness House",
         room: "106",
     },
-    "HEDGEMAN D RM009A": { // name typo
+    "HEDGEMAN D RM009A": {
+        // name typo
         queryText: "HEGEMAN 009A",
         title: "Hegeman",
         room: "009A",
@@ -139,7 +146,8 @@ export const roomInfo = {
         title: "Hope College",
         room: "015",
     },
-    "JAMISON-MEAD RMJ055": { // name typo
+    "JAMISON-MEAD RMJ055": {
+        // name typo
         queryText: "JAMESON-MEAD J055",
         title: "Jameson Mead",
         room: "J055",
@@ -244,7 +252,8 @@ export const roomInfo = {
         title: "Slater",
         room: "008",
     },
-    "VGQA RM001": { // name typo
+    "VGQA RM001": {
+        // name typo
         queryText: "VARTAN GREGORIAN QUAD 001",
         title: "Gregorian Quad B",
         room: "001",
@@ -259,7 +268,8 @@ export const roomInfo = {
         title: "Wayland House",
         room: "023",
     },
-    "WEST HOUSE RM100B": { // room typo ?
+    "WEST HOUSE RM100B": {
+        // room typo ?
         queryText: "WEST HOUSE 105",
         title: "West House",
         room: "105",

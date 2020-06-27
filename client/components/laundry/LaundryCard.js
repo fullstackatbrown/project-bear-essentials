@@ -1,25 +1,22 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
-    StyleSheet, 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    ToolbarAndroidComponent
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    ToolbarAndroidComponent,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
-import LottieView from 'lottie-react-native';
-
+import LottieView from "lottie-react-native";
 
 import { pluralize } from "./utils";
 import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
 
-
 // Component representing an individual laundry room
 const LaundryCard = props => {
-
     // list of machine details, to be updated periodically with api calls
     const [machineInfo, setMachineInfo] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -27,7 +24,9 @@ const LaundryCard = props => {
     // states for star
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
-    const [starColor, setStarColor] = useState(starred ? Colors.starYellow : Colors.inactiveIcon);
+    const [starColor, setStarColor] = useState(
+        starred ? Colors.starYellow : Colors.inactiveIcon
+    );
 
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
@@ -62,11 +61,7 @@ const LaundryCard = props => {
     // returns formatted room number, if it exists
     const roomNumberHandler = () => {
         if (props.card.room) {
-            return (
-                <Text style={styles.room}>
-                    {"Room " + props.card.room}
-                </Text>
-            );
+            return <Text style={styles.room}>{"Room " + props.card.room}</Text>;
         }
     };
 
@@ -74,20 +69,27 @@ const LaundryCard = props => {
     const summaryHandler = () => {
         if (loading) {
             return (
-            <View style={{width: '100%'}}>
-                <LottieView source={require('./animations/small-loader.json')} 
-                            autoPlay 
-                            loop 
-                            style={{
-                                marginTop: -32,
-                                marginBottom: -96,
-                                width:'auto',
-                                height: 160,
-                                alignSelf: 'center'
-                            }}/>
-            </View>);
+                <View style={{ width: "100%" }}>
+                    <LottieView
+                        source={require("./animations/small-loader.json")}
+                        autoPlay
+                        loop
+                        style={{
+                            marginTop: -32,
+                            marginBottom: -96,
+                            width: "auto",
+                            height: 160,
+                            alignSelf: "center",
+                        }}
+                    />
+                </View>
+            );
         } else if (numAvailWashers == 0 && numAvailDryers == 0) {
-            return <Text style={[styles.fail, styles.words]}>No available machines</Text>;
+            return (
+                <Text style={[styles.fail, styles.words]}>
+                    No available machines
+                </Text>
+            );
         } else if (numAvailDryers == 0) {
             return (
                 <Text style={[styles.success, styles.words]}>
@@ -103,206 +105,245 @@ const LaundryCard = props => {
         } else {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(numAvailWashers, "washer")}, {pluralize(numAvailDryers, "dryer")} available
+                    {pluralize(numAvailWashers, "washer")},{" "}
+                    {pluralize(numAvailDryers, "dryer")} available
                 </Text>
             );
         }
     };
 
     // (executed once) get initial data, set repeating timer for updates
-    useEffect(
-        () => {
-            const fakedata = [
+    useEffect(() => {
+        const fakedata = [
             {
-            id: 66757,
-            type: 'wash',
-            machine_no: 1,
-            avail: true,
-            ext_cycle: false,
-            offline: false,
-            time_remaining: 16
-          },
-          {
-            id: 66758,
-            type: 'wash',
-            machine_no: 2,
-            avail: false,
-            ext_cycle: false,
-            offline: false,
-            time_remaining: 1
-          },
-          {
-            id: 66759,
-            type: 'wash',
-            machine_no: 3,
-            avail: false,
-            ext_cycle: false,
-            offline: false,
-            time_remaining: 19
-          },
-          {
-            id: 66760,
-            type: 'wash',
-            machine_no: 4,
-            avail: true,
-            ext_cycle: false,
-            offline: false,
-            time_remaining: 40
-          },
-          {
-            id: 66761,
-            type: 'dry',
-            machine_no: 5,
-            avail: false,
-            ext_cycle: true,
-            offline: false,
-            time_remaining: 0
-          },
-          {
-            id: 66762,
-            type: 'dry',
-            machine_no: 6,
-            avail: true,
-            ext_cycle: false,
-            offline: true,
-            time_remaining: 28
-          },
-          {
-            id: 66763,
-            type: 'dry',
-            machine_no: 7,
-            avail: false,
-            ext_cycle: false,
-            offline: false,
-            time_remaining: 12
-          },
-          {
-            id: 66764,
-            type: 'dry',
-            machine_no: 8,
-            avail: true,
-            ext_cycle: true,
-            offline: true,
-            time_remaining: 60
-          }
+                id: 66757,
+                type: "wash",
+                machine_no: 1,
+                avail: true,
+                ext_cycle: false,
+                offline: false,
+                time_remaining: 16,
+            },
+            {
+                id: 66758,
+                type: "wash",
+                machine_no: 2,
+                avail: false,
+                ext_cycle: false,
+                offline: false,
+                time_remaining: 1,
+            },
+            {
+                id: 66759,
+                type: "wash",
+                machine_no: 3,
+                avail: false,
+                ext_cycle: false,
+                offline: false,
+                time_remaining: 19,
+            },
+            {
+                id: 66760,
+                type: "wash",
+                machine_no: 4,
+                avail: true,
+                ext_cycle: false,
+                offline: false,
+                time_remaining: 40,
+            },
+            {
+                id: 66761,
+                type: "dry",
+                machine_no: 5,
+                avail: false,
+                ext_cycle: true,
+                offline: false,
+                time_remaining: 0,
+            },
+            {
+                id: 66762,
+                type: "dry",
+                machine_no: 6,
+                avail: true,
+                ext_cycle: false,
+                offline: true,
+                time_remaining: 28,
+            },
+            {
+                id: 66763,
+                type: "dry",
+                machine_no: 7,
+                avail: false,
+                ext_cycle: false,
+                offline: false,
+                time_remaining: 12,
+            },
+            {
+                id: 66764,
+                type: "dry",
+                machine_no: 8,
+                avail: true,
+                ext_cycle: true,
+                offline: true,
+                time_remaining: 60,
+            },
         ];
-            let mounted = true;
-            const fetchData = async (isInitial) => {
-                const fetchedMachineData = await fetchLaundryRoomDetailed(props.card.id);
-                if (mounted) {
-                    setMachineInfo(fakedata
-                        .sort((a, b) => a.machine_no - b.machine_no)
-                    );
-                    if (isInitial) setLoading(false);
-                }
-            };
+        let mounted = true;
+        const fetchData = async isInitial => {
+            const fetchedMachineData = await fetchLaundryRoomDetailed(
+                props.card.id
+            );
+            if (mounted) {
+                setMachineInfo(
+                    fakedata.sort((a, b) => a.machine_no - b.machine_no)
+                );
+                if (isInitial) setLoading(false);
+            }
+        };
 
-            fetchData(true);
+        fetchData(true);
 
-            let interval = setInterval(() => fetchData(false), 60000);
+        let interval = setInterval(() => fetchData(false), 60000);
 
-            return () => {
-                mounted = false;
-                clearInterval(interval);
-            };
-        },
-        [],
-    );
+        return () => {
+            mounted = false;
+            clearInterval(interval);
+        };
+    }, []);
 
     // re-parse room data on changes in machineInfo or loading states
-    useEffect(
-        () => {
-            let mounted = true;              
-            if (!loading) {              
-                let newWashers = [];
-                let newDryers = [];
-                let newNumAvailWashers = 0;
-                let newNumAvailDryers = 0;
+    useEffect(() => {
+        let mounted = true;
+        if (!loading) {
+            let newWashers = [];
+            let newDryers = [];
+            let newNumAvailWashers = 0;
+            let newNumAvailDryers = 0;
 
-                machineInfo.forEach(machine => {
-                    if (machine.type == "wash") {
-                        newWashers.push(machine);
-                        if (machine.avail && !machine.offline && !machine.ext_cycle) {
-                            newNumAvailWashers ++;
-                        }
-                    } else if (machine.type == "dry") {
-                        newDryers.push(machine);
-                        if (machine.avail && !machine.offline && !machine.ext_cycle) {
-                            newNumAvailDryers ++;
-                        }
+            machineInfo.forEach(machine => {
+                if (machine.type == "wash") {
+                    newWashers.push(machine);
+                    if (
+                        machine.avail &&
+                        !machine.offline &&
+                        !machine.ext_cycle
+                    ) {
+                        newNumAvailWashers++;
                     }
-                });
-
-                if (mounted) {
-                    setAllWashers(newWashers);
-                    setAllDryers(newDryers);
-                    setNumAvailWashers(newNumAvailWashers);
-                    setNumAvailDryers(newNumAvailDryers);
+                } else if (machine.type == "dry") {
+                    newDryers.push(machine);
+                    if (
+                        machine.avail &&
+                        !machine.offline &&
+                        !machine.ext_cycle
+                    ) {
+                        newNumAvailDryers++;
+                    }
                 }
+            });
+
+            if (mounted) {
+                setAllWashers(newWashers);
+                setAllDryers(newDryers);
+                setNumAvailWashers(newNumAvailWashers);
+                setNumAvailDryers(newNumAvailDryers);
             }
-            return () => mounted = false;
-        },
-        [machineInfo, loading],
-    );
+        }
+        return () => (mounted = false);
+    }, [machineInfo, loading]);
 
     return (
         <View style={styles.back}>
             <View style={styles.card}>
-                <TouchableOpacity activeOpacity={0.60} onPress={arrowHandler}>
+                <TouchableOpacity activeOpacity={0.6} onPress={arrowHandler}>
                     <View style={styles.colSections}>
                         <View style={{ maxWidth: "80%" }}>
                             <Text style={styles.title}>{props.card.title}</Text>
                             {roomNumberHandler()}
                         </View>
-                        <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                            <AntDesign style={styles.star} name={starName} size={30} color={starColor} />  
+                        <TouchableOpacity
+                            style={styles.starArea}
+                            onPress={starHandler}
+                        >
+                            <AntDesign
+                                style={styles.star}
+                                name={starName}
+                                size={30}
+                                color={starColor}
+                            />
                         </TouchableOpacity>
                     </View>
                     <Collapsible collapsed={!collapsed}>
                         <View style={styles.uncollapsed}>
                             {summaryHandler()}
-                            {!loading &&
+                            {!loading && (
                                 <View style={styles.colSections}>
                                     <View>
-                                        <Text style={styles.tapText}>Tap to expand</Text>
+                                        <Text style={styles.tapText}>
+                                            Tap to expand
+                                        </Text>
                                     </View>
                                     <View style={styles.upArrow}>
-                                        <Ionicons style={styles.arrow} name="ios-arrow-down" size={40} color="#CCCCCC" />
+                                        <Ionicons
+                                            style={styles.arrow}
+                                            name="ios-arrow-down"
+                                            size={40}
+                                            color="#CCCCCC"
+                                        />
                                     </View>
                                 </View>
-                            }
+                            )}
                         </View>
                     </Collapsible>
                     <Collapsible collapsed={collapsed}>
                         <View style={styles.collapsed}>
                             <View>
-                                {allWashers.map((washer) => 
-                                    (<LaundryMachine
+                                {allWashers.map(washer => (
+                                    <LaundryMachine
                                         key={washer.id}
                                         name="Washer"
                                         machine={washer}
-                                        isNotif={props.notifList.includes(washer.id)}
-                                        notifAction={() => props.notifAction(washer.id)} />))}
+                                        isNotif={props.notifList.includes(
+                                            washer.id
+                                        )}
+                                        notifAction={() =>
+                                            props.notifAction(washer.id)
+                                        }
+                                    />
+                                ))}
                             </View>
                             <View style={styles.horizontalLine} />
                             <View>
-                                {allDryers.map((dryer) => 
-                                    (<LaundryMachine
+                                {allDryers.map(dryer => (
+                                    <LaundryMachine
                                         key={dryer.id}
                                         name="Dryer"
                                         machine={dryer}
-                                        isNotif={props.notifList.includes(dryer.id)}
-                                        notifAction={() => props.notifAction(dryer.id)} />))}
+                                        isNotif={props.notifList.includes(
+                                            dryer.id
+                                        )}
+                                        notifAction={() =>
+                                            props.notifAction(dryer.id)
+                                        }
+                                    />
+                                ))}
                             </View>
                             <View style={styles.colSections}>
                                 <View>
-                                    <Text style={styles.tapText}>Tap to collapse</Text>
+                                    <Text style={styles.tapText}>
+                                        Tap to collapse
+                                    </Text>
                                 </View>
                                 <View style={styles.upArrow}>
-                                    <Ionicons style={styles.arrow} name="ios-arrow-up" size={40} color="#CCCCCC" />
+                                    <Ionicons
+                                        style={styles.arrow}
+                                        name="ios-arrow-up"
+                                        size={40}
+                                        color="#CCCCCC"
+                                    />
                                 </View>
                             </View>
-                        </View>                    
+                        </View>
                     </Collapsible>
                 </TouchableOpacity>
             </View>
@@ -310,13 +351,12 @@ const LaundryCard = props => {
     );
 };
 
-
 // styles
 const styles = StyleSheet.create({
     back: {
         padding: 5,
         marginBottom: 12,
-        backgroundColor: "#0000"
+        backgroundColor: "#0000",
     },
     card: {
         padding: 22,
@@ -328,7 +368,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         shadowOffset: {
             width: 0,
-            height: 1
+            height: 1,
         },
         width: "88%",
         alignSelf: "center",
@@ -359,11 +399,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     upArrow: {
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     arrow: {
         marginBottom: -10,
-        marginRight: 2
+        marginRight: 2,
     },
     horizontalLine: {
         marginVertical: 6,
@@ -392,7 +432,7 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         fontStyle: "italic",
         fontSize: 16,
-    }
+    },
 });
 
 export default LaundryCard;

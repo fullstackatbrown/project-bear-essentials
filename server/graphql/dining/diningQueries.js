@@ -18,8 +18,7 @@ CAFE_MAP.set("cafecarts", 1538);
 const getCafe = async cafe => {
     let cafe_id = CAFE_MAP.get(cafe);
     let endpoint =
-    brownapi +
-    `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
+        brownapi + `dining/cafe/${cafe_id}?client_id=${process.env.CLIENT_ID}`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
     let res = data.results.cafes[cafe_id];
     res.id = cafe_id;
@@ -33,7 +32,7 @@ const getCafes = async () => {
     let cafe_ids = Array.from(CAFE_MAP.values());
     let keys = cafe_ids.join(",");
     let endpoint =
-    brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
+        brownapi + `dining/cafe/${keys}?client_id=${process.env.CLIENT_ID}`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
     let res = cafe_ids.map(cafe_id => {
         let cafe = data.results.cafes[cafe_id];
@@ -50,8 +49,8 @@ const getCafes = async () => {
 const getMenu = async cafe => {
     let cafe_id = CAFE_MAP.get(cafe);
     let endpoint =
-    brownapi +
-    `dining/cafe/${cafe_id}/menu?client_id=${process.env.CLIENT_ID}`;
+        brownapi +
+        `dining/cafe/${cafe_id}/menu?client_id=${process.env.CLIENT_ID}`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
     let res = data.results.days[0].cafes[cafe_id];
     res.cafe_id = cafe_id;
@@ -65,8 +64,8 @@ const getMenus = async () => {
     let cafe_ids = Array.from(CAFE_MAP.values());
     let keys = cafe_ids.join(",");
     let endpoint =
-    brownapi +
-    `dining/cafe/${keys}/menu?client_id=${process.env.CLIENT_ID}`;
+        brownapi +
+        `dining/cafe/${keys}/menu?client_id=${process.env.CLIENT_ID}`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
     let res = cafe_ids.map(cafe_id => {
         let menu = data.results.days[0].cafes[cafe_id];
@@ -85,10 +84,10 @@ const getMenuOnDays = async (cafe, dates) => {
     let cafe_id = CAFE_MAP.get(cafe);
     dates = dates.map(date => date.toISOString().split("T")[0]);
     let endpoint =
-    brownapi +
-    `dining/cafe/${cafe_id}/menu/${date.join(",")}?client_id=${
-        process.env.CLIENT_ID
-    }`;
+        brownapi +
+        `dining/cafe/${cafe_id}/menu/${date.join(",")}?client_id=${
+            process.env.CLIENT_ID
+        }`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
     let res = data.results.days.map(day => {
         let menu = day.cafes[cafe_id];
