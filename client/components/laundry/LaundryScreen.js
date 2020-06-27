@@ -18,6 +18,7 @@ import {
     deleteStarred,
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
+import LaundryHeader from "./LaundryHeader";
 import { fetchLaundryAll } from "./queries";
 
 const mapStateToProps = state => {
@@ -228,20 +229,9 @@ class LaundryScreen extends Component {
                 </View>
             );
         }
-        return (
+        return (   
             <View style={styles.screen}>
-                <View style={styles.searchBar}>
-                    <Ionicons name="ios-search" size={24} color="gray" />
-                    <TextInput
-                        style={styles.textInput}
-                        ref={input => {
-                            this.textInput = input;
-                        }}
-                        placeholder="Search laundry"
-                        onChangeText={text => this.onTextChanged(text)}
-                    />
-                    {this.crossHandler()}
-                </View>
+                <LaundryHeader onChangeText={this.onTextChanged}/>
                 <ScrollView>{this.renderSuggestions()}</ScrollView>
             </View>
         );
