@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node app",
         "type": "tsc",
-        "lint": "eslint \"**/*.js\" \"**/*.ts\"",
+        "lint": "eslint \"**/*.js\"",
         "deploy": "gcloud config set run/region us-central1 && gcloud config set run/platform managed && gcloud config set project fsab-brown-essentials && gcloud builds submit --tag gcr.io/fsab-brown-essentials/api && gcloud beta run deploy api --image gcr.io/fsab-brown-essentials/api --allow-unauthenticated"
     },
     "keywords": [],

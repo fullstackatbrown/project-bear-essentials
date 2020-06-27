@@ -97,8 +97,6 @@ const getMenuOnDays = async (cafe, dates) => {
     return data.results.days;
 };
 
-console.log(getCafe("ratty"));
-
 module.exports = {
     getCafe: getCafe,
     getCafes: getCafes,
