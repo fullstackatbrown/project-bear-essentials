@@ -14,6 +14,9 @@ import SettingsIcon from "./SettingsIcon";
 //import colors
 import Colors from "../../constants/Colors";
 
+//import headers
+import LaundryHeader from "./LaundryHeader";
+
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
@@ -77,7 +80,7 @@ function getHeaderTitle(route) {
     case "Dining":
         return "Dining";
     case "Laundry":
-        return "Laundry";
+        return () => <LaundryHeader/>;
     case "Map":
         return "Map";
     case "Settings":
