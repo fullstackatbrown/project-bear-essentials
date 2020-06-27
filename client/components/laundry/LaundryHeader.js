@@ -29,8 +29,8 @@ const LaundryHeader = (props) => {
         if (enteredValue != '') {
             return(
                 <TouchableOpacity onPress={crossHandler}>
-                        <AntDesign name="close" size={24} color={Colors.activeIcon} />
-                    </TouchableOpacity>
+                    <AntDesign name="close" size={30} color={Colors.activeIcon} />
+                </TouchableOpacity>
             )
         }
     }
@@ -40,7 +40,7 @@ const LaundryHeader = (props) => {
             <View style={styles.header}>
                <View style={styles.searchHeader}>
                 <View style={styles.searchBar}>
-                    <Ionicons name="ios-search" size={24} color={Colors.activeIcon} />
+                    <Ionicons name="ios-search" size={36} color={Colors.activeIcon} />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Search laundry"
@@ -48,12 +48,10 @@ const LaundryHeader = (props) => {
                         value={enteredValue}
                     />
                     {crossVisibilityHandler()}
-                    
                 </View>
                     <TouchableOpacity onPress={searchTapHandler}>
-                        <Text>Cancel</Text>  
+                        <Text style={styles.cancelText}>Cancel</Text>  
                     </TouchableOpacity>
-
                 </View> 
             </View>
             )
@@ -63,7 +61,7 @@ const LaundryHeader = (props) => {
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Laundry</Text>
                 <TouchableOpacity onPress={searchTapHandler}>
-                    <Ionicons name="ios-search" size={30} color={Colors.inactiveIcon} />
+                    <Ionicons name="ios-search" size={36} color={Colors.inactiveIcon} />
                 </TouchableOpacity>
             </View>
         ) 
@@ -80,8 +78,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 15,
-        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+        paddingHorizontal: 15,
+        paddingTop: Platform.OS === 'ios' ? 30 : StatusBar.currentHeight
     },
     headerTitle: {
         color: "#cc0200",
@@ -101,13 +99,19 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderWidth: 1,
         paddingVertical: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 14,
         marginRight: 10
     },
     textInput: {
+        marginHorizontal: 10,
         flex: 1,
-        marginLeft: 5
-    }
+        fontSize: 22,
+        color: "#666666"
+    },
+    cancelText: {
+        fontSize: 18,
+        color: "#BBBBBB",
+    },
 })
 
 export default LaundryHeader;
