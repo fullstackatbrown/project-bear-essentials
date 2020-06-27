@@ -59,6 +59,10 @@ const DiningCard = props => {
         return false;
     };
 
+    const diningNameHandlder = () => {
+        return <Text style={styles.hall}>{props.card.name}</Text>
+    };
+
     // toggles open/close sign color and text color
     const signColorHandler = () => {
         if (hoursCompare()) {
@@ -91,20 +95,22 @@ const DiningCard = props => {
     }, []);
 
     return (
-        <View style={styles.card}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{props.name}</Text>
-                <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                    <AntDesign
-                        style={styles.star}
-                        name={starName}
-                        size={30}
-                        color={starColor}
-                    />
-                </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.6}> 
+            <View style={styles.card}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{props.name}</Text>
+                    <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                        <AntDesign
+                            style={styles.star}
+                            name={starName}
+                            size={30}
+                            color={starColor}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.info}>{signColorHandler()}</View>
             </View>
-            <View style={styles.info}>{signColorHandler()}</View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -134,6 +140,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 25,
+    },
+    hall: {
+        fontWeight: "bold", 
+        fontSize: 22,
     },
     open: {
         color: Colors.success,

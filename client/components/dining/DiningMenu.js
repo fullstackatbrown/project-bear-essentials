@@ -1,15 +1,25 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function DiningMenu() {
+export const DiningMenu = () => {
+    const [diningMenu, setDiningMenu] = useState({});
+
     <View style={styles.screen}>
         <View style={styles.header}>
             <Text>Hello!</Text>
         </View>
     </View>;
 }
+
+// useEffect(() => {
+//     const fetchMenu = async () => {
+//         const menu = await fetchMenuDetailed(id[props.name]);
+//         setHallHours(menu.menu.dayparts[0].stations); 
+//     };
+//     fetchMenu();
+// }, []);
 
 const styles = StyleSheet.create({
     screen: {
@@ -24,4 +34,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DiningMenu;
+

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DiningCard from "./DiningCard";
+import DiningMenu from "./DiningMenu";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
@@ -25,8 +26,23 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+// configures dining menu screen for navigator
+
 const DINING_HALL = "Sharpe Refrectory";
 const DiningStack = createStackNavigator();
+
+// const DiningMenu = ({ navigation }) => {
+//     return (
+//         <ScreenContainer>
+//          <DiningCard 
+//             style={styles.inputContainer}
+//             name={"Sharpe Refectory"}/> 
+//             onPress={() => {
+//                 navigation.push("Menu");
+//             }}  
+//         </ScreenContainer>
+//     );
+// };
 
 class DiningScreen extends Component {
     constructor(props) {
@@ -69,9 +85,20 @@ class DiningScreen extends Component {
         );
     }
 
+    // creates navigator for dining menu
+    createMenuStack = () => {
+        <NavigationContainer>
+            <DiningStack.Navigator>
+                <DiningStack.Screen
+                    name = "Dining Menu"
+                    component={DiningMenu} />
+            </DiningStack.Navigator>
+        </NavigationContainer>
+    }
+
     render() {
         const { search } = this.state;
-
+        this.createMenuStack();
         return (
             //TODO: set up navigation from card to menu
             <View style={styles.screen}>
@@ -83,10 +110,6 @@ class DiningScreen extends Component {
                             placeholder="Search dining halls"
                         />
                     </View>
-                    <DiningCard
-                        style={styles.inputContainer}
-                        name={"Sharpe Refectory"}
-                    />
                     <DiningCard
                         style={styles.inputContainer}
                         name={"Sharpe Refectory"}
