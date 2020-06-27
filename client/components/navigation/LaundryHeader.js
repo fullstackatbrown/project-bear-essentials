@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TextInput} from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from "../../constants/Colors";
 
 const LaundryHeader = (props) => {
     const [searchEnabled, setSearchEnabled] = useState(false)
+    const [enteredValue, setEnteredValue] = useState('');
 
     const searchTapHandler = () => {
         if (searchEnabled) {
@@ -13,18 +14,39 @@ const LaundryHeader = (props) => {
         } else {
             setSearchEnabled(true);
         }
-       
+    }
+
+    const inputHandler = inputText => {
+        setEnteredValue(inputText)
+    }
+
+    const crossHandler = () => {
+        setEnteredValue('');
+    }
+
+    const crossVisibilityHandler = () => {
+        if (enteredValue != '') {
+            return(
+                <TouchableOpacity onPress={crossHandler}>
+                        <AntDesign name="close" size={24} color={Colors.activeIcon} />
+                    </TouchableOpacity>
+            )
+        }
     }
 
     if (searchEnabled) {
         return(
             <View style={styles.searchHeader}>
                 <View style={styles.searchBar}>
-                    <Ionicons name="ios-search" size={24} color="gray" />
+                    <Ionicons name="ios-search" size={24} color={Colors.activeIcon} />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Search laundry"
+                        onChangeText={inputHandler}
+                        value={enteredValue}
                     />
+                    {crossVisibilityHandler()}
+                    
                 </View>
                     <TouchableOpacity onPress={searchTapHandler}>
                         <Text>Cancel</Text>  
@@ -37,7 +59,7 @@ const LaundryHeader = (props) => {
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Laundry</Text>
                 <TouchableOpacity onPress={searchTapHandler}>
-                    <Ionicons name="ios-search" size={30} color="gray" />
+                    <Ionicons name="ios-search" size={30} color={Colors.inactiveIcon} />
                 </TouchableOpacity>
             </View>
         ) 
