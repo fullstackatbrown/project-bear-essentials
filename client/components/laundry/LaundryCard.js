@@ -183,8 +183,8 @@ const LaundryCard = props => {
                 type: "dry",
                 machine_no: 8,
                 avail: true,
-                ext_cycle: true,
-                offline: true,
+                ext_cycle: false,
+                offline: false,
                 time_remaining: 60,
             },
         ];
@@ -195,7 +195,8 @@ const LaundryCard = props => {
             );
             if (mounted) {
                 setMachineInfo(
-                    fakedata.sort((a, b) => a.machine_no - b.machine_no)
+                    fakedata // fetchedMachineData.data.laundryRoomDetailed.machines
+                    .sort((a, b) => a.machine_no - b.machine_no)
                 );
                 if (isInitial) setLoading(false);
             }
