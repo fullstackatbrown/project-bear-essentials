@@ -23,6 +23,7 @@ const LaundryHeader = (props) => {
 
     const crossHandler = () => {
         setEnteredValue('');
+        props.onChangeText('');
     }
 
     const crossVisibilityHandler = () => {
