@@ -5,7 +5,6 @@ import { Text, View, StyleSheet, TextInput } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 import { connect } from "react-redux";
-import { SearchBar } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -26,23 +25,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-// configures dining menu screen for navigator
-
 const DINING_HALL = "Sharpe Refrectory";
 const DiningStack = createStackNavigator();
-
-// const DiningMenu = ({ navigation }) => {
-//     return (
-//         <ScreenContainer>
-//          <DiningCard 
-//             style={styles.inputContainer}
-//             name={"Sharpe Refectory"}/> 
-//             onPress={() => {
-//                 navigation.push("Menu");
-//             }}  
-//         </ScreenContainer>
-//     );
-// };
 
 class DiningScreen extends Component {
     constructor(props) {
