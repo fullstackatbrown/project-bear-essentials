@@ -64,7 +64,7 @@ const DiningCard = props => {
 
     // TODO: this is misspelled, never called.
     const diningNameHandlder = () => {
-        return <Text style={styles.hall}>{props.card.name}</Text>;
+        return <Text style={styles.hall}>{props.name}</Text>
     };
 
     // toggles open/close sign color and text color
