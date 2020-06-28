@@ -15,6 +15,8 @@ import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
 
+// TODO: Clean up unused imports
+
 // Component representing an individual laundry room
 const LaundryCard = props => {
     // list of machine details, to be updated periodically with api calls
@@ -112,6 +114,7 @@ const LaundryCard = props => {
         }
     };
 
+    // TODO: Move fake data into the dummydata file
     // (executed once) get initial data, set repeating timer for updates
     useEffect(() => {
         const fakedata = [
@@ -196,7 +199,7 @@ const LaundryCard = props => {
             if (mounted) {
                 setMachineInfo(
                     fakedata // fetchedMachineData.data.laundryRoomDetailed.machines
-                    .sort((a, b) => a.machine_no - b.machine_no)
+                        .sort((a, b) => a.machine_no - b.machine_no)
                 );
                 if (isInitial) setLoading(false);
             }
@@ -213,6 +216,7 @@ const LaundryCard = props => {
     }, []);
 
     // re-parse room data on changes in machineInfo or loading states
+    // TODO: Try merging these two useeffects
     useEffect(() => {
         let mounted = true;
         if (!loading) {

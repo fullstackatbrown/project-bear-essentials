@@ -1,74 +1,84 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TextInput, StatusBar} from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TextInput, StatusBar } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
 
-const LaundryHeader = (props) => {
-    const [searchEnabled, setSearchEnabled] = useState(false)
-    const [enteredValue, setEnteredValue] = useState('');
+const LaundryHeader = props => {
+    const [searchEnabled, setSearchEnabled] = useState(false);
+    const [enteredValue, setEnteredValue] = useState("");
 
     const searchTapHandler = () => {
         if (searchEnabled) {
-            setSearchEnabled(false)
+            setSearchEnabled(false);
         } else {
             setSearchEnabled(true);
         }
-    }
+    };
 
     const inputHandler = inputText => {
         setEnteredValue(inputText);
         props.onChangeText(inputText);
-    }
+    };
 
     const crossHandler = () => {
-        setEnteredValue('');
-        props.onChangeText('');
-    }
+        setEnteredValue("");
+        props.onChangeText("");
+    };
 
     const crossVisibilityHandler = () => {
-        if (enteredValue != '') {
-            return(
+        if (enteredValue != "") {
+            return (
                 <TouchableOpacity onPress={crossHandler}>
-                    <AntDesign name="close" size={30} color={Colors.activeIcon} />
+                    <AntDesign
+                        name="close"
+                        size={30}
+                        color={Colors.activeIcon}
+                    />
                 </TouchableOpacity>
-            )
+            );
         }
-    }
+    };
 
     if (searchEnabled) {
-        return(
+        return (
             <View style={styles.header}>
-               <View style={styles.searchHeader}>
-                <View style={styles.searchBar}>
-                    <Ionicons name="ios-search" size={36} color={Colors.activeIcon} />
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Search laundry"
-                        onChangeText={inputHandler}
-                        value={enteredValue}
-                    />
-                    {crossVisibilityHandler()}
-                </View>
+                <View style={styles.searchHeader}>
+                    <View style={styles.searchBar}>
+                        <Ionicons
+                            name="ios-search"
+                            size={36}
+                            color={Colors.activeIcon}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Search laundry"
+                            onChangeText={inputHandler}
+                            value={enteredValue}
+                        />
+                        {crossVisibilityHandler()}
+                    </View>
                     <TouchableOpacity onPress={searchTapHandler}>
-                        <Text style={styles.cancelText}>Cancel</Text>  
+                        <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
-                </View> 
+                </View>
             </View>
-            )
-    }
-    else {
-        return(
+        );
+    } else {
+        return (
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Laundry</Text>
                 <TouchableOpacity onPress={searchTapHandler}>
-                    <Ionicons name="ios-search" size={36} color={Colors.inactiveIcon} />
+                    <Ionicons
+                        name="ios-search"
+                        size={36}
+                        color={Colors.inactiveIcon}
+                    />
                 </TouchableOpacity>
             </View>
-        ) 
+        );
     }
-
-}
+};
 
 const styles = StyleSheet.create({
     header: {
@@ -76,43 +86,43 @@ const styles = StyleSheet.create({
         backgroundColor: "#f9f9f9",
         elevation: 0,
         shadowOpacity: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingHorizontal: 15,
-        paddingTop: Platform.OS === 'ios' ? 30 : StatusBar.currentHeight
+        paddingTop: Platform.OS === "ios" ? 30 : StatusBar.currentHeight,
     },
     headerTitle: {
         color: "#cc0200",
         paddingLeft: 12,
         fontSize: 40,
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     searchHeader: {
         flexDirection: "row",
-        alignItems: 'center'
+        alignItems: "center",
     },
-    searchBar : {
-        flexDirection: 'row',
-        alignItems: 'center',
+    searchBar: {
+        flexDirection: "row",
+        alignItems: "center",
         flex: 1,
         borderColor: Colors.activeIcon,
         borderRadius: 25,
         borderWidth: 1,
         paddingVertical: 5,
         paddingHorizontal: 14,
-        marginRight: 10
+        marginRight: 10,
     },
     textInput: {
         marginHorizontal: 10,
         flex: 1,
         fontSize: 22,
-        color: "#666666"
+        color: "#666666",
     },
     cancelText: {
         fontSize: 18,
         color: "#BBBBBB",
     },
-})
+});
 
 export default LaundryHeader;

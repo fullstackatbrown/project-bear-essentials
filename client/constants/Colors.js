@@ -1,3 +1,4 @@
+// TODO: Figure out why this exists
 const tintColor = "#2f95dc";
 
 export default {
@@ -18,5 +19,5 @@ export default {
     success: "#0f9960",
     inactiveIcon: "#CCCCCC",
     activeIcon: "#949494",
-    accentRed: "#CC0200"
+    accentRed: "#CC0200",
 };

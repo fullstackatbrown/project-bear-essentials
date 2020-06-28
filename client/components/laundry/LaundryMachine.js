@@ -26,6 +26,7 @@ const LaundryMachine = props => {
     };
 
     // machine is either offline, ext. cycle, available, or in use
+    // TODO: Use else if, or switch
     if (thisMachine.offline) {
         return (
             <View style={styles.row}>
@@ -86,4 +87,5 @@ const styles = StyleSheet.create({
         fontSize: 19,
     },
 });
+
 export default LaundryMachine;
