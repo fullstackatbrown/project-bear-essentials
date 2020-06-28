@@ -28,7 +28,7 @@ const mapDispatchToProps = dispatch => {
 
 // configures dining menu screen for navigator
 
-const DINING_HALL = "Sharpe Refrectory";
+const DINING_HALL = "Sharpe Refectory";
 const DiningStack = createStackNavigator();
 
 // const DiningMenu = ({ navigation }) => {
