@@ -11,6 +11,8 @@ import { connect } from "react-redux";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 
+//TODO: Clean up unused imports
+
 import {
     addNotification,
     deleteNotification,
@@ -47,6 +49,7 @@ class LaundryScreen extends Component {
             suggestions: [],
         };
 
+        //TODO: Make this a constant
         this.suggestionsLimit = 10;
 
         this.fetchCards = this.fetchCards.bind(this);
@@ -143,6 +146,7 @@ class LaundryScreen extends Component {
         const { emptySearchBar, suggestions } = this.state;
         let starred = this.props.starred.sort();
 
+        // TODO: Clean up if-else relationships; switch!
         if (suggestions.length === 0) {
             if (emptySearchBar) {
                 if (starred.length === 0) {
@@ -196,23 +200,7 @@ class LaundryScreen extends Component {
         );
     }
 
-    // Returns search bar's clear button when there is text in the search box
-    crossHandler() {
-        const { emptySearchBar } = this.state;
-        if (!emptySearchBar) {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-                        this.textInput.clear();
-                        this.onTextChanged("");
-                    }}
-                >
-                    <AntDesign name="close" size={24} color="#A9A9A9" />
-                </TouchableOpacity>
-            );
-        }
-    }
-
+    // Render
     render() {
         if (this.state.loading) {
             return (
@@ -229,9 +217,9 @@ class LaundryScreen extends Component {
                 </View>
             );
         }
-        return (   
+        return (
             <View style={styles.screen}>
-                <LaundryHeader onChangeText={this.onTextChanged}/>
+                <LaundryHeader onChangeText={this.onTextChanged} />
                 <ScrollView>{this.renderSuggestions()}</ScrollView>
             </View>
         );
