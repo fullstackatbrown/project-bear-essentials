@@ -10,6 +10,7 @@ const DiningCard = props => {
     const [starColor, setStarColor] = useState(
         starred ? Colors.starYellow : Colors.inactiveIcon
     );
+    // TODO: make this capitalized?
     const [hallHours, setHallHours] = useState("loading...");
 
     /* 
@@ -17,6 +18,7 @@ const DiningCard = props => {
     dont need this for inital generating of cards but will
     need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
     */
+    // TODO: conside using a JS map
     const id = {
         "Sharpe Refectory": "ratty",
         "Verney-Wooley": "vdub",
@@ -39,7 +41,7 @@ const DiningCard = props => {
             setStarName("star");
             setStarColor(Colors.starYellow);
         }
-        // props.starPressed(); //will trigger action in diningscreen file
+        // props.starPressed(); //will trigger action in diningscreen file TODO: remove?
     };
 
     // compares the current time w/ the time from the api
@@ -48,6 +50,7 @@ const DiningCard = props => {
         let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;
         let openTime = "11/11/11 06:00";
         let closeTime = "11/11/11 22:00";
+        // TODO: try not to have commented out code, if you do have it, leave a note as to why it's commented out
         // let openTime = `11/11/11 ${hallHours.starttime}`;
         // let closeTime = `11/11/11 ${hallHours.endtime}`;
         let curr = Date.parse(currTime);
@@ -59,6 +62,7 @@ const DiningCard = props => {
         return false;
     };
 
+    // TODO: this is misspelled, never called.
     const diningNameHandlder = () => {
         return <Text style={styles.hall}>{props.name}</Text>
     };
@@ -95,11 +99,14 @@ const DiningCard = props => {
     }, []);
 
     return (
-        <TouchableOpacity activeOpacity={0.6}> 
+        <TouchableOpacity activeOpacity={0.6}>
             <View style={styles.card}>
                 <View style={styles.header}>
                     <Text style={styles.title}>{props.name}</Text>
-                    <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                    <TouchableOpacity
+                        style={styles.starArea}
+                        onPress={starHandler}
+                    >
                         <AntDesign
                             style={styles.star}
                             name={starName}
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     hall: {
-        fontWeight: "bold", 
+        fontWeight: "bold",
         fontSize: 22,
     },
     open: {

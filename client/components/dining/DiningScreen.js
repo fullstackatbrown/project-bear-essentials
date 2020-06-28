@@ -13,6 +13,8 @@ import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { fetchCafes } from "./DinQueries";
 import Colors from "../../constants/Colors.js";
 
+// TODO: delete unused imports (other files too)
+
 // const mapStateToProps = state => {
 //     return {
 //         starred: state.dining.starred,
@@ -34,12 +36,12 @@ const DiningStack = createStackNavigator();
 // const DiningMenu = ({ navigation }) => {
 //     return (
 //         <ScreenContainer>
-//          <DiningCard 
+//          <DiningCard
 //             style={styles.inputContainer}
-//             name={"Sharpe Refectory"}/> 
+//             name={"Sharpe Refectory"}/>
 //             onPress={() => {
 //                 navigation.push("Menu");
-//             }}  
+//             }}
 //         </ScreenContainer>
 //     );
 // };
@@ -71,6 +73,7 @@ class DiningScreen extends Component {
     };
 
     // creates individual dining cards
+    // TODO: key prop is missing
     mapDiningCard(starred) {
         return (
             <ScrollView>
@@ -86,15 +89,14 @@ class DiningScreen extends Component {
     }
 
     // creates navigator for dining menu
+    // TODO: I don't think this returns anything? add return keyword
     createMenuStack = () => {
         <NavigationContainer>
             <DiningStack.Navigator>
-                <DiningStack.Screen
-                    name = "Dining Menu"
-                    component={DiningMenu} />
+                <DiningStack.Screen name="Dining Menu" component={DiningMenu} />
             </DiningStack.Navigator>
-        </NavigationContainer>
-    }
+        </NavigationContainer>;
+    };
 
     render() {
         const { search } = this.state;
