@@ -1,5 +1,5 @@
-const { roomInfo } = require("./utils");
-const axios = require("axios");
+import { roomInfo } from "./utils";
+import axios from "axios";
 
 const url = "https://api-2cu446h72q-uc.a.run.app/graphql";
 
