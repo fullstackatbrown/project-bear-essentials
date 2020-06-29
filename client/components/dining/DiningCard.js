@@ -41,59 +41,77 @@ const DiningCard = props => {
             setStarName("star");
             setStarColor(Colors.starYellow);
         }
-        // props.starPressed(); //will trigger action in diningscreen file TODO: remove?
+    };
+
+    // TODO: this is misspelled, never called.
+    const diningNameHandler = () => {
+        return <Text style={styles.hall}>{props.name}</Text>
     };
 
     // compares the current time w/ the time from the api
     const hoursCompare = () => {
         let date = new Date();
-        let currTime = `11/11/11 ${date.getHours()}:${date.getMinutes()}`;
-        let openTime = "11/11/11 06:00";
-        let closeTime = "11/11/11 22:00";
-        // TODO: try not to have commented out code, if you do have it, leave a note as to why it's commented out
-        // let openTime = `11/11/11 ${hallHours.starttime}`;
-        // let closeTime = `11/11/11 ${hallHours.endtime}`;
-        let curr = Date.parse(currTime);
-        let open = Date.parse(openTime);
-        let close = Date.parse(closeTime);
-        if (curr > open && curr < close) {
-            return true;
+        let curr = Date.parse(`11/11/11 ${date.getHours()}:${date.getMinutes()}`);
+        let open1 = Date.parse(`11/11/11 ${hallHours[0].starttime}`);
+        let close1 = Date.parse(`11/11/11 ${hallHours[0].endtime}`);
+        let open2 = Date.parse(`11/11/11 ${hallHours[1].starttime}`);
+        let close2 = Date.parse(`11/11/11 ${hallHours[1].endtime}`);
+        let open3 = Date.parse(`11/11/11 ${hallHours[2].starttime}`);
+        let close3 = Date.parse(`11/11/11 ${hallHours[2].endtime}`);
+        if (curr > open1 && curr < close1) {
+            return 0
+        } else if (curr > open2 && curr < close2) {
+            return 1
+        } else if (curr > open3 && curr < close3) {
+            return 2
+        } else if (curr > close1 && curr < open2) {
+            return 3
+        } else if (curr > close2 && curr < open3) {
+            return 4
+        } else {
+            return 5
         }
-        return false;
-    };
-
-    // TODO: this is misspelled, never called.
-    const diningNameHandlder = () => {
-        return <Text style={styles.hall}>{props.name}</Text>
     };
 
     // toggles open/close sign color and text color
     const signColorHandler = () => {
-        if (hoursCompare()) {
-            return (
-                <React.Fragment>
-                    <Text style={[styles.open, styles.sign]}>{hallHours}</Text>
-                    <Text style={[styles.closed, styles.text]}>
-                        Closes at 8:00 PM
-                    </Text>
-                </React.Fragment>
-            );
+        let slot = hoursCompare();
+        let sign = styles.open;
+        let time = styles.closed;
+        let text1 = "Open"
+        let text2 = `Closes at ${hallHours[0].endtime}`
+        if (slot === 0) {
+            return;
+        } else if (slot === 1) {
+            text2 = `Closes at ${hallHours[1].endtime}`
+        } else if (slot === 2) {
+            text2 = `Closes at ${hallHours[2].endtime}`
         } else {
-            return (
-                <React.Fragment>
-                    <Text style={[styles.closed, styles.sign]}>Closed</Text>
-                    <Text style={[styles.open, styles.text]}>
-                        Opens at 8:00 AM
-                    </Text>
-                </React.Fragment>
-            );
+            sign = styles.closed;
+            time = styles.open;
+            text1 = "Closed"
+            if (slot === 3) {
+                text2 = `Opens at ${hallHours[1].starttime}`
+            } else if (slot === 4) {
+                text2 = `Opens at ${hallHours[2].starttime}`
+            } else if (slot === 5) {
+                text2 = `Opens at ${hallHours[0].starttime}`
+            }
         }
+        return (
+            <React.Fragment>
+                <Text style={[sign, styles.sign]}>{text1}</Text>
+                <Text style={[time, styles.text]}>
+                    {text2}
+                </Text>
+            </React.Fragment>
+        );
     };
 
     useEffect(() => {
         const effectFunction = async () => {
             const time = await fetchHours(id[props.name]);
-            setHallHours(time.data.cafe.days[0].dayparts[0].starttime);
+            setHallHours(time.data.cafe.days[0].dayparts);
         };
         effectFunction();
     }, []);
