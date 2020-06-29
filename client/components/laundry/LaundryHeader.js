@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, StatusBar } from "react-native";
+import { Platform, StyleSheet, View, Text, TextInput, StatusBar } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
@@ -59,7 +59,7 @@ const LaundryHeader = props => {
                         {crossVisibilityHandler()}
                     </View>
                     <TouchableOpacity onPress={searchTapHandler}>
-                        <Text style={styles.cancelText}>Cancel</Text>
+                        <Text style={styles.cancelText}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 15,
+        paddingLeft: 20,
+        paddingRight: 26,
         paddingTop: Platform.OS === "ios" ? 30 : StatusBar.currentHeight,
     },
     headerTitle: {

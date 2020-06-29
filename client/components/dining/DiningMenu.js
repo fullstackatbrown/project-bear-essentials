@@ -11,7 +11,7 @@ export const DiningMenu = () => {
             <Text>Hello!</Text>
         </View>
     </View>;
-}
+};
 
 // useEffect(() => {
 //     const fetchMenu = async () => {

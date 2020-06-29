@@ -1,26 +1,31 @@
 const { roomInfo } = require("./utils");
-// TODO: Change to axios
-const { createApolloFetch } = require("apollo-fetch");
+const axios = require("axios");
 
-const uri = "https://api-2cu446h72q-uc.a.run.app/graphql";
-const fetch = createApolloFetch({ uri });
+const url = "https://api-2cu446h72q-uc.a.run.app/graphql";
+
+// returns promise
+const axiosPost = query => {
+    return axios.post(url, {
+        query: query,
+    });
+};
 
 const fetchLaundryRooms = () => {
-    return fetch({
-        query: `{
+    return axiosPost(`
+        {
             laundryRooms {
                 results {
                     name
                     id
                 }
             }
-        }`,
-    });
+        }
+    `);
 };
 
 const fetchLaundryRoomDetailed = id => {
-    return fetch({
-        query: `{
+    return axiosPost(`
+        {
             laundryRoomDetailed (id: ${id}) {
                 machines {
                     id
@@ -32,24 +37,27 @@ const fetchLaundryRoomDetailed = id => {
                     time_remaining
                 }
             }
-        }`,
-    });
+        }
+    `);
 };
 
-// returns object containing **roomInfo** information for all laundry rooms
+// returns object containing list of all laundry rooms using roomInfo data
 const fetchLaundryAll = async () => {
     let nameIds = await fetchLaundryRooms();
-    nameIds = nameIds.data.laundryRooms.results;
+    nameIds = nameIds.data.data.laundryRooms.results;
 
     const allRoomsDetailed = {};
     nameIds.forEach(v => {
-        const thisRoom = roomInfo[v.name];
-        allRoomsDetailed[thisRoom.queryText] = {
-            title: thisRoom.title,
-            room: thisRoom.room,
-            id: v.id,
-            // machines: fetchLaundryRoomDetailed(v.id),
-        };
+        if (v.name in roomInfo) {
+            const thisRoom = roomInfo[v.name];
+            allRoomsDetailed[thisRoom.queryText] = {
+                title: thisRoom.title,
+                room: thisRoom.room,
+                id: v.id,
+            };
+        } else {
+            console.log("[WARNING] Laundry room '" + v.name + "' not found in roomInfo");
+        }        
     });
 
     return allRoomsDetailed;

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { pluralize } from "./utils";
-import BellIcon from "./BellIcon";
+import { BellIcon } from "./icons";
 import Colors from "../../constants/Colors";
 
 // Component representing an individual laundry machine
@@ -26,7 +25,6 @@ const LaundryMachine = props => {
     };
 
     // machine is either offline, ext. cycle, available, or in use
-    // TODO: Use else if, or switch
     if (thisMachine.offline) {
         return (
             <View style={styles.row}>
@@ -35,8 +33,7 @@ const LaundryMachine = props => {
                 </Text>
             </View>
         );
-    }
-    if (thisMachine.ext_cycle) {
+    } else if (thisMachine.ext_cycle) {
         return (
             <View style={styles.row}>
                 <Text style={[styles.words, styles.used]}>
@@ -44,8 +41,7 @@ const LaundryMachine = props => {
                 </Text>
             </View>
         );
-    }
-    if (thisMachine.avail) {
+    } else if (thisMachine.avail) {
         return (
             <View style={styles.row}>
                 <Text style={[styles.words, styles.available]}>
@@ -53,18 +49,19 @@ const LaundryMachine = props => {
                 </Text>
             </View>
         );
+    } else {
+        return (
+            <View style={styles.row}>
+                <Text style={[styles.words, styles.used]}>
+                    {props.name} {thisMachine.machine_no} (
+                    {pluralize(thisMachine.time_remaining, "minute")} rem.)
+                </Text>
+                <TouchableOpacity onPress={bellHandler}>
+                    <BellIcon focused={notif} />
+                </TouchableOpacity>
+            </View>
+        );
     }
-    return (
-        <View style={styles.row}>
-            <Text style={[styles.words, styles.used]}>
-                {props.name} {thisMachine.machine_no} (
-                {pluralize(thisMachine.time_remaining, "minute")} rem.)
-            </Text>
-            <TouchableOpacity onPress={bellHandler}>
-                <BellIcon focused={notif} />
-            </TouchableOpacity>
-        </View>
-    );
 };
 
 const styles = StyleSheet.create({

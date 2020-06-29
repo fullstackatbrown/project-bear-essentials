@@ -1,17 +1,8 @@
 import React, { Component, Fragment } from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-
-//TODO: Clean up unused imports
 
 import {
     addNotification,
@@ -38,6 +29,8 @@ const mapDispatchToProps = dispatch => ({
     deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
 
+const SUGGESTIONS_LIMIT = 10;
+
 // Component representing the laundry screen
 class LaundryScreen extends Component {
     constructor(props) {
@@ -48,9 +41,6 @@ class LaundryScreen extends Component {
             emptySearchBar: true,
             suggestions: [],
         };
-
-        //TODO: Make this a constant
-        this.suggestionsLimit = 10;
 
         this.fetchCards = this.fetchCards.bind(this);
         this.onTextChanged = this.onTextChanged.bind(this);
@@ -115,7 +105,7 @@ class LaundryScreen extends Component {
     mapToCards(toMap) {
         return (
             <Fragment>
-                {toMap.slice(0, this.suggestionsLimit).map(room => (
+                {toMap.slice(0, SUGGESTIONS_LIMIT).map(room => (
                     <LaundryCard
                         key={room}
                         card={this.state.cards[room]}
@@ -128,10 +118,10 @@ class LaundryScreen extends Component {
                         notifAction={this.onNotifChanged(room)}
                     />
                 ))}
-                {toMap.length > this.suggestionsLimit && (
+                {toMap.length > SUGGESTIONS_LIMIT && (
                     <View>
                         <Text style={styles.smallTextCentered}>
-                            Showing top {this.suggestionsLimit} rooms. If you do
+                            Showing top {SUGGESTIONS_LIMIT} rooms. If you do
                             not see your laundry room above, try narrowing your
                             search.
                         </Text>
@@ -146,23 +136,21 @@ class LaundryScreen extends Component {
         const { emptySearchBar, suggestions } = this.state;
         let starred = this.props.starred.sort();
 
-        // TODO: Clean up if-else relationships; switch!
-        if (suggestions.length === 0) {
-            if (emptySearchBar) {
-                if (starred.length === 0) {
-                    // 0 starred, empty search bar
-                    return (
-                        <Fragment>
-                            <Text style={styles.textCentered}>
-                                No starred laundry rooms to show. Starred rooms
-                                will appear at the top.
-                            </Text>
-                            <View style={styles.horizontalLine} />
-                            {this.mapToCards(Object.keys(this.state.cards))}
-                        </Fragment>
-                    );
-                }
-                // 1+ starred, empty search bar
+        if (emptySearchBar) {
+            if (starred.length === 0) {
+                // no search, display "no starred rooms" message
+                return (
+                    <Fragment>
+                        <Text style={styles.textCentered}>
+                            No starred laundry rooms to show. Starred rooms
+                            will appear at the top.
+                        </Text>
+                        <View style={styles.horizontalLine} />
+                        {this.mapToCards(Object.keys(this.state.cards))}
+                    </Fragment>
+                );
+            } else {
+                // no search, display 1+ starred rooms at top
                 return (
                     <Fragment>
                         {this.mapToCards(starred)}
@@ -175,29 +163,33 @@ class LaundryScreen extends Component {
                     </Fragment>
                 );
             }
-            // no results for search
-            return (
-                <Fragment>
-                    <Text style={styles.textCentered}>No results found.</Text>
-                    {starred.length !== 0 && (
-                        <View style={styles.horizontalLine} />
-                    )}
-                    {this.mapToCards(starred)}
-                </Fragment>
-            );
+        } else {
+            if (suggestions.length === 0) {
+                // "no results found" message
+                return (
+                    <Fragment>
+                        <Text style={styles.textCentered}>No results found.</Text>
+                        {starred.length !== 0 && (
+                            <View style={styles.horizontalLine} />
+                        )}
+                        {this.mapToCards(starred)}
+                    </Fragment>
+                );
+            } else {
+                // display results with starred results at top
+                return (
+                    <Fragment>
+                        {this.mapToCards(
+                            suggestions.filter(card => starred.includes(card))
+                        )}
+                        {starred.length !== 0 && <View style={styles.horizontalLine} />}
+                        {this.mapToCards(
+                            suggestions.filter(card => !starred.includes(card))
+                        )}
+                    </Fragment>
+                );
+            }
         }
-        // 1+ results for search
-        return (
-            <Fragment>
-                {this.mapToCards(
-                    suggestions.filter(card => starred.includes(card))
-                )}
-                {starred.length !== 0 && <View style={styles.horizontalLine} />}
-                {this.mapToCards(
-                    suggestions.filter(card => !starred.includes(card))
-                )}
-            </Fragment>
-        );
     }
 
     // Render

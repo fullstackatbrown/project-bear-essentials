@@ -3,7 +3,7 @@ import * as React from "react";
 import NotificationOffIcon from "../../assets/icons/notifications-off.svg";
 import NotificationOnIcon from "../../assets/icons/notifications-on.svg";
 
-export default function BellIcon(props) {
+export function BellIcon(props) {
     if (props.focused) {
         return <NotificationOnIcon width={28} />;
     } else {
