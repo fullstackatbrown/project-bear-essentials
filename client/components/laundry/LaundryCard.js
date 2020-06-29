@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     View,
     Text,
     TouchableOpacity,
-    ToolbarAndroidComponent,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
@@ -14,13 +13,11 @@ import { pluralize } from "./utils";
 import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
-
-// TODO: Clean up unused imports
+// import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint"
 
 // Component representing an individual laundry room
 const LaundryCard = props => {
-    // list of machine details, to be updated periodically with api calls
-    const [machineInfo, setMachineInfo] = useState(null);
+    // initial fetching of card data
     const [loading, setLoading] = useState(true);
 
     // states for star
@@ -114,93 +111,51 @@ const LaundryCard = props => {
         }
     };
 
-    // TODO: Move fake data into the dummydata file
-    // (executed once) get initial data, set repeating timer for updates
+    // (executed once) get initial data, set repeating timer for updates,
+    // re-parse room data on changes in machineInfo or loading states
     useEffect(() => {
-        const fakedata = [
-            {
-                id: 66757,
-                type: "wash",
-                machine_no: 1,
-                avail: true,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 16,
-            },
-            {
-                id: 66758,
-                type: "wash",
-                machine_no: 2,
-                avail: false,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 1,
-            },
-            {
-                id: 66759,
-                type: "wash",
-                machine_no: 3,
-                avail: false,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 19,
-            },
-            {
-                id: 66760,
-                type: "wash",
-                machine_no: 4,
-                avail: true,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 40,
-            },
-            {
-                id: 66761,
-                type: "dry",
-                machine_no: 5,
-                avail: false,
-                ext_cycle: true,
-                offline: false,
-                time_remaining: 0,
-            },
-            {
-                id: 66762,
-                type: "dry",
-                machine_no: 6,
-                avail: true,
-                ext_cycle: false,
-                offline: true,
-                time_remaining: 28,
-            },
-            {
-                id: 66763,
-                type: "dry",
-                machine_no: 7,
-                avail: false,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 12,
-            },
-            {
-                id: 66764,
-                type: "dry",
-                machine_no: 8,
-                avail: true,
-                ext_cycle: false,
-                offline: false,
-                time_remaining: 60,
-            },
-        ];
         let mounted = true;
         const fetchData = async isInitial => {
             const fetchedMachineData = await fetchLaundryRoomDetailed(
                 props.card.id
             );
             if (mounted) {
-                setMachineInfo(
-                    fakedata // fetchedMachineData.data.laundryRoomDetailed.machines
-                        .sort((a, b) => a.machine_no - b.machine_no)
-                );
+                let newWashers = [];
+                let newDryers = [];
+                let newNumAvailWashers = 0;
+                let newNumAvailDryers = 0;
+
+                fetchedMachineData.data.data.laundryRoomDetailed.machines // LAUNDRY_DATA (fake data)
+                    .sort((a, b) => a.machine_no - b.machine_no)
+                    .forEach(machine => {
+                        if (machine.type == "wash") {
+                            newWashers.push(machine);
+                            if (
+                                machine.avail &&
+                            !machine.offline &&
+                            !machine.ext_cycle
+                            ) {
+                                newNumAvailWashers++;
+                            }
+                        } else if (machine.type == "dry") {
+                            newDryers.push(machine);
+                            if (
+                                machine.avail &&
+                            !machine.offline &&
+                            !machine.ext_cycle
+                            ) {
+                                newNumAvailDryers++;
+                            }
+                        }
+                    });
+
+                if (mounted) {
+                    setAllWashers(newWashers);
+                    setAllDryers(newDryers);
+                    setNumAvailWashers(newNumAvailWashers);
+                    setNumAvailDryers(newNumAvailDryers);
+                }
+
                 if (isInitial) setLoading(false);
             }
         };
@@ -214,48 +169,6 @@ const LaundryCard = props => {
             clearInterval(interval);
         };
     }, []);
-
-    // re-parse room data on changes in machineInfo or loading states
-    // TODO: Try merging these two useeffects
-    useEffect(() => {
-        let mounted = true;
-        if (!loading) {
-            let newWashers = [];
-            let newDryers = [];
-            let newNumAvailWashers = 0;
-            let newNumAvailDryers = 0;
-
-            machineInfo.forEach(machine => {
-                if (machine.type == "wash") {
-                    newWashers.push(machine);
-                    if (
-                        machine.avail &&
-                        !machine.offline &&
-                        !machine.ext_cycle
-                    ) {
-                        newNumAvailWashers++;
-                    }
-                } else if (machine.type == "dry") {
-                    newDryers.push(machine);
-                    if (
-                        machine.avail &&
-                        !machine.offline &&
-                        !machine.ext_cycle
-                    ) {
-                        newNumAvailDryers++;
-                    }
-                }
-            });
-
-            if (mounted) {
-                setAllWashers(newWashers);
-                setAllDryers(newDryers);
-                setNumAvailWashers(newNumAvailWashers);
-                setNumAvailDryers(newNumAvailDryers);
-            }
-        }
-        return () => (mounted = false);
-    }, [machineInfo, loading]);
 
     return (
         <View style={styles.back}>

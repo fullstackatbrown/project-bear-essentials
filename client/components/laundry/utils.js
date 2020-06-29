@@ -7,7 +7,7 @@ export const pluralize = (num, word) => {
     }
 };
 
-// display/query information for each laundry room (queryText is the general identifier)
+// display/query information for each laundry room (queryText is used as the identifier)
 export const roomInfo = {
     "111 BROWN ST RM106": {
         queryText: "111 BROWN STREET 106",
