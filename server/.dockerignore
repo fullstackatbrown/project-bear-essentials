@@ -1,6 +1,7 @@
 Dockerfile
 README.md
 node_modules
+build
 .env.example
 .eslintrc.json
 npm-debug.log

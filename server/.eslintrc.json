@@ -28,7 +28,7 @@
     "overrides": [
         {
             "files": ["**/*.js", "**/*.ts"],
-            "excludedFiles": "node_modules/**/*.js"
+            "excludedFiles": ["node_modules/**/*.js", "build/**/*.js"]
         }
     ]
 }
