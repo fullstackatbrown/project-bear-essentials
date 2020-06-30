@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { brownapi } = require("../../constants/urls");
+const brownapi = require("../../constants/urls");
 
 const CAFE_MAP = new Map();
 CAFE_MAP.set("ratty", 1531);
@@ -85,7 +85,7 @@ const getMenuOnDays = async (cafe, dates) => {
     dates = dates.map(date => date.toISOString().split("T")[0]);
     let endpoint =
         brownapi +
-        `dining/cafe/${cafe_id}/menu/${date.join(",")}?client_id=${
+        `dining/cafe/${cafe_id}/menu/${dates.join(",")}?client_id=${
             process.env.CLIENT_ID
         }`;
     let { data } = await axios.get(endpoint).catch(e => console.log(e));
@@ -94,7 +94,7 @@ const getMenuOnDays = async (cafe, dates) => {
         menu.cafe_id = cafe_id;
         return menu;
     });
-    return data.results.days;
+    return res;
 };
 
 module.exports = {

@@ -5,10 +5,10 @@
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/bear_essentials_logo.png",
+    "icon": "./assets/logo/bear-essentials-logo.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/logo/bear_essentials_logo.png",
+      "image": "./assets/logo/bear-essentials-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#f9f9f9"
     },
