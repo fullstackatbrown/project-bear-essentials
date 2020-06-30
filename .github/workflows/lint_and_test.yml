@@ -9,7 +9,6 @@ jobs:
     lint-and-test:
         name: Lint and Test
         runs-on: ubuntu-latest
-        continue-on-error: true
 
         steps:
             - name: Checkout
@@ -22,24 +21,28 @@ jobs:
               run: yarn
 
             - name: Lint Client
+              continue-on-error: true
               run: |-
                   cd client
                   yarn
                   yarn lint
 
             - name: Type Client
+              continue-on-error: true
               run: |-
                   cd client
                   yarn
                   yarn type
 
             - name: Lint Server
+              continue-on-error: true
               run: |-
                   cd server
                   yarn
                   yarn lint
 
             - name: Type Server
+              continue-on-error: true
               run: |-
                   cd server
                   yarn
