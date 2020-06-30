@@ -22,7 +22,6 @@
         "@react-navigation/native": "^5.5.0",
         "@react-navigation/stack": "^5.4.1",
         "@react-navigation/web": "~1.0.0-alpha.9",
-        "apollo-fetch": "^0.7.0",
         "axios": "^0.19.2",
         "dotenv": "^8.2.0",
         "expo": "^37.0.12",
