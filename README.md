@@ -19,7 +19,7 @@ Brown Essentials is a mobile app that exposes vital data and information about B
 Pull requests are welcome. Please open an issue for any bugs you may find. A list of contributors can be found below:
 
 -   [Adam Wang](https://github.com/AdamWang00) (ACTIVE)
--   [Christine Zhou](ACTIVE)
+-   [Christine Zhou]() (ACTIVE)
 -   [David Han](https://github.com/davidfhan) (ACTIVE)
 -   [Emily Wu](https://github.com/ems-wu) (ACTIVE)
 -   [Joshua Tan](https://github.com/tanjoshua) (ACTIVE)
