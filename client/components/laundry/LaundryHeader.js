@@ -9,11 +9,7 @@ const LaundryHeader = props => {
     const [enteredValue, setEnteredValue] = useState("");
 
     const searchTapHandler = () => {
-        if (searchEnabled) {
-            setSearchEnabled(false);
-        } else {
-            setSearchEnabled(true);
-        }
+        setSearchEnabled(!searchEnabled);
     };
 
     const inputHandler = inputText => {
@@ -51,6 +47,7 @@ const LaundryHeader = props => {
                             color={Colors.activeIcon}
                         />
                         <TextInput
+                            autoFocus={true}
                             style={styles.textInput}
                             placeholder="Search laundry"
                             onChangeText={inputHandler}

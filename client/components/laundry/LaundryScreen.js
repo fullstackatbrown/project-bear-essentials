@@ -33,6 +33,7 @@ const SUGGESTIONS_LIMIT = 10;
 
 // Component representing the laundry screen
 class LaundryScreen extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -113,7 +114,7 @@ class LaundryScreen extends Component {
                         notifList={this.props.notifications
                             .map(str => str.split("///")) // split into [room, machine]
                             .filter(([r, _]) => r === room) // check room
-                            .map(rm => Number(rm[1]))} // extract machine
+                            .map(rm => rm[1])} // extract machine id
                         starAction={() => this.onStarChanged(room)}
                         notifAction={this.onNotifChanged(room)}
                     />

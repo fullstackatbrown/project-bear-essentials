@@ -17,6 +17,7 @@ import Colors from "../../constants/Colors.js";
 
 // Component representing an individual laundry room
 const LaundryCard = props => {
+
     // initial fetching of card data
     const [loading, setLoading] = useState(true);
 

@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors";
 
 // Component representing an individual laundry machine
 const LaundryMachine = props => {
+
     // are push notifications toggled for this machine?
     const [notif, setNotif] = useState(props.isNotif ? true : false);
 
