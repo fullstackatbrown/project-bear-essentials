@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "Welcome to the Brown Essentials repository!",
     "main": "index.js",
+    "scripts": {
+        "start": "concurrently \"cd client && yarn start\" \"cd server && yarn start\"",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/FullStackAtBrownTeam/brownessentials.git"
@@ -13,5 +17,8 @@
     "bugs": {
         "url": "https://github.com/FullStackAtBrownTeam/brownessentials/issues"
     },
-    "homepage": "https://github.com/FullStackAtBrownTeam/brownessentials#readme"
+    "homepage": "https://github.com/FullStackAtBrownTeam/brownessentials#readme",
+    "devDependencies": {
+        "concurrently": "^5.2.0"
+    }
 }

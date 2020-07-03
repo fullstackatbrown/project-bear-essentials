@@ -45,7 +45,7 @@ const DiningCard = props => {
 
     // TODO: this is misspelled, never called.
     const diningNameHandler = () => {
-        return <Text style={styles.hall}>{props.name}</Text>;
+        return <Text style={styles.hall}>{props.name}</Text>
     };
 
     // compares the current time w/ the time from the api
@@ -59,17 +59,17 @@ const DiningCard = props => {
         let open3 = Date.parse(`11/11/11 ${hallHours[2].starttime}`);
         let close3 = Date.parse(`11/11/11 ${hallHours[2].endtime}`);
         if (curr > open1 && curr < close1) {
-            return 0;
+            return 0
         } else if (curr > open2 && curr < close2) {
-            return 1;
+            return 1
         } else if (curr > open3 && curr < close3) {
-            return 2;
+            return 2
         } else if (curr > close1 && curr < open2) {
-            return 3;
+            return 3
         } else if (curr > close2 && curr < open3) {
-            return 4;
+            return 4
         } else {
-            return 5;
+            return 5
         }
     };
 
@@ -78,24 +78,24 @@ const DiningCard = props => {
         let slot = hoursCompare();
         let sign = styles.open;
         let time = styles.closed;
-        let text1 = "Open";
-        let text2 = `Closes at ${hallHours[0].endtime}`;
+        let text1 = "Open"
+        let text2 = `Closes at ${hallHours[0].endtime}`
         if (slot === 0) {
             return;
         } else if (slot === 1) {
-            text2 = `Closes at ${hallHours[1].endtime}`;
+            text2 = `Closes at ${hallHours[1].endtime}`
         } else if (slot === 2) {
-            text2 = `Closes at ${hallHours[2].endtime}`;
+            text2 = `Closes at ${hallHours[2].endtime}`
         } else {
             sign = styles.closed;
             time = styles.open;
-            text1 = "Closed";
+            text1 = "Closed"
             if (slot === 3) {
-                text2 = `Opens at ${hallHours[1].starttime}`;
+                text2 = `Opens at ${hallHours[1].starttime}`
             } else if (slot === 4) {
-                text2 = `Opens at ${hallHours[2].starttime}`;
+                text2 = `Opens at ${hallHours[2].starttime}`
             } else if (slot === 5) {
-                text2 = `Opens at ${hallHours[0].starttime}`;
+                text2 = `Opens at ${hallHours[0].starttime}`
             }
         }
         return (
