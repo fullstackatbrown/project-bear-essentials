@@ -1,5 +1,5 @@
 const axios = require("axios");
-const brownapi = require("../../constants/urls");
+const { brownapi } = require("../../constants/urls");
 
 const CAFE_MAP = new Map();
 CAFE_MAP.set("ratty", 1531);

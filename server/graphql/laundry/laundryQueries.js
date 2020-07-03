@@ -1,5 +1,5 @@
 const axios = require("axios");
-const brownapi = require("../../constants/urls");
+const { brownapi } = require("../../constants/urls");
 // Returns all laundry rooms.
 const getLaundryRooms = async () => {
     let endpoint = brownapi + `laundry/rooms?client_id=${process.env.CLIENT_ID}`;
