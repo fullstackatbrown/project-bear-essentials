@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
-import { fetchHours } from "./DinQueries";
+import { fetchHours, fetchMenuDetailed } from "./DinQueries";
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
@@ -12,6 +12,7 @@ const DiningCard = props => {
     );
     // TODO: make this capitalized?
     const [hallHours, setHallHours] = useState("loading...");
+    const [menuSummary, setMenuSummary] = useState([]);
 
     /* 
     deal with the lowercase and the josiah error in the search bar component of the diningscene.js
@@ -41,11 +42,6 @@ const DiningCard = props => {
             setStarName("star");
             setStarColor(Colors.starYellow);
         }
-    };
-
-    // TODO: this is misspelled, never called.
-    const diningNameHandler = () => {
-        return <Text style={styles.hall}>{props.name}</Text>;
     };
 
     // compares the current time w/ the time from the api
@@ -108,17 +104,28 @@ const DiningCard = props => {
         );
     };
 
+    // handles menu summary for card w/ placeholder for menu
+    const menuHandler = () => {
+        return (
+            <React.Fragment>
+                <Text >Turkey bacon, oatmeal, scrambled eggs...</Text>
+            </React.Fragment>
+        )
+    }
+
     useEffect(() => {
         const effectFunction = async () => {
             const time = await fetchHours(id[props.name]);
-            setHallHours(time.data.cafe.days[0].dayparts);
+            const menu = await fetchMenuDetailed(id[props.name]);
+            setHallHours(time.data.cafe.days[0].dayparts);  
+            // setMenuSummary(menu.data.menu.dayparts[0].stations);
         };
         effectFunction();
     }, []);
-
+ 
     return (
-        <TouchableOpacity activeOpacity={0.6}>
-            <View style={styles.card}>
+        <View style={styles.card}>
+            <TouchableOpacity activeOpacity={0.6}>
                 <View style={styles.header}>
                     <Text style={styles.title}>{props.name}</Text>
                     <TouchableOpacity
@@ -134,8 +141,9 @@ const DiningCard = props => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.info}>{signColorHandler()}</View>
-            </View>
-        </TouchableOpacity>
+                <View style={styles.menuSummary}>{menuHandler()}</View>
+            </TouchableOpacity>
+        </View>
     );
 };
 
@@ -158,17 +166,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     title: {
-        fontWeight: "600",
-        fontSize: 35,
+        fontWeight: "bold",
+        fontSize: 26,
     },
     info: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 25,
+        marginTop: 10,
     },
     hall: {
         fontWeight: "bold",
-        fontSize: 22,
+        fontSize: 28,
     },
     open: {
         color: Colors.success,
@@ -186,6 +194,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         paddingVertical: 3,
         fontWeight: "500",
+    },
+    menuSummary: {
+        marginTop: 20,  
     },
     text: {
         fontSize: 17,

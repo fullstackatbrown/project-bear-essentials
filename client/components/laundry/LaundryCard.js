@@ -60,7 +60,7 @@ const LaundryCard = props => {
     };
 
     // returns formatted room number, if it exists
-    const roomNumberHandler = () => {
+    const v = () => {
         if (props.card.room) {
             return <Text style={styles.room}>{"Room " + props.card.room}</Text>;
         }

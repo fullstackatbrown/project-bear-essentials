@@ -219,7 +219,7 @@ class LaundryScreen extends Component {
         <LaundryHeader onChangeText={this.onTextChanged} />
         <FlatList
           ListHeaderComponent={
-            // starred cars
+            // starred cards
             <ScrollView>{this.starredCards()}</ScrollView>
           }
           data={this.getData()}

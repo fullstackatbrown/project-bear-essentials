@@ -1,24 +1,16 @@
 import React, { Component } from "react";
 import DiningCard from "./DiningCard";
 import DiningMenu from "./DiningMenu";
-import { Text, View, StyleSheet, TextInput } from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Text, View, ScrollView, StyleSheet, TextInput, Button } from "react-native";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
+import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { ScrollView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { fetchCafes } from "./DinQueries";
-import Colors from "../../constants/Colors.js";
 
 // TODO: delete unused imports (other files too)
-
-// const mapStateToProps = state => {
-//     return {
-//         starred: state.dining.starred,
-//     };
-// };
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -28,22 +20,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 // configures dining menu screen for navigator
-
 const DINING_HALL = "Sharpe Refectory";
 const DiningStack = createStackNavigator();
-
-// const DiningMenu = ({ navigation }) => {
-//     return (
-//         <ScreenContainer>
-//          <DiningCard
-//             style={styles.inputContainer}
-//             name={"Sharpe Refectory"}/>
-//             onPress={() => {
-//                 navigation.push("Menu");
-//             }}
-//         </ScreenContainer>
-//     );
-// };
 
 class DiningScreen extends Component {
     constructor(props) {
@@ -52,10 +30,18 @@ class DiningScreen extends Component {
         this.state = {
             search: "",
             cards: DINING_DATA,
+            emptySearchBar: true,
         };
 
         this.starChanged = this.starChanged.bind(this);
-    }
+    };
+
+    //  fetches dining hall names
+    fetchCafeNames = async () => {
+        let cafeNames = [];
+        const cafe = await fetchCafes();
+        cafeNames.push(cafe.data.cafes.name);
+    };
 
     // updates star's state when clicked
     starChanged = card => {
@@ -78,9 +64,12 @@ class DiningScreen extends Component {
             <ScrollView>
                 {starred.map(diningHall => (
                     <DiningCard
+                        key = {diningHall}
                         diningCard={this.state.cards[diningHall]}
                         starPressed={() => this.starChanges(diningHall)}
-                        isStarred={this.props.starred.includes(diningHall)}
+                        isStarre
+                        d={this.props.starred.includes(diningHall)}
+                        starAction={() => this.starChanged(diningHall)}
                     />
                 ))}
             </ScrollView>
@@ -88,21 +77,27 @@ class DiningScreen extends Component {
     }
 
     // creates navigator for dining menu
-    // TODO: I don't think this returns anything? add return keyword
     createMenuStack = () => {
-        <NavigationContainer>
-            <DiningStack.Navigator>
-                <DiningStack.Screen name="Dining Menu" component={DiningMenu} />
-            </DiningStack.Navigator>
-        </NavigationContainer>;
+        return (
+            <NavigationContainer>
+                <DiningStack.Navigator initialRouteName="Dining Screen">
+                    <DiningStack.Screen name="Dining Screen" component={DiningScreen}/>
+                    <DiningStack.Screen name="Dining Menu" component={DiningMenu}/>
+                </DiningStack.Navigator>
+            </NavigationContainer>
+        );
     };
 
     render() {
         const { search } = this.state;
+        this.fetchCafeNames();
         this.createMenuStack();
         return (
             //TODO: set up navigation from card to menu
             <View style={styles.screen}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Dining</Text>
+                </View>
                 <ScrollView style={styles.scroll}>
                     <View style={styles.search}>
                         <Ionicons name="ios-search" size={24} color="gray" />
@@ -110,7 +105,7 @@ class DiningScreen extends Component {
                             style={styles.textInput}
                             placeholder="Search dining halls"
                         />
-                    </View>
+                    </View>   
                     <DiningCard
                         style={styles.inputContainer}
                         name={"Sharpe Refectory"}
@@ -183,9 +178,22 @@ const styles = StyleSheet.create({
     },
     header: {
         minWidth: "100%",
+        height: 110,
+        backgroundColor: "#f9f9f9",
+        elevation: 0,
+        shadowOpacity: 0,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 26,
+        paddingTop: Platform.OS === "ios" ? 30 : StatusBar.currentHeight,
     },
     title: {
-        fontSize: 25,
+        color: "#cc0200",
+        paddingLeft: 12,
+        fontSize: 40,
+        fontWeight: "bold",
         marginVertical: 10,
     },
     inputContainer: {
