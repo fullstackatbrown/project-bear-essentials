@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
 
 const LaundryHeader = props => {
+
     const [searchEnabled, setSearchEnabled] = useState(false);
     const [enteredValue, setEnteredValue] = useState("");
 

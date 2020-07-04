@@ -57,6 +57,11 @@ const fetchLaundryAll = async () => {
             };
         } else {
             console.log("[WARNING] Laundry room '" + v.name + "' not found in roomInfo");
+            allRoomsDetailed[v.name] = {
+                title: v.name,
+                room: "",
+                id: v.id,
+            };
         }        
     });
 

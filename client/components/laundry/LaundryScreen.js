@@ -226,15 +226,15 @@ class LaundryScreen extends Component {
         return (
             <View style={styles.screen}>
                 <LaundryHeader onChangeText={this.onTextChanged} />
-                    <ScrollView
-                        onMomentumScrollEnd={({nativeEvent}) => {
-                            if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
-                                this.setState((state) => {
-                                    return { suggestionsLimit: state.suggestionsLimit + 10 };
-                                });
-                            }}}
-                        scrollEventThrottle={0}
-                    >
+                <ScrollView
+                    onMomentumScrollEnd={({nativeEvent}) => {
+                        if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
+                            this.setState((state) => {
+                                return { suggestionsLimit: state.suggestionsLimit + 10 };
+                            });
+                        }}}
+                    scrollEventThrottle={0}
+                >
                     {this.renderSuggestions()}
                     {this.canLoadMore && <LottieView
                         source={require("./animations/small-loader.json")}
@@ -248,7 +248,7 @@ class LaundryScreen extends Component {
                             alignSelf: "center",
                         }}
                     />}
-                  </ScrollView>
+                </ScrollView>
             </View>
         );
     }
