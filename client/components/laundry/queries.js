@@ -7,7 +7,7 @@ const url = "https://api-2cu446h72q-uc.a.run.app/graphql";
 const axiosPost = query => {
     return axios.post(url, {
         query: query,
-    });
+    }).catch(e => console.log(e));
 };
 
 const fetchLaundryRooms = () => {
@@ -43,8 +43,8 @@ const fetchLaundryRoomDetailed = id => {
 
 // returns object containing list of all laundry rooms using roomInfo data
 const fetchLaundryAll = async () => {
-    let nameIds = await fetchLaundryRooms();
-    nameIds = nameIds.data.data.laundryRooms.results;
+    const { data } = await fetchLaundryRooms();
+    const nameIds = data.data.laundryRooms.results;
 
     const allRoomsDetailed = {};
     nameIds.forEach(v => {

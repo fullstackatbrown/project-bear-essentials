@@ -29,24 +29,26 @@ const mapDispatchToProps = dispatch => ({
     deleteStarred: flag => dispatch(deleteStarred(flag)),
 });
 
-const SUGGESTIONS_LIMIT = 10;
-
 // Component representing the laundry screen
 class LaundryScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            cards: null, // to be fetched
             loading: true,
             emptySearchBar: true,
             suggestions: [],
+            suggestionsLimit: 10,
         };
+
+        this.cards = null, // to be fetched
+        this.canLoadMore = true;
 
         this.fetchCards = this.fetchCards.bind(this);
         this.onTextChanged = this.onTextChanged.bind(this);
         this.onNotifChanged = this.onNotifChanged.bind(this);
         this.onStarChanged = this.onStarChanged.bind(this);
+        this.isCloseToBottom = this.isCloseToBottom.bind(this);
     }
 
     // fetch cards when mounted
@@ -59,15 +61,15 @@ class LaundryScreen extends Component {
         if (!this.state.loading) {
             this.setState({ loading: true });
         }
-        const fetchedCards = await fetchLaundryAll();
-        const fetchedCardsKeys = Object.keys(fetchedCards);
+        this.cards = await fetchLaundryAll();
+        const fetchedCardsKeys = Object.keys(this.cards);
         this.props.starred.forEach(s => {
             if (!fetchedCardsKeys.includes(s)) {
                 this.props.deleteStarred(s);
             }
         });
 
-        this.setState({ cards: fetchedCards, loading: false });
+        this.setState({ loading: false });
     };
 
     // Called when a card is starred or unstarred
@@ -95,21 +97,37 @@ class LaundryScreen extends Component {
         let newSuggestions = [];
         if (text.length > 0) {
             emptySearchBar = false;
-            newSuggestions = Object.keys(this.state.cards)
+            newSuggestions = Object.keys(this.cards)
                 .filter(v => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
                 .sort();
         }
-        this.setState(() => ({ emptySearchBar, suggestions: newSuggestions }));
+
+        this.setState({
+            emptySearchBar,
+            suggestions: newSuggestions,
+            suggestionsLimit: 10,
+        });
+    };
+
+    // Determines if ScrollView is close to the bottom
+    isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 5;
+        return layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
     };
 
     // Returns scrolling card view, given list of rooms (keys) to be rendered
-    mapToCards(toMap) {
+    mapToCards(toMap, isSliced) {
+        if (isSliced) {
+            this.canLoadMore = toMap.length > this.state.suggestionsLimit;
+        }
+
         return (
             <Fragment>
-                {toMap.slice(0, SUGGESTIONS_LIMIT).map(room => (
+                {(isSliced ? toMap.slice(0, this.state.suggestionsLimit) : toMap).map(room => (
                     <LaundryCard
                         key={room}
-                        card={this.state.cards[room]}
+                        card={this.cards[room]}
                         isStarred={this.props.starred.includes(room)}
                         notifList={this.props.notifications
                             .map(str => str.split("///")) // split into [room, machine]
@@ -119,15 +137,6 @@ class LaundryScreen extends Component {
                         notifAction={this.onNotifChanged(room)}
                     />
                 ))}
-                {toMap.length > SUGGESTIONS_LIMIT && (
-                    <View>
-                        <Text style={styles.smallTextCentered}>
-                            Showing top {SUGGESTIONS_LIMIT} rooms. If you do
-                            not see your laundry room above, try narrowing your
-                            search.
-                        </Text>
-                    </View>
-                )}
             </Fragment>
         );
     }
@@ -147,19 +156,20 @@ class LaundryScreen extends Component {
                             will appear at the top.
                         </Text>
                         <View style={styles.horizontalLine} />
-                        {this.mapToCards(Object.keys(this.state.cards))}
+                        {this.mapToCards(Object.keys(this.cards), true)}
                     </Fragment>
                 );
             } else {
                 // no search, display 1+ starred rooms at top
                 return (
                     <Fragment>
-                        {this.mapToCards(starred)}
+                        {this.mapToCards(starred, false)}
                         <View style={styles.horizontalLine} />
                         {this.mapToCards(
-                            Object.keys(this.state.cards).filter(
+                            Object.keys(this.cards).filter(
                                 card => !starred.includes(card)
-                            )
+                            ),
+                            true
                         )}
                     </Fragment>
                 );
@@ -167,13 +177,14 @@ class LaundryScreen extends Component {
         } else {
             if (suggestions.length === 0) {
                 // "no results found" message
+                this.canLoadMore = false;
                 return (
                     <Fragment>
                         <Text style={styles.textCentered}>No results found.</Text>
                         {starred.length !== 0 && (
                             <View style={styles.horizontalLine} />
                         )}
-                        {this.mapToCards(starred)}
+                        {this.mapToCards(starred, false)}
                     </Fragment>
                 );
             } else {
@@ -181,11 +192,13 @@ class LaundryScreen extends Component {
                 return (
                     <Fragment>
                         {this.mapToCards(
-                            suggestions.filter(card => starred.includes(card))
+                            suggestions.filter(card => starred.includes(card)),
+                            false
                         )}
                         {starred.length !== 0 && <View style={styles.horizontalLine} />}
                         {this.mapToCards(
-                            suggestions.filter(card => !starred.includes(card))
+                            suggestions.filter(card => !starred.includes(card)),
+                            true
                         )}
                     </Fragment>
                 );
@@ -213,7 +226,29 @@ class LaundryScreen extends Component {
         return (
             <View style={styles.screen}>
                 <LaundryHeader onChangeText={this.onTextChanged} />
-                <ScrollView>{this.renderSuggestions()}</ScrollView>
+                    <ScrollView
+                        onMomentumScrollEnd={({nativeEvent}) => {
+                            if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
+                                this.setState((state) => {
+                                    return { suggestionsLimit: state.suggestionsLimit + 10 };
+                                });
+                            }}}
+                        scrollEventThrottle={0}
+                    >
+                    {this.renderSuggestions()}
+                    {this.canLoadMore && <LottieView
+                        source={require("./animations/small-loader.json")}
+                        autoPlay
+                        loop
+                        style={{
+                            marginTop: -16,
+                            marginBottom: -50,
+                            width: "auto",
+                            height: 160,
+                            alignSelf: "center",
+                        }}
+                    />}
+                  </ScrollView>
             </View>
         );
     }

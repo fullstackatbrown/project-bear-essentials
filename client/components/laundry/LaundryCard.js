@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+    Platform,
     StyleSheet,
     View,
     Text,
@@ -13,7 +14,7 @@ import { pluralize } from "./utils";
 import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
-// import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint"
+// import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint" // for testing
 
 // Component representing an individual laundry room
 const LaundryCard = props => {
@@ -75,7 +76,7 @@ const LaundryCard = props => {
                         autoPlay
                         loop
                         style={{
-                            marginTop: -32,
+                            marginTop: Platform.OS === "ios" ? -20 : -32,
                             marginBottom: -96,
                             width: "auto",
                             height: 160,
@@ -117,7 +118,7 @@ const LaundryCard = props => {
     useEffect(() => {
         let mounted = true;
         const fetchData = async isInitial => {
-            const fetchedMachineData = await fetchLaundryRoomDetailed(
+            const { data } = await fetchLaundryRoomDetailed(
                 props.card.id
             );
             if (mounted) {
@@ -126,7 +127,7 @@ const LaundryCard = props => {
                 let newNumAvailWashers = 0;
                 let newNumAvailDryers = 0;
 
-                fetchedMachineData.data.data.laundryRoomDetailed.machines // LAUNDRY_DATA (fake data)
+                data.data.laundryRoomDetailed.machines // LAUNDRY_DATA // for testing
                     .sort((a, b) => a.machine_no - b.machine_no)
                     .forEach(machine => {
                         if (machine.type == "wash") {
