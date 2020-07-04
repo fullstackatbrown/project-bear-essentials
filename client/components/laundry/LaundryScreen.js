@@ -129,7 +129,7 @@ class LaundryScreen extends Component {
   }
 
   // render suggestions (only for starred class)
-  renderSuggestions() {
+  starredCards() {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
 
@@ -165,12 +165,15 @@ class LaundryScreen extends Component {
         );
       } else {
         // display results with starred results at top
+        let starredSuggestions = suggestions.filter((card) =>
+          starred.includes(card)
+        );
         return (
           <Fragment>
-            {this.mapToCards(
-              suggestions.filter((card) => starred.includes(card))
+            {this.mapToCards(starredSuggestions)}
+            {starredSuggestions.length !== 0 && (
+              <View style={styles.horizontalLine} />
             )}
-            {starred.length !== 0 && <View style={styles.horizontalLine} />}
           </Fragment>
         );
       }
@@ -216,12 +219,14 @@ class LaundryScreen extends Component {
         <LaundryHeader onChangeText={this.onTextChanged} />
         <FlatList
           ListHeaderComponent={
-            <ScrollView>{this.renderSuggestions()}</ScrollView>
+            // starred cars
+            <ScrollView>{this.starredCards()}</ScrollView>
           }
           data={this.getData()}
           keyExtractor={(item) => item}
           renderItem={(room) => {
             return (
+              // all cards
               <LaundryCard
                 card={this.cards[room.item]}
                 isStarred={this.props.starred.includes(room.item)}
