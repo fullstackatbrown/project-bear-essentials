@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ScrollView, FlatList } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import LottieView from "lottie-react-native";
 
@@ -47,6 +47,7 @@ class LaundryScreen extends Component {
     this.onTextChanged = this.onTextChanged.bind(this);
     this.onNotifChanged = this.onNotifChanged.bind(this);
     this.onStarChanged = this.onStarChanged.bind(this);
+    this.isCloseToBottom = this.isCloseToBottom.bind(this);
   }
 
   // fetch cards when mounted
@@ -107,29 +108,44 @@ class LaundryScreen extends Component {
     });
   };
 
+  // Determines if ScrollView is close to the bottom
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 5;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+
   // Returns scrolling card view, given list of rooms (keys) to be rendered
-  mapToCards(toMap) {
+  mapToCards(toMap, isSliced) {
+    if (isSliced) {
+      this.canLoadMore = toMap.length > this.state.suggestionsLimit;
+    }
+
     return (
       <Fragment>
-        {toMap.map((room) => (
-          <LaundryCard
-            key={room}
-            card={this.cards[room]}
-            isStarred={this.props.starred.includes(room)}
-            notifList={this.props.notifications
-              .map((str) => str.split("///")) // split into [room, machine]
-              .filter(([r, _]) => r === room) // check room
-              .map((rm) => rm[1])} // extract machine id
-            starAction={() => this.onStarChanged(room)}
-            notifAction={this.onNotifChanged(room)}
-          />
-        ))}
+        {(isSliced ? toMap.slice(0, this.state.suggestionsLimit) : toMap).map(
+          (room) => (
+            <LaundryCard
+              key={room}
+              card={this.cards[room]}
+              isStarred={this.props.starred.includes(room)}
+              notifList={this.props.notifications
+                .map((str) => str.split("///")) // split into [room, machine]
+                .filter(([r, _]) => r === room) // check room
+                .map((rm) => rm[1])} // extract machine id
+              starAction={() => this.onStarChanged(room)}
+              notifAction={this.onNotifChanged(room)}
+            />
+          )
+        )}
       </Fragment>
     );
   }
 
-  // render suggestions (only for starred class)
-  starredCards() {
+  // Returns search bar results, starred laundry rooms, or no results message
+  renderSuggestions() {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
 
@@ -143,56 +159,49 @@ class LaundryScreen extends Component {
               top.
             </Text>
             <View style={styles.horizontalLine} />
+            {this.mapToCards(Object.keys(this.cards), true)}
           </Fragment>
         );
       } else {
         // no search, display 1+ starred rooms at top
         return (
           <Fragment>
-            {this.mapToCards(starred)}
+            {this.mapToCards(starred, false)}
             <View style={styles.horizontalLine} />
+            {this.mapToCards(
+              Object.keys(this.cards).filter((card) => !starred.includes(card)),
+              true
+            )}
           </Fragment>
         );
       }
     } else {
       if (suggestions.length === 0) {
         // "no results found" message
+        this.canLoadMore = false;
         return (
           <Fragment>
             <Text style={styles.textCentered}>No results found.</Text>
             {starred.length !== 0 && <View style={styles.horizontalLine} />}
+            {this.mapToCards(starred, false)}
           </Fragment>
         );
       } else {
         // display results with starred results at top
-        let starredSuggestions = suggestions.filter((card) =>
-          starred.includes(card)
-        );
         return (
           <Fragment>
-            {this.mapToCards(starredSuggestions)}
-            {starredSuggestions.length !== 0 && (
-              <View style={styles.horizontalLine} />
+            {this.mapToCards(
+              suggestions.filter((card) => starred.includes(card)),
+              false
+            )}
+            {suggestions.filter((card) => starred.includes(card)).length !==
+              0 && <View style={styles.horizontalLine} />}
+            {this.mapToCards(
+              suggestions.filter((card) => !starred.includes(card)),
+              true
             )}
           </Fragment>
         );
-      }
-    }
-  }
-
-  // get data for flatlist display
-  getData() {
-    const { emptySearchBar, suggestions } = this.state;
-    let starred = this.props.starred.sort();
-
-    if (emptySearchBar) {
-      return Object.keys(this.cards).filter((card) => !starred.includes(card));
-    } else {
-      if (suggestions.length === 0) {
-        return starred;
-      } else {
-        // display results with starred results at top
-        return suggestions.filter((card) => !starred.includes(card));
       }
     }
   }
@@ -217,29 +226,32 @@ class LaundryScreen extends Component {
     return (
       <View style={styles.screen}>
         <LaundryHeader onChangeText={this.onTextChanged} />
-        <FlatList
-          ListHeaderComponent={
-            // starred cards
-            <ScrollView>{this.starredCards()}</ScrollView>
-          }
-          data={this.getData()}
-          keyExtractor={(item) => item}
-          renderItem={(room) => {
-            return (
-              // all cards
-              <LaundryCard
-                card={this.cards[room.item]}
-                isStarred={this.props.starred.includes(room.item)}
-                notifList={this.props.notifications
-                  .map((str) => str.split("///")) // split into [room, machine]
-                  .filter(([r, _]) => r === room.item) // check room
-                  .map((rm) => rm[1])} // extract machine id
-                starAction={() => this.onStarChanged(room.item)}
-                notifAction={this.onNotifChanged(room.item)}
-              />
-            );
+        <ScrollView
+          onMomentumScrollEnd={({ nativeEvent }) => {
+            if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
+              this.setState((state) => {
+                return { suggestionsLimit: state.suggestionsLimit + 10 };
+              });
+            }
           }}
-        />
+          scrollEventThrottle={0}
+        >
+          {this.renderSuggestions()}
+          {this.canLoadMore && (
+            <LottieView
+              source={require("./animations/small-loader.json")}
+              autoPlay
+              loop
+              style={{
+                marginTop: -16,
+                marginBottom: -50,
+                width: "auto",
+                height: 160,
+                alignSelf: "center",
+              }}
+            />
+          )}
+        </ScrollView>
       </View>
     );
   }
