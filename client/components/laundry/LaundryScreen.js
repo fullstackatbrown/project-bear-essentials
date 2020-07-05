@@ -11,7 +11,7 @@ import {
   deleteStarred,
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
-import LaundryHeader from "./LaundryHeader";
+import Header from "../reusable/Header";
 import { fetchLaundryAll } from "./queries";
 
 const mapStateToProps = (state) => {
@@ -225,7 +225,7 @@ class LaundryScreen extends Component {
     }
     return (
       <View style={styles.screen}>
-        <LaundryHeader onChangeText={this.onTextChanged} />
+        <Header onChangeText={this.onTextChanged}>Laundry</Header>
         <ScrollView
           onMomentumScrollEnd={({ nativeEvent }) => {
             if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
