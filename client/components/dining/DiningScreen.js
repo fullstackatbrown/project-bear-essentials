@@ -22,6 +22,12 @@ import Header from "../reusable/Header";
 
 // TODO: delete unused imports (other files too)
 
+const mapStateToProps = (state) => {
+  return {
+    starred: state.laundry.starred,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addStarred: (flag) => dispatch(addStarred(flag)),
@@ -60,8 +66,14 @@ class DiningScreen extends Component {
     }
     this.cards = await fetchDiningAll();
     this.setState({ loading: false });
+    const fetchedCardsKeys = Object.keys(this.cards);
+    this.props.starred.forEach((star) => {
+      if (!fetchedCardsKeys.includes(star)) {
+        this.props.deleteStarred(star);
+      }
+    });
   };
-  
+
   //  fetches dining hall names
   fetchCafeNames = async () => {
     let cafeNames = [];
@@ -77,6 +89,21 @@ class DiningScreen extends Component {
       this.props.deleteStarred(card);
     }
   };
+
+  onTextChanged = (text) => {
+    let emptySearchBar = true;
+    let newSuggestions = [];
+    if (text.length > 0) {
+      emptySearchBar = false;
+      newSuggestions = Object.keys(this.cards)
+    }
+
+    this.setState({
+      emptySearchBar,
+      suggestions: newSuggestions,
+      suggestionsLimit: 10,
+    });
+  }
 
   // replaces query with text user searches
   updateSearch = (search) => {
@@ -113,6 +140,12 @@ class DiningScreen extends Component {
     );
   };
 
+  //TODO: set up suggestion rendering
+  renderSearchSuggestions = () => {
+    const { emptySearchBar, suggestions } = this.state;
+    let starred = this.props.starred.sort();
+  }
+
   render() {
     const { search } = this.state;
     this.fetchCafeNames();
@@ -120,7 +153,7 @@ class DiningScreen extends Component {
     return (
       //TODO: set up navigation from card to menu
       <View style={styles.screen}>
-        <Header>Dining</Header>
+        <Header onChangeText={this.onTextChanged}>Dining</Header>
         <ScrollView style={styles.scroll}>
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
@@ -158,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapDispatchToProps)(DiningScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DiningScreen);
