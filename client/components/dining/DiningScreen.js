@@ -16,6 +16,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { fetchCafes } from "./DinQueries";
+import Header from "../reusable/Header";
+
 
 // TODO: delete unused imports (other files too)
 
@@ -74,8 +76,7 @@ class DiningScreen extends Component {
             key={diningHall}
             diningCard={this.state.cards[diningHall]}
             starPressed={() => this.starChanges(diningHall)}
-            isStarre
-            d={this.props.starred.includes(diningHall)}
+            isStarred={this.props.starred.includes(diningHall)}
             starAction={() => this.starChanged(diningHall)}
           />
         ))}
@@ -102,17 +103,8 @@ class DiningScreen extends Component {
     return (
       //TODO: set up navigation from card to menu
       <View style={styles.screen}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Dining</Text>
-        </View>
+        <Header>Dining</Header>
         <ScrollView style={styles.scroll}>
-          <View style={styles.search}>
-            <Ionicons name="ios-search" size={24} color="gray" />
-            <TextInput
-              style={styles.textInput}
-              placeholder="Search dining halls"
-            />
-          </View>
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
@@ -128,34 +120,10 @@ class DiningScreen extends Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: "#fafafa",
   },
   scroll: {
     width: "100%",
-  },
-  search: {
-    flex: 1,
-    borderWidth: 0,
-    borderRadius: 25,
-    borderColor: "#BCBCBC",
-    padding: 10,
-    paddingLeft: 12,
-    margin: 12,
-    width: "88%",
-    flexDirection: "row",
-    alignSelf: "center",
-    alignItems: "center",
-
-    // shadows for ios
-    shadowColor: "black",
-    shadowRadius: 2,
-    shadowOpacity: 0.25,
-    backgroundColor: "white",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
   },
   textInput: {
     borderWidth: 0,
@@ -164,26 +132,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     color: "#9C9C9C",
-  },
-  header: {
-    minWidth: "100%",
-    height: 110,
-    backgroundColor: "#f9f9f9",
-    elevation: 0,
-    shadowOpacity: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 26,
-    paddingTop: Platform.OS === "ios" ? 30 : StatusBar.currentHeight,
-  },
-  title: {
-    color: "#cc0200",
-    paddingLeft: 12,
-    fontSize: 40,
-    fontWeight: "bold",
-    marginVertical: 10,
   },
   inputContainer: {
     width: 332,

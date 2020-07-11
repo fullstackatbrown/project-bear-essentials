@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
 import { fetchHours, fetchMenuDetailed } from "./DinQueries";
+import LottieView from "lottie-react-native";
 
 const DiningCard = props => {
     const [starred, setStarred] = useState(props.isStarred ? true : false);
@@ -10,8 +11,8 @@ const DiningCard = props => {
     const [starColor, setStarColor] = useState(
         starred ? Colors.starYellow : Colors.inactiveIcon
     );
-    // TODO: make this capitalized?
-    const [hallHours, setHallHours] = useState("loading...");
+    const [hallHours, setHallHours] = useState("Loading...");
+    const [loading, setLoading] = useState(true);
     const [menuSummary, setMenuSummary] = useState([]);
 
     /* 
@@ -19,7 +20,6 @@ const DiningCard = props => {
     dont need this for inital generating of cards but will
     need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
     */
-    // TODO: conside using a JS map
     const id = {
         "Sharpe Refectory": "ratty",
         "Verney-Wooley": "vdub",
@@ -69,60 +69,107 @@ const DiningCard = props => {
         }
     };
 
-    // toggles open/close sign color and text color
-    const signColorHandler = () => {
-        let slot = hoursCompare();
-        let sign = styles.open;
-        let time = styles.closed;
-        let text1 = "Open";
-        let text2 = `Closes at ${hallHours[0].endtime}`;
-        if (slot === 0) {
-            return;
-        } else if (slot === 1) {
-            text2 = `Closes at ${hallHours[1].endtime}`;
-        } else if (slot === 2) {
-            text2 = `Closes at ${hallHours[2].endtime}`;
+    // formats the time returned from the api
+    const timeFormatter = time => {
+        let num = parseInt(time.slice(0, 2))
+        if (num < 10) {
+            return `${time.slice(1)} am`
+        } else if (num >= 10 && num <= 12) {
+            return `${time} am`
         } else {
-            sign = styles.closed;
-            time = styles.open;
+            num -= 12
+            time = `${num}${time.slice(2)}`
+            return `${time} pm`
+        }
+    }
+
+    // returns correct open status and hours
+    const hoursHandler = () => {
+        let slot = hoursCompare();
+        let time;
+        let text2;
+        let signStyle = styles.open;
+        let timeStyle = styles.closed;
+        let text1 = "Open";
+        if (slot <= 2) {
+            time = hallHours[slot].endtime;
+        }
+        if (slot >= 3) {
+            signStyle = styles.closed;
+            timeStyle = styles.open;
             text1 = "Closed";
             if (slot === 3) {
-                text2 = `Opens at ${hallHours[1].starttime}`;
+                time = hallHours[1].starttime
             } else if (slot === 4) {
-                text2 = `Opens at ${hallHours[2].starttime}`;
+                time = hallHours[2].starttime
             } else if (slot === 5) {
-                text2 = `Opens at ${hallHours[0].starttime}`;
+                time = hallHours[0].starttime
             }
         }
+        time = timeFormatter(time);
+        if (slot <= 2) {
+            text2 = `Closes at ${time}`
+        } else {
+            text2 = `Opens at ${time}`
+        }
         return (
-            <React.Fragment>
-                <Text style={[sign, styles.sign]}>{text1}</Text>
-                <Text style={[time, styles.text]}>
+            <View style={styles.info}>
+                <Text style={[signStyle, styles.sign]}>{text1}</Text>
+                <Text style={[timeStyle, styles.text]}>
                     {text2}
                 </Text>
-            </React.Fragment>
+            </View>
         );
     };
 
     // handles menu summary for card w/ placeholder for menu
     const menuHandler = () => {
         return (
-            <React.Fragment>
+            <View style={styles.menuSummary}>
                 <Text >Turkey bacon, oatmeal, scrambled eggs...</Text>
-            </React.Fragment>
+            </View>
         )
+    }
+
+    const detailHandler = () => {
+        if (loading) {
+            return (
+                <View style={{ width: "100%" }}>
+                    <LottieView
+                        source={require("./animations/small-loader.json")}
+                        autoPlay
+                        loop
+                        style={{
+                            marginTop: Platform.OS === "ios" ? -20 : -32,
+                            marginBottom: -96,
+                            width: "auto",
+                            height: 160,
+                            alignSelf: "center",
+                        }}
+                    />
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    {hoursHandler()}
+                    {menuHandler()}
+                </View>
+            )
+        }
     }
 
     useEffect(() => {
         const effectFunction = async () => {
             const time = await fetchHours(id[props.name]);
             const menu = await fetchMenuDetailed(id[props.name]);
-            setHallHours(time.data.cafe.days[0].dayparts);  
+            setHallHours(time.data.data.cafe.days[0].dayparts);
+            setLoading(false);
             // setMenuSummary(menu.data.menu.dayparts[0].stations);
         };
         effectFunction();
     }, []);
- 
+
     return (
         <View style={styles.card}>
             <TouchableOpacity activeOpacity={0.6}>
@@ -140,8 +187,7 @@ const DiningCard = props => {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.info}>{signColorHandler()}</View>
-                <View style={styles.menuSummary}>{menuHandler()}</View>
+                {detailHandler()}
             </TouchableOpacity>
         </View>
     );
@@ -196,7 +242,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     menuSummary: {
-        marginTop: 20,  
+        marginTop: 20,
     },
     text: {
         fontSize: 17,

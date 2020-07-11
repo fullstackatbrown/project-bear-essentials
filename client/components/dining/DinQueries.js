@@ -1,22 +1,28 @@
-// TODO: change to axios
-const { createApolloFetch } = require("apollo-fetch");
-const uri = "https://api-2cu446h72q-uc.a.run.app/graphql";
-const fetch = createApolloFetch({ uri });
+import axios from "axios";
+
+const url = "https://api-2cu446h72q-uc.a.run.app/graphql";
+
+// returns promise
+const axiosPost = query => {
+    return axios.post(url, {
+        query: query,
+    }).catch(e => console.log(e));
+};
 
 const fetchCafes = () => {
-    return fetch({
-        query: `{
+    return axiosPost(`
+        {
             cafes {
                 name
                 id
             }
-        }`,
-    });
+        }
+    `);
 };
 
 const fetchHours = id => {
-    return fetch({
-        query: `{
+    return axiosPost(`  
+        {
             cafe (id: "${id}") {
                 name
                 days {
@@ -28,13 +34,13 @@ const fetchHours = id => {
                     }
                 }
             }
-        }`,
-    });
+        }
+    `);
 };
 
 const fetchMenuDetailed = id => {
-    return fetch({
-        query: `{
+    return axiosPost(`  
+        {
             menu (id: ${id}) {
                 name
                 dayparts {
@@ -50,8 +56,8 @@ const fetchMenuDetailed = id => {
                     }
                 }
             }
-        }`,
-    });
+        }
+    `);
 };
 
 export { fetchCafes, fetchMenuDetailed, fetchHours };
