@@ -16,6 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { fetchCafes } from "./DinQueries";
+import { fetchDiningAll } from "./DinQueries";
 import Header from "../reusable/Header";
 
 
@@ -35,16 +36,32 @@ const DiningStack = createStackNavigator();
 class DiningScreen extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       search: "",
+      loading: true,
       cards: DINING_DATA,
       emptySearchBar: true,
+      suggestions: [],
     };
+    (this.cards = null),
 
     this.starChanged = this.starChanged.bind(this);
   }
 
+  // fetch cards when mounted
+  componentDidMount() {
+    this.fetchCards();
+  }
+
+  // fetches dining cards
+  fetchCards = async () => {
+    if (!this.state.loading) {
+      this.setState({ loading: true });
+    }
+    this.cards = await fetchDiningAll();
+    this.setState({ loading: false });
+  };
+  
   //  fetches dining hall names
   fetchCafeNames = async () => {
     let cafeNames = [];
