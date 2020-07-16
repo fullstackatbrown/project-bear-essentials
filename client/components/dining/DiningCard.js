@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors.js";
 import { fetchHours, fetchMenuDetailed } from "./DinQueries";
 import LottieView from "lottie-react-native";
@@ -108,9 +108,9 @@ const DiningCard = props => {
         }
         time = timeFormatter(time);
         if (slot <= 2) {
-            text2 = `Closes at ${time}`
+            text2 = `Closes ${time}`
         } else {
-            text2 = `Opens at ${time}`
+            text2 = `Opens ${time}`
         }
         return (
             <View style={styles.info}>
@@ -126,11 +126,13 @@ const DiningCard = props => {
     const menuHandler = () => {
         return (
             <View style={styles.menuSummary}>
-                <Text >Turkey bacon, oatmeal, scrambled eggs...</Text>
+                <Text style={styles.menuText}>Turkey bacon, oatmeal, eggs...</Text>
+                <AntDesign name="right" size={24} color="#CCCCCC"/>
             </View>
         )
     }
 
+    // handles detail return and loading delay
     const detailHandler = () => {
         if (loading) {
             return (
@@ -197,13 +199,13 @@ const styles = StyleSheet.create({
     card: {
         padding: 25,
         marginBottom: 20,
-        borderRadius: 15,
+        borderRadius: 8,
         shadowColor: "black",
-        shadowRadius: 4,
+        shadowRadius: 3,
         shadowOpacity: 0.25,
         backgroundColor: "white",
-        shadowOffset: { width: 3, height: 3 },
-        width: "90%",
+        shadowOffset: { width: 1, height: 1 },
+        width: "88%",
         alignSelf: "center",
         elevation: 5,
     },
@@ -212,17 +214,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     title: {
-        fontWeight: "bold",
-        fontSize: 26,
+        fontWeight: "600",
+        fontSize: 28,
     },
     info: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
-    },
-    hall: {
-        fontWeight: "bold",
-        fontSize: 28,
     },
     open: {
         color: Colors.success,
@@ -234,21 +232,28 @@ const styles = StyleSheet.create({
     },
     sign: {
         textTransform: "uppercase",
-        fontSize: 17,
-        borderWidth: 2,
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        paddingVertical: 3,
-        fontWeight: "500",
+        fontSize: 20,
+        borderWidth: 1.5,
+        borderRadius: 6,
+        paddingHorizontal: 8,
+        paddingTop: 2,
+        paddingBottom: 1,
+        fontWeight: "600",
     },
     menuSummary: {
-        marginTop: 20,
+        marginTop: 16,
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    menuText: {
+        marginTop: 6,
     },
     text: {
-        fontSize: 17,
+        fontSize: 20,
         borderColor: "white",
-        paddingVertical: 5,
-        fontWeight: "500",
+        paddingVertical: 3,
+        fontWeight: "300",
+        fontStyle: "italic"
     },
 });
 
