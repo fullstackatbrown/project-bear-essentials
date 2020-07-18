@@ -12,15 +12,23 @@ export const askNotification = async () => {
 };
 
 // Schedules a local notification
-export const scheduleNotification = (minutes) => {
+// returns id of notification
+export const scheduleNotification = async (minutes) => {
   // Calculate time of notification
   let time = new Date().getTime() + Number(minutes * 60000);
   const schedulingOptions = {
     time: time,
   };
 
-  Notifications.scheduleLocalNotificationAsync(
+  const notifId = await Notifications.scheduleLocalNotificationAsync(
     sampleNotification,
     schedulingOptions
   );
+
+  console.log(notifId);
+  return notifId;
+};
+
+export const cancelNotification = (id) => {
+  Notifications.dismissNotificationAsync(id);
 };

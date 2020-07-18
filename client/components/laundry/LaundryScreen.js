@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import LottieView from "lottie-react-native";
@@ -12,7 +12,11 @@ import {
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
 import Header from "../reusable/Header";
-import { askNotification, sendNotification, scheduleNotification } from "../reusable/Notifications";
+import {
+  askNotification,
+  scheduleNotification,
+  cancelNotification,
+} from "../reusable/Notifications";
 import { fetchLaundryAll } from "./queries";
 
 const mapStateToProps = (state) => {
@@ -230,6 +234,7 @@ class LaundryScreen extends Component {
     return (
       <View style={styles.screen}>
         <Header onChangeText={this.onTextChanged}>Laundry</Header>
+        <Button title="test" onPress={() => scheduleNotification(0.5)} />
         <ScrollView
           onMomentumScrollEnd={({ nativeEvent }) => {
             if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {
