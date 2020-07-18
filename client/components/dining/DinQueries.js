@@ -82,4 +82,4 @@ const fetchDiningAll = async () => {
 };
 
 
-export { fetchCafes, fetchMenuDetailed, fetchHours };
+export { fetchCafes, fetchMenuDetailed, fetchHours, fetchDiningAll };

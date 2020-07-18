@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import DiningCard from "./DiningCard";
 import DiningMenu from "./DiningMenu";
 import {
-  Text,
   View,
   ScrollView,
   StyleSheet,
-  TextInput,
   StatusBar,
 } from "react-native";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
-import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -21,12 +18,6 @@ import Header from "../reusable/Header";
 
 
 // TODO: delete unused imports (other files too)
-
-const mapStateToProps = (state) => {
-  return {
-    starred: state.laundry.starred,
-  };
-};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -134,7 +125,7 @@ class DiningScreen extends Component {
       <NavigationContainer>
         <DiningStack.Navigator initialRouteName="Dining Screen">
           <DiningStack.Screen name="Dining Screen" component={DiningScreen} />
-          <DiningStack.Screen name="Dining Menu" component={DiningMenu} />
+          <DiningStack.Screen name="Menu" component={DiningMenu} />
         </DiningStack.Navigator>
       </NavigationContainer>
     );
@@ -144,6 +135,19 @@ class DiningScreen extends Component {
   renderSearchSuggestions = () => {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
+
+    if (emptySearchBar) {
+      if (suggestions.length === 0) {
+        // no results
+        return (
+          <Fragment>
+            <Text style={styles.textCentered}>No results found.</Text>
+            {starred.length !== 0 && <View style={styles.horizontalLine} />}
+            {this.mapToCards(starred, false)}
+          </Fragment>
+        );
+      }
+    }
   }
 
   render() {
@@ -155,7 +159,7 @@ class DiningScreen extends Component {
       <View style={styles.screen}>
         <Header onChangeText={this.onTextChanged}>Dining</Header>
         <ScrollView style={styles.scroll}>
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"}/>
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
           <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
@@ -189,6 +193,14 @@ const styles = StyleSheet.create({
     height: 175,
     alignItems: "center",
   },
+  horizontalLine: {
+    marginTop: 14,
+    marginBottom: 14,
+    alignSelf: "center",
+    width: "86%",
+    borderBottomColor: "#D3D3D3",
+    borderBottomWidth: 1,
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiningScreen);
+export default connect(mapDispatchToProps)(DiningScreen);

@@ -6,11 +6,24 @@ import { ScrollView } from "react-native-gesture-handler";
 export const DiningMenu = () => {
     const [diningMenu, setDiningMenu] = useState({});
 
-    <View style={styles.screen}>
+    return (
+        <View style={styles.screen}>
         <View style={styles.header}>
-            <Text>Hello!</Text>
+        <Text style={styles.title}>{props.name}</Text>
+            <TouchableOpacity
+                style={styles.starArea}
+                onPress={starHandler}
+            >
+            <AntDesign
+                style={styles.star}
+                name={starName}
+                size={30}
+                color={starColor}
+                />
+            </TouchableOpacity>
         </View>
-    </View>;
+    </View>
+    );
 };
 
 // useEffect(() => {
@@ -32,6 +45,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
+    title: {
+        fontWeight: "600",
+        fontSize: 28,
+    },
+    starArea: {
+        height: 32,
+      },
 });
 
 

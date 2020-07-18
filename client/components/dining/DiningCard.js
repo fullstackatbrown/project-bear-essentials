@@ -14,6 +14,7 @@ const DiningCard = props => {
     const [hallHours, setHallHours] = useState("Loading...");
     const [loading, setLoading] = useState(true);
     const [menuSummary, setMenuSummary] = useState([]);
+    const { navigation } = props;
 
     /* 
     deal with the lowercase and the josiah error in the search bar component of the diningscene.js
@@ -174,7 +175,7 @@ const DiningCard = props => {
 
     return (
         <View style={styles.card}>
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate("Menu")}>
                 <View style={styles.header}>
                     <Text style={styles.title}>{props.name}</Text>
                     <TouchableOpacity
