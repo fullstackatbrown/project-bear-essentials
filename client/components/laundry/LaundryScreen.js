@@ -12,6 +12,7 @@ import {
 } from "../../redux/ActionCreators";
 import LaundryCard from "./LaundryCard";
 import Header from "../reusable/Header";
+import { askNotification, sendNotification, scheduleNotification } from "../reusable/Notifications";
 import { fetchLaundryAll } from "./queries";
 
 const mapStateToProps = (state) => {
@@ -86,6 +87,9 @@ class LaundryScreen extends Component {
     if (this.props.notifications.includes(roomMachine)) {
       this.props.deleteNotification(roomMachine);
     } else {
+      askNotification();
+      scheduleNotification(1);
+
       this.props.addNotification(roomMachine);
     }
   };

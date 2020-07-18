@@ -254,12 +254,12 @@ export const roomInfo = {
     },
     "VGQA RM001": {
         // name typo
-        queryText: "VARTAN GREGORIAN QUAD 001",
+        queryText: "VARTAN GREGORIAN QUAD B 001",
         title: "Gregorian Quad B",
         room: "001",
     },
     "VGQA RM007": {
-        queryText: "VARTAN GREGORIAN QUAD 007",
+        queryText: "VARTAN GREGORIAN QUAD A 007",
         title: "Gregorian Quad A",
         room: "007",
     },

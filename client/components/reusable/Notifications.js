@@ -11,19 +11,14 @@ export const askNotification = async () => {
     console.log("Notification permissions granted.");
 };
 
-// send notification right now
-export const sendNotification = () => {
-  Notifications.presentLocalNotificationAsync(sampleNotification);
-};
-
+// Schedules a local notification
 export const scheduleNotification = (minutes) => {
-  // get time with delay in minutes
-  let delay = new Date().getTime() + Number(minutes * 60000);
+  // Calculate time of notification
+  let time = new Date().getTime() + Number(minutes * 60000);
   const schedulingOptions = {
-    time: delay,
+    time: time,
   };
 
-  // set the scheduled notification
   Notifications.scheduleLocalNotificationAsync(
     sampleNotification,
     schedulingOptions

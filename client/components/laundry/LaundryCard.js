@@ -14,7 +14,7 @@ import { pluralize } from "./utils";
 import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors.js";
-// import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint" // for testing
+import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint" // for testing
 
 // Component representing an individual laundry room
 const LaundryCard = (props) => {
@@ -122,7 +122,7 @@ const LaundryCard = (props) => {
         let newNumAvailWashers = 0;
         let newNumAvailDryers = 0;
 
-        data.data.laundryRoomDetailed.machines // LAUNDRY_DATA // for testing
+        LAUNDRY_DATA // data.data.laundryRoomDetailed.machines
           .sort((a, b) => a.machine_no - b.machine_no)
           .forEach((machine) => {
             if (machine.type == "wash") {
