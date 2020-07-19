@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import LottieView from "lottie-react-native";
@@ -86,15 +86,29 @@ class LaundryScreen extends Component {
   };
 
   // Called when a machine's notification is set or unset
-  onNotifChanged = (room) => (machine) => {
-    const roomMachine = `${room}///${machine}`;
-    if (this.props.notifications.includes(roomMachine)) {
-      this.props.deleteNotification(roomMachine);
+  onNotifChanged = (roomId, roomName) => (machineId, machineName) => async (timeRemaining) => {
+    console.log(timeRemaining);
+
+    const roomMachine = `${roomId}///${machineId}`;
+    const prevNotifs = this.props.notifications.filter(n => n.startsWith(roomMachine));
+
+    console.log(prevNotifs);
+
+    if (prevNotifs.length > 0) {
+      prevNotifs.forEach((p) => {
+        this.props.deleteNotification(p);
+        const notifId = p.split("///")[2];
+        if (notifId) cancelNotification(notifId);
+        console.log(`[NOTIF DELETED] ${notifId}`);
+        return false;
+      });
     } else {
       askNotification();
-      scheduleNotification(1);
-
-      this.props.addNotification(roomMachine);
+      const notifBody = `${roomName} ${machineName} has finished.`
+      const [notifId, notifTime] = await scheduleNotification("Laundry Ready!", notifBody, 0.1); // timeRemaining
+      this.props.addNotification(`${roomMachine}///${notifId}`);
+      console.log(`[NOTIF ADDED] ${notifId}`);
+      return true;
     }
   };
 
@@ -144,7 +158,7 @@ class LaundryScreen extends Component {
                 .filter(([r, _]) => r === room) // check room
                 .map((rm) => rm[1])} // extract machine id
               starAction={() => this.onStarChanged(room)}
-              notifAction={this.onNotifChanged(room)}
+              notifAction={this.onNotifChanged(room, this.cards[room].title)}
             />
           )
         )}
@@ -234,7 +248,6 @@ class LaundryScreen extends Component {
     return (
       <View style={styles.screen}>
         <Header onChangeText={this.onTextChanged}>Laundry</Header>
-        <Button title="test" onPress={() => scheduleNotification(0.5)} />
         <ScrollView
           onMomentumScrollEnd={({ nativeEvent }) => {
             if (this.canLoadMore && this.isCloseToBottom(nativeEvent)) {

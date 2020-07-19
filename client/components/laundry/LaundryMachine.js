@@ -15,14 +15,9 @@ const LaundryMachine = props => {
     const thisMachine = props.machine;
 
     // when bell is pressed
-    const bellHandler = () => {
-        if (notif) {
-            setNotif(false);
-        } else {
-            setNotif(true);
-        }
-
-        props.notifAction();
+    const bellHandler = async () => {
+        const isNotif = await props.notifAction(thisMachine.time_remaining);
+        setNotif(isNotif);
     };
 
     // machine is either offline, ext. cycle, available, or in use

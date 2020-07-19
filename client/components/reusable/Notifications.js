@@ -2,7 +2,6 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 
-const sampleNotification = { title: "done", body: "done!" };
 
 // get permission for notifications on ios devices - when the app startup?
 export const askNotification = async () => {
@@ -13,22 +12,21 @@ export const askNotification = async () => {
 
 // Schedules a local notification
 // returns id of notification
-export const scheduleNotification = async (minutes) => {
-  // Calculate time of notification
+export const scheduleNotification = async (title, body, minutes) => {
+  
+  const notifContent = { title, body };
+
   let time = new Date().getTime() + Number(minutes * 60000);
-  const schedulingOptions = {
-    time: time,
-  };
+  const schedulingOptions = { time };
 
   const notifId = await Notifications.scheduleLocalNotificationAsync(
-    sampleNotification,
+    notifContent,
     schedulingOptions
   );
-
-  console.log(notifId);
-  return notifId;
+  return [notifId, time];
 };
 
 export const cancelNotification = (id) => {
-  Notifications.dismissNotificationAsync(id);
+  console.log("[CANCELLED NOTIFICATION]")
+  // Notifications.dismissNotificationAsync(id);
 };

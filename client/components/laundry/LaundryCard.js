@@ -206,7 +206,7 @@ const LaundryCard = (props) => {
                     name="Washer"
                     machine={washer}
                     isNotif={props.notifList.includes(washer.id)}
-                    notifAction={() => props.notifAction(washer.id)}
+                    notifAction={props.notifAction(washer.id, `Washer ${washer.machine_no}`)}
                   />
                 ))}
               </View>
@@ -218,7 +218,7 @@ const LaundryCard = (props) => {
                     name="Dryer"
                     machine={dryer}
                     isNotif={props.notifList.includes(dryer.id)}
-                    notifAction={() => props.notifAction(dryer.id)}
+                    notifAction={props.notifAction(dryer.id, `Dryer ${dryer.machine_no}`)}
                   />
                 ))}
               </View>
