@@ -26,5 +26,5 @@ export const scheduleNotification = async (title, body, minutes) => {
 
 export const cancelNotification = (id) => {
   console.log("[CANCELLED NOTIFICATION]");
-  Notifications.cancelScheduledNotificationAsync(parseFloat(id));
+  Notifications.cancelScheduledNotificationAsync(id);
 };
