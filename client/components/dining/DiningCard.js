@@ -13,24 +13,9 @@ const DiningCard = props => {
     );
     const [hallHours, setHallHours] = useState("Loading...");
     const [loading, setLoading] = useState(true);
+    const [isClosed, setClosed] = useState(false);
     const [menuSummary, setMenuSummary] = useState([]);
     const { navigation } = props;
-
-    /* 
-    deal with the lowercase and the josiah error in the search bar component of the diningscene.js
-    dont need this for inital generating of cards but will
-    need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
-    */
-    const id = {
-        "Sharpe Refectory": "ratty",
-        "Verney-Wooley": "vdub",
-        "Andrews Commons": "andrews",
-        "Blue Room": "blueroom",
-        "Josiah's": "jos",
-        "Ivy Room": "ivyroom",
-        "Gourmet To Go": "campusmarket",
-        "Café Carts": "cafecarts",
-    };
 
     // handles changes to star icon if pressed
     const starHandler = () => {
@@ -135,7 +120,7 @@ const DiningCard = props => {
 
     // handles detail return and loading delay
     const detailHandler = () => {
-        if (loading) {
+        if(loading) {
             return (
                 <View style={{ width: "100%" }}>
                     <LottieView
@@ -152,7 +137,14 @@ const DiningCard = props => {
                     />
                 </View>
             );
-        } else {
+        } else if(isClosed) {
+            return (
+                <View style={styles.info}>
+                    <Text style={[styles.text, styles.closed]}>Closed All Day</Text>
+                </View>
+            )
+        }
+        else {
             return (
                 <View>
                     {hoursHandler()}
@@ -162,13 +154,17 @@ const DiningCard = props => {
         }
     }
 
+    /**
+     * GET AN ERROR BC OF UNDEFINED. HOW TO SOLVE?
+     */
     useEffect(() => {
         const effectFunction = async () => {
-            const time = await fetchHours(id[props.name]);
-            const menu = await fetchMenuDetailed(id[props.name]);
-            setHallHours(time.data.data.cafe.days[0].dayparts);
-            setLoading(false);
-            // setMenuSummary(menu.data.menu.dayparts[0].stations);
+                const time = await fetchHours(props.queryText);
+                const menu = await fetchMenuDetailed(props.queryText);
+                const hours = time.data.data.cafe.days[0].dayparts;
+                hours.length === 0 ? setClosed(true) : setHallHours(hours), console.log("insert set menu here");
+                // setMenuSummary(menu.data.menu.dayparts[0].stations);
+                setLoading(false);
         };
         effectFunction();
     }, []);
@@ -177,7 +173,7 @@ const DiningCard = props => {
         <View style={styles.card}>
             <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate("Menu")}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{props.name}</Text>
+                    <Text style={styles.title}>{props.title}</Text>
                     <TouchableOpacity
                         style={styles.starArea}
                         onPress={starHandler}
@@ -199,6 +195,7 @@ const DiningCard = props => {
 const styles = StyleSheet.create({
     card: {
         padding: 25,
+        paddingVertical: 22,
         marginBottom: 20,
         borderRadius: 8,
         shadowColor: "black",
@@ -206,7 +203,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         backgroundColor: "white",
         shadowOffset: { width: 1, height: 1 },
-        width: "88%",
+        width: "87%",
         alignSelf: "center",
         elevation: 5,
     },
@@ -242,7 +239,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     menuSummary: {
-        marginTop: 16,
+        marginTop: 12,
         flexDirection: "row",
         justifyContent: "space-between"
     },
