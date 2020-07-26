@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import Colors from "../../constants/Colors.js";
-import { fetchHours, fetchMenuDetailed } from "./DinQueries";
+import React, {useState, useEffect} from "react";
+import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import {fetchHours, fetchMenuDetailed} from "./DinQueries";
 import LottieView from "lottie-react-native";
 
 const DiningCard = props => {
@@ -14,9 +14,9 @@ const DiningCard = props => {
     const [hallHours, setHallHours] = useState("Loading...");
     const [loading, setLoading] = useState(true);
     const [menuSummary, setMenuSummary] = useState([]);
-    const { navigation } = props;
+    const {navigation} = props;
 
-    /* 
+    /*
     deal with the lowercase and the josiah error in the search bar component of the diningscene.js
     dont need this for inital generating of cards but will
     need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
@@ -128,7 +128,7 @@ const DiningCard = props => {
         return (
             <View style={styles.menuSummary}>
                 <Text style={styles.menuText}>Turkey bacon, oatmeal, eggs...</Text>
-                <AntDesign name="right" size={24} color="#CCCCCC"/>
+                <AntDesign name="right" size={24} color="#CCCCCC" />
             </View>
         )
     }
@@ -137,7 +137,7 @@ const DiningCard = props => {
     const detailHandler = () => {
         if (loading) {
             return (
-                <View style={{ width: "100%" }}>
+                <View style={{width: "100%"}}>
                     <LottieView
                         source={require("./animations/small-loader.json")}
                         autoPlay
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOpacity: 0.25,
         backgroundColor: "white",
-        shadowOffset: { width: 1, height: 1 },
+        shadowOffset: {width: 1, height: 1},
         width: "88%",
         alignSelf: "center",
         elevation: 5,
