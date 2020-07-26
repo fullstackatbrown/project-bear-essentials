@@ -1,9 +1,19 @@
 import React, {useState} from "react";
 import {View, StyleSheet, Alert} from "react-native";
+import {RouteProp, NavigationProp} from '@react-navigation/core';
+import {SettingsStackParamList} from './Settings';
 import SettingsSwitch from './SettingsSwitch';
 import SettingsTab from './SettingsTab';
 
-const SettingsScreen = () => {
+type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, 'SettingsScreen'>;
+type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, 'SettingsScreen'>;
+
+interface SettingsScreenProps {
+    route: SettingsScreenRouteProp;
+    navigation: SettingsScreenNavigationProp;
+}
+
+const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScreenProps) => {
     const [darkTheme, setDarkTheme] = useState(false)
 
     const toggleDarkTheme = () => {
@@ -11,13 +21,13 @@ const SettingsScreen = () => {
     }
 
     const navigateToLaundryNotifications = () => {
-        Alert.alert("Navigating to laundry notifications!")
+        navigation.navigate("LaundryNotifications")
     }
     const navigateToDietaryPreferences = () => {
-        Alert.alert("Navigating to dietary preferences!")
+        navigation.navigate("DietaryPreferences")
     }
     const navigateToDeveloperTeam = () => {
-        Alert.alert("Navigating to developer team!")
+        navigation.navigate("DeveloperTeam")
     }
 
     return (

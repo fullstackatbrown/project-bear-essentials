@@ -1,10 +1,10 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
 import DiningScreen from "../dining/DiningScreen";
 import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
-import SettingsScreen from "../settings/SettingsScreen";
+import Settings from "../settings";
 
 // import icons
 import LaundryIcon from "./LaundryIcon";
@@ -17,8 +17,8 @@ import Colors from "../../constants/Colors";
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-export default function BottomTabNavigator({ navigation, route }) {
-    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+export default function BottomTabNavigator({navigation, route}) {
+    navigation.setOptions({headerTitle: getHeaderTitle(route)});
 
     return (
         <BottomTab.Navigator
@@ -32,7 +32,7 @@ export default function BottomTabNavigator({ navigation, route }) {
                 component={DiningScreen}
                 options={{
                     title: "Dining",
-                    tabBarIcon: ({ focused }) => (
+                    tabBarIcon: ({focused}) => (
                         <DiningIcon focused={focused} />
                     ),
                 }}
@@ -42,7 +42,7 @@ export default function BottomTabNavigator({ navigation, route }) {
                 component={LaundryScreen}
                 options={{
                     title: "Laundry",
-                    tabBarIcon: ({ focused }) => (
+                    tabBarIcon: ({focused}) => (
                         <LaundryIcon focused={focused} />
                     ),
                 }}
@@ -52,15 +52,15 @@ export default function BottomTabNavigator({ navigation, route }) {
                 component={MapScreen}
                 options={{
                     title: "Map",
-                    tabBarIcon: ({ focused }) => <MapIcon focused={focused} />,
+                    tabBarIcon: ({focused}) => <MapIcon focused={focused} />,
                 }}
             />
             <BottomTab.Screen
                 name="Settings"
-                component={SettingsScreen}
+                component={Settings}
                 options={{
                     title: "Settings",
-                    tabBarIcon: ({ focused }) => (
+                    tabBarIcon: ({focused}) => (
                         <SettingsIcon focused={focused} />
                     ),
                 }}
@@ -74,13 +74,13 @@ function getHeaderTitle(route) {
         route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
     switch (routeName) {
-    case "Dining":
-        return "Dining";
-    case "Laundry":
-        return "Laundry";
-    case "Map":
-        return "Map";
-    case "Settings":
-        return "Settings";
+        case "Dining":
+            return "Dining";
+        case "Laundry":
+            return "Laundry";
+        case "Map":
+            return "Map";
+        case "Settings":
+            return "Settings";
     }
 }
