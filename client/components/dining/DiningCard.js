@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import Colors from "../../constants/Colors.js";
-import { fetchHours, fetchMenuDetailed } from "./DinQueries";
+import React, {useState, useEffect} from "react";
+import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import {fetchHours, fetchMenuDetailed} from "./DinQueries";
 import LottieView from "lottie-react-native";
 
 const DiningCard = props => {
@@ -15,8 +15,27 @@ const DiningCard = props => {
     const [loading, setLoading] = useState(true);
     const [isClosed, setClosed] = useState(false);
     const [menuSummary, setMenuSummary] = useState([]);
-    const { navigation } = props;
+    const {navigation} = props;
 
+<<<<<<< HEAD
+=======
+    /*
+    deal with the lowercase and the josiah error in the search bar component of the diningscene.js
+    dont need this for inital generating of cards but will
+    need it for searchbar functionality (when ppl look up by name and we need id to get info from api call)
+    */
+    const id = {
+        "Sharpe Refectory": "ratty",
+        "Verney-Wooley": "vdub",
+        "Andrews Commons": "andrews",
+        "Blue Room": "blueroom",
+        "Josiah's": "jos",
+        "Ivy Room": "ivyroom",
+        "Gourmet To Go": "campusmarket",
+        "Café Carts": "cafecarts",
+    };
+
+>>>>>>> b1b67ddcba119ec9f398a44a27c9866830ecd975
     // handles changes to star icon if pressed
     const starHandler = () => {
         if (starred) {
@@ -113,7 +132,7 @@ const DiningCard = props => {
         return (
             <View style={styles.menuSummary}>
                 <Text style={styles.menuText}>Turkey bacon, oatmeal, eggs...</Text>
-                <AntDesign name="right" size={24} color="#CCCCCC"/>
+                <AntDesign name="right" size={24} color="#CCCCCC" />
             </View>
         )
     }
@@ -122,7 +141,7 @@ const DiningCard = props => {
     const detailHandler = () => {
         if(loading) {
             return (
-                <View style={{ width: "100%" }}>
+                <View style={{width: "100%"}}>
                     <LottieView
                         source={require("./animations/small-loader.json")}
                         autoPlay
