@@ -1,5 +1,6 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
+import {StyleSheet} from 'react-native';
 
 import DiningScreen from "../dining/DiningScreen";
 import LaundryScreen from "../laundry/LaundryScreen";
@@ -17,21 +18,20 @@ import Colors from "../../constants/Colors";
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-export default function BottomTabNavigator({navigation, route}) {
-    navigation.setOptions({headerTitle: getHeaderTitle(route)});
-
+export default function BottomTabNavigator({}) {
     return (
         <BottomTab.Navigator
             initialRouteName={INITIAL_ROUTE_NAME}
             tabBarOptions={{
                 activeTintColor: Colors.accentRed,
+                style: styles.tabs,
+                showLabel: false,
             }}
         >
             <BottomTab.Screen
                 name="Dining"
                 component={DiningScreen}
                 options={{
-                    title: "Dining",
                     tabBarIcon: ({focused}) => (
                         <DiningIcon focused={focused} />
                     ),
@@ -41,7 +41,6 @@ export default function BottomTabNavigator({navigation, route}) {
                 name="Laundry"
                 component={LaundryScreen}
                 options={{
-                    title: "Laundry",
                     tabBarIcon: ({focused}) => (
                         <LaundryIcon focused={focused} />
                     ),
@@ -51,7 +50,6 @@ export default function BottomTabNavigator({navigation, route}) {
                 name="Map"
                 component={MapScreen}
                 options={{
-                    title: "Map",
                     tabBarIcon: ({focused}) => <MapIcon focused={focused} />,
                 }}
             />
@@ -59,7 +57,6 @@ export default function BottomTabNavigator({navigation, route}) {
                 name="Settings"
                 component={Settings}
                 options={{
-                    title: "Settings",
                     tabBarIcon: ({focused}) => (
                         <SettingsIcon focused={focused} />
                     ),
@@ -69,18 +66,8 @@ export default function BottomTabNavigator({navigation, route}) {
     );
 }
 
-function getHeaderTitle(route) {
-    const routeName =
-        route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-    switch (routeName) {
-        case "Dining":
-            return "Dining";
-        case "Laundry":
-            return "Laundry";
-        case "Map":
-            return "Map";
-        case "Settings":
-            return "Settings";
+const styles = StyleSheet.create({
+    tabs: {
+        paddingVertical: 10
     }
-}
+})
