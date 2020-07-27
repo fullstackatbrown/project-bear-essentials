@@ -16,7 +16,7 @@ export const diningHallInfo = {
         queryText: "blueroom"
     },
     "Josiah&#039;s": {
-        title: "Josiahs",
+        title: "Josiah's",
         queryText: "jos"
     },
     "Ivy Room": {

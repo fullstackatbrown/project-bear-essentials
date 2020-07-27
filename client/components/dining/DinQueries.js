@@ -71,7 +71,7 @@ const fetchDiningAll = async () => {
         if (hall.name in diningHallInfo) {
             const thisHall = diningHallInfo[hall.name];
             diningHallsDetailed[thisHall.title] = {
-                name: thisHall.title,
+                title: thisHall.title,
                 queryText: thisHall.queryText,
                 id: hall.id,
             };

@@ -5,8 +5,7 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  Text,
-  StatusBar,
+  Text
 } from "react-native";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
 import { connect } from "react-redux";
@@ -15,9 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import Header from "../reusable/Header";
 import { diningHallInfo } from "./DiningUtils";
-
-
-// TODO: delete unused imports (other files too)
+import LottieView from "lottie-react-native";
 
 const mapStateToProps = (state) => {
   return {
@@ -34,14 +31,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // configures dining menu screen for navigator
-const DINING_HALL = "Sharpe Refectory";
 const DiningStack = createStackNavigator();
 
 class DiningScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
       loading: true,
       cards: DINING_DATA,
       emptySearchBar: true,
@@ -49,7 +44,10 @@ class DiningScreen extends Component {
     };
     this.cards = diningHallInfo,
 
+    this.fetchCards = this.fetchCards.bind(this);
     this.starChanged = this.starChanged.bind(this);
+    this.onTextChanged = this.onTextChanged.bind(this);
+
   }
 
   // fetch cards when mounted
@@ -72,7 +70,7 @@ class DiningScreen extends Component {
         this.props.deleteStarred(star);
       }
     });
-    this.setState({loading: false});
+    this.setState({ loading: false });
   };
 
   // updates star's state when clicked
@@ -90,22 +88,16 @@ class DiningScreen extends Component {
     if (text.length > 0) {
       emptySearchBar = false;
       newSuggestions = Object.keys(this.cards)
+      .filter((v) => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
+      .sort();
     }
-
     this.setState({
       emptySearchBar,
       suggestions: newSuggestions,
-      suggestionsLimit: 10,
     });
   }
 
-  // replaces query with text user searches
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
-
   // creates individual dining cards
-  // TODO: key prop is missing
   mapToDiningCards(toMap) {
     return (
       <Fragment>
@@ -123,47 +115,80 @@ class DiningScreen extends Component {
     );
   }
 
-  //TODO: set up suggestion rendering
   renderSuggestions = () => {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
 
     if (emptySearchBar) {
-      if (suggestions.length === 0) {
+      if (starred.length === 0) {
         return (
           <Fragment>
-            {starred.length !== 0 && <View style={styles.horizontalLine} />}
+            <Text style={styles.textCentered}>
+              No starred dining halls. Starred halls will appear at the
+              top.
+            </Text>
+            <View style={styles.horizontalLine} />
             {this.mapToDiningCards(Object.keys(this.cards))}
           </Fragment>
         );
       }
+    } else {
+      if(suggestions.length === 0) {
+        return (
+          <Fragment>
+            <Text style={styles.textCentered}>No results found.</Text>
+          </Fragment>
+        );
+      } else {
+        return (
+          <Fragment>
+            {this.mapToDiningCards(suggestions)}
+          </Fragment>
+        )
+      }
     }
   }
 
-    // creates navigator for dining menu
-    createMenuStack = () => {
-      return (
-        <NavigationContainer>
-          <DiningStack.Navigator initialRouteName="Dining Screen">
-            <DiningStack.Screen name="Dining Screen" component={DiningScreen} />
-            <DiningStack.Screen name="Menu" component={DiningMenu} />
-          </DiningStack.Navigator>
-        </NavigationContainer>
-      );
-    };
+  // creates navigator for dining menu
+  createMenuStack = () => {
+    return (
+      <NavigationContainer>
+        <DiningStack.Navigator initialRouteName="Dining Screen">
+          <DiningStack.Screen name="Dining Screen" component={DiningScreen} />
+          <DiningStack.Screen name="Menu" component={DiningMenu} />
+        </DiningStack.Navigator>
+      </NavigationContainer>
+    );
+  };
 
   render() {
-    const { search } = this.state;
+    const { search, loading} = this.state;
     // this.createMenuStack();
-    return (
-      //TODO: set up navigation from card to menu
-      <View style={styles.screen}>
-        <Header onChangeText={this.onTextChanged}>Dining</Header>
-        <ScrollView style={styles.scroll}>
-          {this.renderSuggestions()}
-        </ScrollView>
-      </View>
-    );
+    if (loading) {
+      return (
+        <View style={styles.loading}>
+          <LottieView
+            source={require("./animations/dotted-loader.json")}
+            autoPlay
+            loop
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        //TODO: set up navigation from card to menu
+        <View style={styles.screen}>
+          <Header onChangeText={this.onTextChanged}>Dining</Header>
+          <ScrollView style={styles.scroll}>
+            {this.renderSuggestions()}
+          </ScrollView>
+        </View>
+      );
+    }
   }
 }
 
@@ -188,6 +213,15 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     height: 175,
     alignItems: "center",
+  },
+  textCentered: {
+    marginLeft: 18,
+    marginRight: 18,
+    marginTop: 4,
+    marginBottom: 4,
+    textAlign: "center",
+    fontSize: 20,
+    color: "#9C9C9C",
   },
   horizontalLine: {
     marginTop: 14,
