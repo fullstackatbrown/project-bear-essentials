@@ -269,15 +269,15 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontWeight: "bold", // medium
+        fontWeight: "600", // medium
         fontSize: 28,
     },
     room: {
-        fontWeight: "bold", // medium
+        fontWeight: "600", // medium
         fontSize: 22,
     },
     uncollapsed: {
-        marginTop: 15,
+        marginTop: 10,
         flexDirection: "column",
         justifyContent: "space-between",
     },
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
     },
     arrow: {
-        marginBottom: -10,
+        marginBottom: -15,
         marginRight: 2,
     },
     horizontalLine: {

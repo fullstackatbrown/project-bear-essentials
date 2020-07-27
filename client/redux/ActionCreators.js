@@ -20,6 +20,16 @@ export const deleteStarred = roomId => ({
     payload: roomId,
 });
 
+export const addDiningStarred = hall => ({
+    type: ActionTypes.ADD_DINING_STARRED,
+    payload: hall,
+});
+
+export const deleteDiningStarred = hall => ({
+    type: ActionTypes.DELETE_DINING_STARRED,
+    payload: hall,
+});
+
 export const addFlag = flag => ({
     type: ActionTypes.ADD_FLAG,
     payload: flag,

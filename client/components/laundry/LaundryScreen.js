@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 4,
-    marginBottom: 4,
+    marginBottom: 7,
     textAlign: "center",
     fontSize: 20,
     color: "#9C9C9C",
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   horizontalLine: {
-    marginTop: 14,
+    marginTop: 4,
     marginBottom: 14,
     alignSelf: "center",
     width: "86%",

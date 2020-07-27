@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text
 } from "react-native";
-import { addStarred, deleteStarred } from "../../redux/ActionCreators";
+import { addDiningStarred, deleteDiningStarred } from "../../redux/ActionCreators";
 import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -18,15 +18,14 @@ import LottieView from "lottie-react-native";
 
 const mapStateToProps = (state) => {
   return {
-    starred: state.laundry.starred,
-    notifications: state.notifications.notifications,
+    starred: state.dining.starred,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addStarred: (flag) => dispatch(addStarred(flag)),
-    deleteStarred: (flag) => dispatch(deleteStarred(flag)),
+    addDiningStarred: (flag) => dispatch(addDiningStarred(flag)),
+    deleteDiningStarred: (flag) => dispatch(deleteDiningStarred(flag)),
   };
 };
 
@@ -55,19 +54,15 @@ class DiningScreen extends Component {
     this.fetchCards();
   }
 
-  /**
-   * WE MAY NOT NEED ANY LOADING BC WE DO NOT MAKE AN API CALL HERE.
-   * ALSO MAY NOT NEED FETCHDININGALL IN DINQUERIES OR FETCHCAFES
-   */
   // fetches dining cards
-  fetchCards = async () => {
+  fetchCards = () => {
     if (!this.state.loading) {
       this.setState({ loading: true });
     }
     const fetchedCardsKeys = Object.keys(this.cards);
     this.props.starred.forEach((star) => {
       if (!fetchedCardsKeys.includes(star)) {
-        this.props.deleteStarred(star);
+        this.props.deleteDiningStarred(star);
       }
     });
     this.setState({ loading: false });
@@ -75,21 +70,22 @@ class DiningScreen extends Component {
 
   // updates star's state when clicked
   starChanged = (card) => {
-    if (!this.props.starred.includes(card)) {
-      this.props.addStarred(card);
+    if (this.props.starred.includes(card)) {
+      this.props.deleteDiningStarred(card);
     } else {
-      this.props.deleteStarred(card);
+      this.props.addDiningStarred(card);
     }
   };
 
+  // deals with search bar functionality
   onTextChanged = (text) => {
     let emptySearchBar = true;
     let newSuggestions = [];
     if (text.length > 0) {
       emptySearchBar = false;
       newSuggestions = Object.keys(this.cards)
-      .filter((v) => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
-      .sort();
+        .filter((v) => v.toLowerCase().indexOf(text.toLowerCase()) != -1)
+        .sort();
     }
     this.setState({
       emptySearchBar,
@@ -99,14 +95,14 @@ class DiningScreen extends Component {
 
   // creates individual dining cards
   mapToDiningCards(toMap) {
+    this.cards = diningHallInfo
     return (
       <Fragment>
         {toMap.map((diningHall) => (
           <DiningCard
             style={styles.inputContainer}
             key={diningHall}
-            title={this.cards[diningHall].title}
-            queryText={this.cards[diningHall].queryText}
+            card={this.cards[diningHall]}
             starPressed={() => this.starChanged(diningHall)}
             isStarred={this.props.starred.includes(diningHall)}
           />
@@ -115,6 +111,7 @@ class DiningScreen extends Component {
     );
   }
 
+  // renders suggestions based on search bar
   renderSuggestions = () => {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
@@ -131,9 +128,17 @@ class DiningScreen extends Component {
             {this.mapToDiningCards(Object.keys(this.cards))}
           </Fragment>
         );
+      } else {
+        return (
+          <Fragment>
+            {this.mapToDiningCards(starred)}
+            <View style={styles.horizontalLine} />
+            {this.mapToDiningCards(Object.keys(this.cards).filter((card) => !starred.includes(card)))}
+          </Fragment>
+        )
       }
     } else {
-      if(suggestions.length === 0) {
+      if (suggestions.length === 0) {
         return (
           <Fragment>
             <Text style={styles.textCentered}>No results found.</Text>
@@ -162,8 +167,7 @@ class DiningScreen extends Component {
   };
 
   render() {
-    const { search, loading} = this.state;
-    // this.createMenuStack();
+    const { loading } = this.state;
     if (loading) {
       return (
         <View style={styles.loading}>
@@ -208,6 +212,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#9C9C9C",
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+  },
   inputContainer: {
     width: 332,
     maxWidth: "100%",
@@ -218,14 +226,13 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 4,
-    marginBottom: 4,
+    marginBottom: 10,
     textAlign: "center",
     fontSize: 20,
     color: "#9C9C9C",
   },
   horizontalLine: {
-    marginTop: 14,
-    marginBottom: 14,
+    marginBottom: 18,
     alignSelf: "center",
     width: "86%",
     borderBottomColor: "#D3D3D3",

@@ -1,34 +1,34 @@
 export const diningHallInfo = {
     "Sharpe Refectory": {
-        title: "Sharpe Refectory",
+        name: "Sharpe Refectory",
         queryText: "ratty",
     },
     "Verney-Woolley": {
-        title: "Verney-Woolley",
+        name: "Verney-Woolley",
         queryText: "vdub"
     },
     "Andrews Commons": {
-        title: "Andrews Commons",
+        name: "Andrews Commons",
         queryText: "andrews"
     },
     "Blue Room": {
-        title: "Blue Room",
+        name: "Blue Room",
         queryText: "blueroom"
     },
     "Josiah&#039;s": {
-        title: "Josiah's",
+        name: "Josiah's",
         queryText: "jos"
     },
     "Ivy Room": {
-        title: "Ivy Room",
+        name: "Ivy Room",
         queryText: "ivyroom"
     },
     "Gourmet to Go": {
-        title: "Campus Market",
+        name: "Campus Market",
         queryText: "campusmarket"
     },
     "Café Carts": {
-        title: "Café Carts",
+        name: "Café Carts",
         queryText: "cafecarts"
     },
 };

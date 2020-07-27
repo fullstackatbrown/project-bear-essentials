@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
-import {AntDesign, Ionicons} from "@expo/vector-icons";
+import {AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import {fetchHours, fetchMenuDetailed} from "./DinQueries";
 import LottieView from "lottie-react-native";
@@ -28,6 +28,7 @@ const DiningCard = props => {
             setStarName("star");
             setStarColor(Colors.starYellow);
         }
+        props.starPressed();
     };
 
     // compares the current time w/ the time from the api
@@ -154,26 +155,33 @@ const DiningCard = props => {
         }
     }
 
-    /**
-     * GET AN ERROR BC OF UNDEFINED. HOW TO SOLVE?
-     */
     useEffect(() => {
-        const effectFunction = async () => {
-                const time = await fetchHours(props.queryText);
-                const menu = await fetchMenuDetailed(props.queryText);
+        let mounted = true;
+        const effectFunction = async (isInitial) => {
+            if(mounted) {
+                const time = await fetchHours(props.card.queryText);
+                // const menu = await fetchMenuDetailed(props.queryText);
                 const hours = time.data.data.cafe.days[0].dayparts;
-                hours.length === 0 ? setClosed(true) : setHallHours(hours), console.log("insert set menu here");
+                hours.length === 0 ? setClosed(true) : setHallHours(hours);
                 // setMenuSummary(menu.data.menu.dayparts[0].stations);
-                setLoading(false);
+                if (isInitial) setLoading(false);
+            }
         };
-        effectFunction();
+        effectFunction(true);
+
+        let interval = setInterval(() => effectFunction(false), 60000);
+
+        return () => {
+            mounted = false;
+            clearInterval(interval);
+        }
     }, []);
 
     return (
         <View style={styles.card}>
             <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate("Menu")}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{props.title}</Text>
+                    <Text style={styles.title}>{props.card.name}</Text>
                     <TouchableOpacity
                         style={styles.starArea}
                         onPress={starHandler}
