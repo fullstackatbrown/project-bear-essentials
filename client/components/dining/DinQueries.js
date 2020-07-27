@@ -63,15 +63,16 @@ const fetchMenuDetailed = id => {
 
 // object returning all dining halls for query text
 const fetchDiningAll = async () => {
-    const { data } = await fetchLaundryRooms();
+    const { data } = await fetchCafes();
     const diningIds = data.data.cafes;
 
     const diningHallsDetailed = {};
     diningIds.forEach(hall => {
         if (hall.name in diningHallInfo) {
             const thisHall = diningHallInfo[hall.name];
-            diningHallsDetailed[thisHall.queryText] = {
-                title: thisHall.title,
+            diningHallsDetailed[thisHall.title] = {
+                name: thisHall.title,
+                queryText: thisHall.queryText,
                 id: hall.id,
             };
         } else {
@@ -82,4 +83,4 @@ const fetchDiningAll = async () => {
 };
 
 
-export { fetchCafes, fetchMenuDetailed, fetchHours, fetchDiningAll };
+export { fetchMenuDetailed, fetchHours, fetchDiningAll };

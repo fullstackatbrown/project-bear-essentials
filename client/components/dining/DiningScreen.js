@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import DiningCard from "./DiningCard";
 import DiningMenu from "./DiningMenu";
 import {
   View,
   ScrollView,
   StyleSheet,
+  Text,
   StatusBar,
 } from "react-native";
 import { addStarred, deleteStarred } from "../../redux/ActionCreators";
@@ -12,12 +13,18 @@ import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
-import { fetchCafes } from "./DinQueries";
-import { fetchDiningAll } from "./DinQueries";
 import Header from "../reusable/Header";
+import { diningHallInfo } from "./DiningUtils";
 
 
 // TODO: delete unused imports (other files too)
+
+const mapStateToProps = (state) => {
+  return {
+    starred: state.laundry.starred,
+    notifications: state.notifications.notifications,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -40,7 +47,7 @@ class DiningScreen extends Component {
       emptySearchBar: true,
       suggestions: [],
     };
-    (this.cards = null),
+    this.cards = diningHallInfo,
 
     this.starChanged = this.starChanged.bind(this);
   }
@@ -50,26 +57,22 @@ class DiningScreen extends Component {
     this.fetchCards();
   }
 
+  /**
+   * WE MAY NOT NEED ANY LOADING BC WE DO NOT MAKE AN API CALL HERE.
+   * ALSO MAY NOT NEED FETCHDININGALL IN DINQUERIES OR FETCHCAFES
+   */
   // fetches dining cards
   fetchCards = async () => {
     if (!this.state.loading) {
       this.setState({ loading: true });
     }
-    this.cards = await fetchDiningAll();
-    this.setState({ loading: false });
     const fetchedCardsKeys = Object.keys(this.cards);
     this.props.starred.forEach((star) => {
       if (!fetchedCardsKeys.includes(star)) {
         this.props.deleteStarred(star);
       }
     });
-  };
-
-  //  fetches dining hall names
-  fetchCafeNames = async () => {
-    let cafeNames = [];
-    const cafe = await fetchCafes();
-    cafeNames.push(cafe.data.cafes.name);
+    this.setState({loading: false});
   };
 
   // updates star's state when clicked
@@ -103,68 +106,61 @@ class DiningScreen extends Component {
 
   // creates individual dining cards
   // TODO: key prop is missing
-  mapDiningCard(starred) {
+  mapToDiningCards(toMap) {
     return (
-      <ScrollView>
-        {starred.map((diningHall) => (
+      <Fragment>
+        {toMap.map((diningHall) => (
           <DiningCard
+            style={styles.inputContainer}
             key={diningHall}
-            diningCard={this.state.cards[diningHall]}
-            starPressed={() => this.starChanges(diningHall)}
+            title={this.cards[diningHall].title}
+            queryText={this.cards[diningHall].queryText}
+            starPressed={() => this.starChanged(diningHall)}
             isStarred={this.props.starred.includes(diningHall)}
-            starAction={() => this.starChanged(diningHall)}
           />
         ))}
-      </ScrollView>
+      </Fragment>
     );
   }
 
-  // creates navigator for dining menu
-  createMenuStack = () => {
-    return (
-      <NavigationContainer>
-        <DiningStack.Navigator initialRouteName="Dining Screen">
-          <DiningStack.Screen name="Dining Screen" component={DiningScreen} />
-          <DiningStack.Screen name="Menu" component={DiningMenu} />
-        </DiningStack.Navigator>
-      </NavigationContainer>
-    );
-  };
-
   //TODO: set up suggestion rendering
-  renderSearchSuggestions = () => {
+  renderSuggestions = () => {
     const { emptySearchBar, suggestions } = this.state;
     let starred = this.props.starred.sort();
 
     if (emptySearchBar) {
       if (suggestions.length === 0) {
-        // no results
         return (
           <Fragment>
-            <Text style={styles.textCentered}>No results found.</Text>
             {starred.length !== 0 && <View style={styles.horizontalLine} />}
-            {this.mapToCards(starred, false)}
+            {this.mapToDiningCards(Object.keys(this.cards))}
           </Fragment>
         );
       }
     }
   }
 
+    // creates navigator for dining menu
+    createMenuStack = () => {
+      return (
+        <NavigationContainer>
+          <DiningStack.Navigator initialRouteName="Dining Screen">
+            <DiningStack.Screen name="Dining Screen" component={DiningScreen} />
+            <DiningStack.Screen name="Menu" component={DiningMenu} />
+          </DiningStack.Navigator>
+        </NavigationContainer>
+      );
+    };
+
   render() {
     const { search } = this.state;
-    this.fetchCafeNames();
-    this.createMenuStack();
+    // this.createMenuStack();
     return (
       //TODO: set up navigation from card to menu
       <View style={styles.screen}>
         <Header onChangeText={this.onTextChanged}>Dining</Header>
         <ScrollView style={styles.scroll}>
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"}/>
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
-          <DiningCard style={styles.inputContainer} name={"Sharpe Refectory"} />
+          {this.renderSuggestions()}
         </ScrollView>
       </View>
     );
@@ -203,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapDispatchToProps)(DiningScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DiningScreen);
