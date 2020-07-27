@@ -162,7 +162,7 @@ const DiningCard = props => {
                 const time = await fetchHours(props.card.queryText);
                 // const menu = await fetchMenuDetailed(props.queryText);
                 const hours = time.data.data.cafe.days[0].dayparts;
-                hours.length === 0 ? setClosed(true) : setHallHours(hours);
+                hours.length === 0 || hours === undefined ? setClosed(true) : setHallHours(hours);
                 // setMenuSummary(menu.data.menu.dayparts[0].stations);
                 if (isInitial) setLoading(false);
             }

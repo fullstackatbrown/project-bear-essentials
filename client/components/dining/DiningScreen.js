@@ -121,8 +121,10 @@ class DiningScreen extends Component {
         return (
           <Fragment>
             <Text style={styles.textCentered}>
-              No starred dining halls. Starred halls will appear at the
-              top.
+              No starred dining halls.
+            </Text>
+            <Text style={styles.textCentered2}>
+              Starred halls will appear at the top.
             </Text>
             <View style={styles.horizontalLine} />
             {this.mapToDiningCards(Object.keys(this.cards))}
@@ -226,6 +228,15 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 4,
+    marginBottom: 0,
+    textAlign: "center",
+    fontSize: 20,
+    color: "#9C9C9C",
+  },
+  textCentered2: {
+    marginLeft: 18,
+    marginRight: 18,
+    marginTop: 0,
     marginBottom: 10,
     textAlign: "center",
     fontSize: 20,
