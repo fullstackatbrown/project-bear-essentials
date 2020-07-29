@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import {View, StyleSheet, Alert} from "react-native";
+import {View, StyleSheet, SafeAreaView} from "react-native";
 import {RouteProp, NavigationProp} from '@react-navigation/core';
 import {SettingsStackParamList} from './Settings';
 import SettingsSwitch from './SettingsSwitch';
 import SettingsTab from './SettingsTab';
 import DietaryPreferencesIcons from './DietaryPreferencesIcons';
+import {SimpleHeader} from "../reusable";
 
 type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, 'SettingsScreen'>;
 type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, 'SettingsScreen'>;
@@ -16,45 +17,45 @@ interface SettingsScreenProps {
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScreenProps) => {
     const [darkTheme, setDarkTheme] = useState(false)
-    const [dietaryPreferences] = useState(['kosher', 'halal'])
-
+    const [preferences, setPreferences] = useState(new Map<string, boolean>([['gluten-free', false], ['halal', true], ['kosher', true], ['vegan', false], ['vegetarian', false]]))
     const toggleDarkTheme = () => {
         setDarkTheme(!darkTheme);
+    }
+    const onSelect = (preference: string) => {
+        let newPreferences = new Map(preferences);
+        newPreferences.set(preference, !preferences.get(preference));
+        setPreferences(newPreferences);
     }
 
     const navigateToLaundryNotifications = () => {
         navigation.navigate("LaundryNotifications")
     }
     const navigateToDietaryPreferences = () => {
-        navigation.navigate("DietaryPreferences")
+        navigation.navigate("DietaryPreferences", {preferences: preferences, onSelect: onSelect})
     }
     const navigateToDeveloperTeam = () => {
         navigation.navigate("DeveloperTeam")
     }
 
     return (
-        <View style={styles.container}>
-            <SettingsTab title="Dietary preferences" onPress={navigateToDietaryPreferences} style={styles.sectionHeader} rightElement={<DietaryPreferencesIcons preferences={dietaryPreferences} />} />
+        <SafeAreaView style={styles.container}>
+            <SimpleHeader title={"Settings"} />
+            <SettingsTab title="Dietary preferences" onPress={navigateToDietaryPreferences} rightElement={<DietaryPreferencesIcons preferences={preferences} />} />
             <SettingsTab title="Laundry notifications" onPress={navigateToLaundryNotifications} />
             <SettingsSwitch title="Dark theme" value={darkTheme} onSwitch={toggleDarkTheme} style={styles.sectionHeader} />
             <SettingsTab title="Developer team" onPress={navigateToDeveloperTeam} style={styles.sectionHeader} />
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignContent: 'center',
     },
     sectionHeader: {
         marginTop: 30,
     }
 });
-
-SettingsScreen.navigationOptions = {
-    header: null,
-};
 
 export default SettingsScreen;

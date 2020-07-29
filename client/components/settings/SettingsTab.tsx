@@ -13,7 +13,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({title, rightElement, style, on
             <Text style={styles.title}>{title}</Text>
             <View style={styles.rightElement}>
                 {rightElement}
-                <ChevronRight />
+                <ChevronRight style={styles.chevron} />
             </View>
         </TouchableOpacity>
     );
@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     rightElement: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    chevron: {
+        marginLeft: 10
     }
 });
 

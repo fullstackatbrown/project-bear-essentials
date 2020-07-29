@@ -1,21 +1,23 @@
 import React from "react";
-import {View, StyleSheet, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import Check from "../../assets/icons/check.svg";
 
 interface SettingsSelectProps {
     title: string;
-    rightElement: JSX.Element;
-    onPress: () => void;
+    selected: boolean;
+    icon: any;
+    onPress: (title: string) => void;
+    id: string;
 }
 
-const SettingsSelect: React.FC<SettingsSelectProps> = ({title, rightElement, onPress}) => {
+const SettingsSelect: React.FC<SettingsSelectProps> = ({id, title, icon, selected, onPress}) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <Text style={styles.title}>{title}</Text>
-            <View style={styles.rightElement}>
-                {rightElement}
-                <Check />
+        <TouchableOpacity style={styles.container} onPress={() => onPress(id)}>
+            <View style={styles.leftElem}>
+                {icon !== undefined && icon}
+                <Text style={styles.title}>{title}</Text>
             </View>
+            {selected && <Check />}
         </TouchableOpacity>
     );
 };
@@ -30,10 +32,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
     title: {
-        fontSize: 20
+        fontSize: 20,
+        marginLeft: 10
     },
-    rightElement: {
-        flexDirection: 'row',
+    leftElem: {
+        flexDirection: "row",
+        justifyContent: 'center',
         alignItems: 'center',
     }
 });

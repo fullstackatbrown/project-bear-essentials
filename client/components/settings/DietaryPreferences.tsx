@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {RouteProp, NavigationProp} from '@react-navigation/core';
 import {SettingsStackParamList} from "./Settings";
+import SettingsSelect from './SettingsSelect';
+import {getDietaryPreferenceIcon} from './DietaryPreferencesIcons';
 
 type DietaryPreferencesRouteProp = RouteProp<SettingsStackParamList, 'DietaryPreferences'>;
 type DietaryPreferencesNavigationProp = NavigationProp<SettingsStackParamList, 'DietaryPreferences'>;
@@ -11,19 +13,33 @@ interface DietaryPreferencesProps {
     navigation: DietaryPreferencesNavigationProp;
 }
 
-const DietaryPreferences: React.FC<DietaryPreferencesProps> = () => {
+const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({route}) => {
+    const {preferences, onSelect} = route.params;
+    let preferenceList: Array<JSX.Element> = [];
+    preferences.forEach((selected, preference) => {
+        const icon = getDietaryPreferenceIcon(preference)
+        const title = preference.charAt(0).toUpperCase() + preference.slice(1);
+        preferenceList.push(<SettingsSelect icon={icon} id={preference} key={preference} title={title} selected={selected} onPress={onSelect} />)
+    });
+    const desc: string = "Once a dining preference is turned on, the app will only show foods from the selected categories."
     return (
-        <View style={styles.container}>
-            <Text>Dietary preferences go here!</Text>
-        </View>
+        <SafeAreaView style={styles.container}>
+            {preferenceList}
+            <Text style={styles.desc}>{desc}</Text>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'stretch',
+    },
+    desc: {
+        margin: 15,
+        color: '#666666',
+        fontSize: 14,
+        fontWeight: '400',
     }
 })
 
