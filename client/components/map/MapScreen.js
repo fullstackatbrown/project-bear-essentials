@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     Text,
     View,
@@ -32,7 +32,7 @@ const MapScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [region, setRegion] = useState(INITIAL_REGION);
     const [selected, setSelected] = useState({});
-    const [selectedMarker, setSelectedMarker] = useState(<Marker></Marker>);
+    const markerRef = useRef(null);
 
     const RenderFlags = () => {
         return (
@@ -60,8 +60,20 @@ const MapScreen = props => {
     const RenderMarkers = () => {
         return (
             <>
-                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e =>
-                    (<Marker
+                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e => {
+                    if (e.name == selected.name) {
+                        return <Marker
+                            coordinate={{
+                                latitude: e.latitude,
+                                longitude: e.longitude,
+                            }}
+                            key={e.id}
+                            title={e.name}
+                            pinColor={FLAGS_COLORS[e.use]}
+                            ref={markerRef}
+                        ></Marker>;
+                    }
+                    return <Marker
                         coordinate={{
                             latitude: e.latitude,
                             longitude: e.longitude,
@@ -69,7 +81,8 @@ const MapScreen = props => {
                         key={e.id}
                         title={e.name}
                         pinColor={FLAGS_COLORS[e.use]}
-                    ></Marker>))}
+                    ></Marker>;
+                })}
             </>
         );
     };
@@ -124,6 +137,12 @@ const MapScreen = props => {
             setSelected(firstResult);
         }
     };
+
+    useEffect(() => {
+        if (markerRef && markerRef.current) {
+            markerRef.current.showCallout();
+        }
+    });
 
     return (
         <View style={styles.screen}>
