@@ -5,7 +5,7 @@ import {SettingsStackParamList} from "./Settings";
 import SettingsSwitch from "./SettingsSwitch";
 import SettingsTab from "./SettingsTab";
 import DietaryPreferencesIcons from "./DietaryPreferencesIcons";
-import {SimpleHeader} from "../reusable";
+import SimpleHeader from "../reusable/SimpleHeader";
 
 type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsScreen">;
 type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, "SettingsScreen">;
@@ -39,7 +39,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScr
 
     return (
         <SafeAreaView style={styles.container}>
-            <SimpleHeader title={"Settings"} />
+            <SimpleHeader>Settings</SimpleHeader>
             <SettingsTab title="Dietary preferences" onPress={navigateToDietaryPreferences} rightElement={<DietaryPreferencesIcons preferences={preferences} />} />
             <SettingsTab title="Laundry notifications" onPress={navigateToLaundryNotifications} />
             <SettingsSwitch title="Dark theme" value={darkTheme} onSwitch={toggleDarkTheme} style={styles.sectionHeader} />
