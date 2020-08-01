@@ -12,7 +12,7 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { ConfigureStore } from "./redux/configureStore";
 
 const Stack = createStackNavigator();
-const { persistor, store } = ConfigureStore();
+export const { persistor, store } = ConfigureStore();
 
 export default function App(props) {
     const [isLoadingComplete, setLoadingComplete] = React.useState(false);
