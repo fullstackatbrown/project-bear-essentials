@@ -30,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
 
 const MapScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [region, setRegion] = useState(INITIAL_REGION);
 
     const RenderFlags = () => {
         return (
@@ -107,14 +108,30 @@ const MapScreen = props => {
         );
     };
 
+    // TODO: Make the search functionality more interesting
+    const onChangeText = prefix => {
+        const results = BUILDINGS.filter(
+            e => e.name.startsWith(prefix) && props.flags.includes(e.use)
+        );
+        if (results.length > 0) {
+            setRegion({
+                latitude: results[0].latitude,
+                longitude: results[0].longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+            });
+        }
+    };
+
     return (
         <View style={styles.screen}>
-            <Header>Map</Header>
+            <Header onChangeText={onChangeText}>Map</Header>
             <View style={styles.app}>
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={{ ...StyleSheet.absoluteFillObject }}
                     initialRegion={INITIAL_REGION}
+                    region={region}
                 >
                     <RenderMarkers />
                 </MapView>
