@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Text,
     View,
@@ -31,6 +31,8 @@ const mapDispatchToProps = dispatch => ({
 const MapScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [region, setRegion] = useState(INITIAL_REGION);
+    const [selected, setSelected] = useState({});
+    const [selectedMarker, setSelectedMarker] = useState(<Marker></Marker>);
 
     const RenderFlags = () => {
         return (
@@ -58,8 +60,8 @@ const MapScreen = props => {
     const RenderMarkers = () => {
         return (
             <>
-                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e => (
-                    <Marker
+                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e =>
+                    (<Marker
                         coordinate={{
                             latitude: e.latitude,
                             longitude: e.longitude,
@@ -67,8 +69,7 @@ const MapScreen = props => {
                         key={e.id}
                         title={e.name}
                         pinColor={FLAGS_COLORS[e.use]}
-                    ></Marker>
-                ))}
+                    ></Marker>))}
             </>
         );
     };
@@ -108,18 +109,19 @@ const MapScreen = props => {
         );
     };
 
-    // TODO: Make the search functionality more interesting
     const onChangeText = prefix => {
         const results = BUILDINGS.filter(
-            e => e.name.startsWith(prefix) && props.flags.includes(e.use)
+            e => e.name.toLowerCase().startsWith(prefix.toLowerCase()) && props.flags.includes(e.use)
         );
-        if (results.length > 0) {
+        if (prefix && results.length > 0) {
+            const firstResult = results[0];
             setRegion({
-                latitude: results[0].latitude,
-                longitude: results[0].longitude,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
+                latitude: firstResult.latitude,
+                longitude: firstResult.longitude,
+                latitudeDelta: 0.002,
+                longitudeDelta: 0.002,
             });
+            setSelected(firstResult);
         }
     };
 

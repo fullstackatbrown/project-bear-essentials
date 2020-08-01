@@ -6,35 +6,25 @@ export const INITIAL_REGION = {
 };
 
 export const FLAGS = [
-    "INDEPENDNT",
-    "ACAD",
-    "RES HALL",
-    "SUPPORT",
-    "AUXILIARY",
-    "LIBRARY",
-    "ADMIN",
-    "STUDENT AC",
-    "COMMERCIAL",
-    "ATHLETICS",
-    "HOSPITAL",
-    "CHURCH",
-    "DINING",
+    "Academic",
+    "Admin",
+    "Athletics",
+    "Dining",
+    "Dormitory",
+    "Library",
+    "StudentLife",
+    "Support",
 ];
 
 export const FLAGS_COLORS = {
-    INDEPENDNT: "red",
-    ACAD: "tomato",
-    "RES HALL": "orange",
-    SUPPORT: "yellow",
-    AUXILIARY: "gold",
-    LIBRARY: "wheat",
-    ADMIN: "tan",
-    "STUDENT AC": "linen",
-    COMMERCIAL: "green",
-    ATHLETICS: "blue",
-    HOSPITAL: "aqua",
-    CHURCH: "violet",
-    DINING: "indigo",
+    Academic: "red",
+    Admin: "indigo",
+    Athletics: "gold",
+    Dining: "green",
+    Dormitory: "blue",
+    Library: "green",
+    StudentLife: "violet",
+    Support: "linen",
 };
 
 export const MAP_STYLE = [
