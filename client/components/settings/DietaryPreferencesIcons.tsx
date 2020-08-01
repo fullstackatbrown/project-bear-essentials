@@ -7,7 +7,7 @@ import VegetarianIcon from "../../assets/icons/vegetarian-icon.svg";
 import GlutenFreeIcon from "../../assets/icons/gluten-free-icon.svg";
 
 interface DietaryPreferencesIconsProps {
-    preferences: Map<string, boolean>
+    preferences: Array<string>
 }
 
 export const getDietaryPreferenceIcon = (preference: string) => {
@@ -31,12 +31,7 @@ export const getDietaryPreferenceIcon = (preference: string) => {
 const DietaryPreferencesIcons: React.FC<DietaryPreferencesIconsProps> = ({preferences}) => {
     return (
         <View style={styles.container}>
-            {Array.from(preferences).map(preference => {
-                const [name, selected] = preference;
-                if (selected) {
-                    return getDietaryPreferenceIcon(name);
-                }
-            })}
+            {preferences.map(preference => getDietaryPreferenceIcon(preference))}
         </View>
     );
 };

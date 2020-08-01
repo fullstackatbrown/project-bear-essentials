@@ -4,6 +4,18 @@ import {RouteProp, NavigationProp} from "@react-navigation/core";
 import {SettingsStackParamList} from "./Settings";
 import SettingsSelect from "./SettingsSelect";
 import {getDietaryPreferenceIcon} from "./DietaryPreferencesIcons";
+import { connect } from "react-redux";
+import { togglePreference } from "../../redux/ActionCreators";
+
+const mapStateToProps = state => {
+    return {
+        preferences: state.settings.preferences
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    togglePreference: preference => dispatch(togglePreference(preference))
+});
 
 type DietaryPreferencesRouteProp = RouteProp<SettingsStackParamList, "DietaryPreferences">;
 type DietaryPreferencesNavigationProp = NavigationProp<SettingsStackParamList, "DietaryPreferences">;
@@ -13,13 +25,15 @@ interface DietaryPreferencesProps {
     navigation: DietaryPreferencesNavigationProp;
 }
 
-const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({route}) => {
-    const {preferences, onSelect} = route.params;
+const allPreferences = ["gluten-free", "halal", "kosher", "vegan", "vegetarian"];
+
+const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({route, preferences, togglePreference}) => {
     let preferenceList: Array<JSX.Element> = [];
-    preferences.forEach((selected, preference) => {
+    allPreferences.forEach((preference) => {
         const icon = getDietaryPreferenceIcon(preference);
         const title = preference.charAt(0).toUpperCase() + preference.slice(1);
-        preferenceList.push(<SettingsSelect icon={icon} id={preference} key={preference} title={title} selected={selected} onPress={onSelect} />);
+        const selected = preferences.includes(preference);
+        preferenceList.push(<SettingsSelect icon={icon} id={preference} key={preference} title={title} selected={selected} onPress={(e) => togglePreference(e)} />);
     });
     const desc: string = "Once a dining preference is turned on, the app will only show foods from the selected categories.";
     return (
@@ -43,4 +57,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DietaryPreferences;
+export default connect(mapStateToProps, mapDispatchToProps)(DietaryPreferences);
