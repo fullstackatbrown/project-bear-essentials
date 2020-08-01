@@ -1,11 +1,24 @@
 import React, {useState} from "react";
 import {View, StyleSheet, SafeAreaView} from "react-native";
 import {RouteProp, NavigationProp} from "@react-navigation/core";
+import { connect } from "react-redux";
+
 import {SettingsStackParamList} from "./Settings";
 import SettingsSwitch from "./SettingsSwitch";
 import SettingsTab from "./SettingsTab";
 import DietaryPreferencesIcons from "./DietaryPreferencesIcons";
 import SimpleHeader from "../reusable/SimpleHeader";
+import { toggleTheme } from "../../redux/ActionCreators";
+
+const mapStateToProps = state => {
+    return {
+        darkmode: state.settings.darkmode,
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    toggleTheme: () => dispatch(toggleTheme()),
+});
 
 type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsScreen">;
 type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, "SettingsScreen">;
@@ -15,8 +28,7 @@ interface SettingsScreenProps {
     navigation: SettingsScreenNavigationProp;
 }
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScreenProps) => {
-    const [darkTheme, setDarkTheme] = useState(false);
+const SettingsScreen: React.FC<SettingsScreenProps> = ({darkmode, toggleTheme, navigation}: SettingsScreenProps) => {
     const [preferences, setPreferences] = useState(new Map<string, boolean>([["gluten-free", false], ["halal", true], ["kosher", true], ["vegan", false], ["vegetarian", false]]));
     const toggleDarkTheme = () => {
         setDarkTheme(!darkTheme);
@@ -42,7 +54,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScr
             <SimpleHeader>Settings</SimpleHeader>
             <SettingsTab title="Dietary preferences" onPress={navigateToDietaryPreferences} rightElement={<DietaryPreferencesIcons preferences={preferences} />} />
             <SettingsTab title="Laundry notifications" onPress={navigateToLaundryNotifications} />
-            <SettingsSwitch title="Dark theme" value={darkTheme} onSwitch={toggleDarkTheme} style={styles.sectionHeader} />
+            <SettingsSwitch title="Dark theme" value={darkmode} onSwitch={toggleTheme} style={styles.sectionHeader} />
             <SettingsTab title="Developer team" onPress={navigateToDeveloperTeam} style={styles.sectionHeader} />
         </SafeAreaView>
     );
@@ -58,4 +70,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SettingsScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
