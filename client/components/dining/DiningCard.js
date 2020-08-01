@@ -1,5 +1,11 @@
-import React, { Platform, useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Text,
+    Platform,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { fetchHours } from "./DinQueries";
