@@ -6,11 +6,16 @@ import {
     TouchableOpacity,
     AntDesign,
 } from "react-native";
-import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
+import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 
 export const DiningMenu = props => {
-    const [diningMenu, setDiningMenu] = useState({});
+    const [starred, setStarred] = useState(props.isStarred ? true : false);
+    const [starName, setStarName] = useState(starred ? "star" : "staro");
+    const [starColor, setStarColor] = useState(
+        starred ? Colors.starYellow : Colors.inactiveIcon
+    );
+    const [isClosed, setClosed] = useState(false);
 
     return (
         <View style={styles.screen}>
@@ -25,6 +30,9 @@ export const DiningMenu = props => {
                     />
                 </TouchableOpacity>
             </View>
+            <View style={styles.openHours}></View>
+            <Text>Entrees</Text>
+                <View style={styles.horizontalLine} />
         </View>
     );
 };
@@ -54,5 +62,34 @@ const styles = StyleSheet.create({
     },
     starArea: {
         height: 32,
+    },
+    horizontalLine: {
+        marginBottom: 18,
+        alignSelf: "center",
+        width: "86%",
+        borderBottomColor: "#D3D3D3",
+        borderBottomWidth: 1,
+    },
+    openHours: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    open: {
+        color: Colors.success,
+        borderColor: Colors.success,
+    },
+    closed: {
+        color: Colors.danger,
+        borderColor: Colors.danger,
+    },
+    sign: {
+        textTransform: "uppercase",
+        fontSize: 20,
+        borderWidth: 1.5,
+        borderRadius: 6,
+        paddingHorizontal: 8,
+        paddingTop: 2,
+        paddingBottom: 1,
+        fontWeight: "600",
     },
 });

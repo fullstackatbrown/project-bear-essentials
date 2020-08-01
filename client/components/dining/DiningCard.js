@@ -20,7 +20,6 @@ const DiningCard = props => {
     const [hallHours, setHallHours] = useState("Loading...");
     const [loading, setLoading] = useState(true);
     const [isClosed, setClosed] = useState(false);
-    const [menuSummary, setMenuSummary] = useState([]);
     const { navigation } = props;
 
     // handles changes to star icon if pressed
