@@ -14,7 +14,7 @@ import {pluralize} from "./utils";
 import {fetchLaundryRoomDetailed} from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors";
-import {LAUNDRY_DATA} from "../../data/dummydata/laundry/endpoint" // for testing
+import {LAUNDRY_DATA} from "../../data/dummydata/laundry/endpoint"; // for testing
 
 // Component representing an individual laundry room
 const LaundryCard = (props) => {

@@ -1,16 +1,13 @@
-// TODO: Figure out why this exists
-const tintColor = "#2f95dc";
-
 export default {
     tintColor: "#cc0200",
     tabIconDefault: "#ccc",
-    tabIconSelected: tintColor,
+    tabIconSelected: "#2f95dc",
     tabBar: "#fff",
     errorBackground: "red",
     errorText: "#fff",
     warningBackground: "#EAEB5E",
     warningText: "#666804",
-    noticeBackground: tintColor,
+    noticeBackground: "#2f95dc",
     noticeText: "#fff",
     bearBrown: "#7d5125",
     starYellow: "#ffef26",

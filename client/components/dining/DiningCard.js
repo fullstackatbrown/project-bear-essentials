@@ -58,17 +58,17 @@ const DiningCard = props => {
 
     // formats the time returned from the api
     const timeFormatter = time => {
-        let num = parseInt(time.slice(0, 2))
+        let num = parseInt(time.slice(0, 2));
         if (num < 10) {
-            return `${time.slice(1)} am`
+            return `${time.slice(1)} am`;
         } else if (num >= 10 && num <= 12) {
-            return `${time} am`
+            return `${time} am`;
         } else {
-            num -= 12
-            time = `${num}${time.slice(2)}`
-            return `${time} pm`
+            num -= 12;
+            time = `${num}${time.slice(2)}`;
+            return `${time} pm`;
         }
-    }
+    };
 
     // returns correct open status and hours
     const hoursHandler = () => {
@@ -86,18 +86,18 @@ const DiningCard = props => {
             timeStyle = styles.open;
             text1 = "Closed";
             if (slot === 3) {
-                time = hallHours[1].starttime
+                time = hallHours[1].starttime;
             } else if (slot === 4) {
-                time = hallHours[2].starttime
+                time = hallHours[2].starttime;
             } else if (slot === 5) {
-                time = hallHours[0].starttime
+                time = hallHours[0].starttime;
             }
         }
         time = timeFormatter(time);
         if (slot <= 2) {
-            text2 = `Closes ${time}`
+            text2 = `Closes ${time}`;
         } else {
-            text2 = `Opens ${time}`
+            text2 = `Opens ${time}`;
         }
         return (
             <View style={styles.info}>
@@ -116,8 +116,8 @@ const DiningCard = props => {
                 <Text style={styles.menuText}>Turkey bacon, oatmeal, eggs...</Text>
                 <AntDesign name="right" size={24} color="#CCCCCC" />
             </View>
-        )
-    }
+        );
+    };
 
     // handles detail return and loading delay
     const detailHandler = () => {
@@ -143,7 +143,7 @@ const DiningCard = props => {
                 <View style={styles.info}>
                     <Text style={[styles.text, styles.closed]}>Closed All Day</Text>
                 </View>
-            )
+            );
         }
         else {
             return (
@@ -151,9 +151,9 @@ const DiningCard = props => {
                     {hoursHandler()}
                     {menuHandler()}
                 </View>
-            )
+            );
         }
-    }
+    };
 
     useEffect(() => {
         let mounted = true;
@@ -174,7 +174,7 @@ const DiningCard = props => {
         return () => {
             mounted = false;
             clearInterval(interval);
-        }
+        };
     }, []);
 
     return (

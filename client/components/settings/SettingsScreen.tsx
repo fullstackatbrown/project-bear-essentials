@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import {View, StyleSheet, SafeAreaView} from "react-native";
-import {RouteProp, NavigationProp} from '@react-navigation/core';
-import {SettingsStackParamList} from './Settings';
-import SettingsSwitch from './SettingsSwitch';
-import SettingsTab from './SettingsTab';
-import DietaryPreferencesIcons from './DietaryPreferencesIcons';
+import {RouteProp, NavigationProp} from "@react-navigation/core";
+import {SettingsStackParamList} from "./Settings";
+import SettingsSwitch from "./SettingsSwitch";
+import SettingsTab from "./SettingsTab";
+import DietaryPreferencesIcons from "./DietaryPreferencesIcons";
 import {SimpleHeader} from "../reusable";
 
-type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, 'SettingsScreen'>;
-type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, 'SettingsScreen'>;
+type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsScreen">;
+type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, "SettingsScreen">;
 
 interface SettingsScreenProps {
     route: SettingsScreenRouteProp;
@@ -16,26 +16,26 @@ interface SettingsScreenProps {
 }
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScreenProps) => {
-    const [darkTheme, setDarkTheme] = useState(false)
-    const [preferences, setPreferences] = useState(new Map<string, boolean>([['gluten-free', false], ['halal', true], ['kosher', true], ['vegan', false], ['vegetarian', false]]))
+    const [darkTheme, setDarkTheme] = useState(false);
+    const [preferences, setPreferences] = useState(new Map<string, boolean>([["gluten-free", false], ["halal", true], ["kosher", true], ["vegan", false], ["vegetarian", false]]));
     const toggleDarkTheme = () => {
         setDarkTheme(!darkTheme);
-    }
+    };
     const onSelect = (preference: string) => {
         let newPreferences = new Map(preferences);
         newPreferences.set(preference, !preferences.get(preference));
         setPreferences(newPreferences);
-    }
+    };
 
     const navigateToLaundryNotifications = () => {
-        navigation.navigate("LaundryNotifications")
-    }
+        navigation.navigate("LaundryNotifications");
+    };
     const navigateToDietaryPreferences = () => {
-        navigation.navigate("DietaryPreferences", {preferences: preferences, onSelect: onSelect})
-    }
+        navigation.navigate("DietaryPreferences", {preferences: preferences, onSelect: onSelect});
+    };
     const navigateToDeveloperTeam = () => {
-        navigation.navigate("DeveloperTeam")
-    }
+        navigation.navigate("DeveloperTeam");
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -46,12 +46,12 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({navigation}: SettingsScr
             <SettingsTab title="Developer team" onPress={navigateToDeveloperTeam} style={styles.sectionHeader} />
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignContent: 'center',
+        alignContent: "center",
     },
     sectionHeader: {
         marginTop: 30,

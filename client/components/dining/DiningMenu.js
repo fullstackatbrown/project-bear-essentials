@@ -8,21 +8,21 @@ export const DiningMenu = () => {
 
     return (
         <View style={styles.screen}>
-        <View style={styles.header}>
-        <Text style={styles.title}>{props.name}</Text>
-            <TouchableOpacity
-                style={styles.starArea}
-                onPress={starHandler}
-            >
-            <AntDesign
-                style={styles.star}
-                name={starName}
-                size={30}
-                color={starColor}
-                />
-            </TouchableOpacity>
+            <View style={styles.header}>
+                <Text style={styles.title}>{props.name}</Text>
+                <TouchableOpacity
+                    style={styles.starArea}
+                    onPress={starHandler}
+                >
+                    <AntDesign
+                        style={styles.star}
+                        name={starName}
+                        size={30}
+                        color={starColor}
+                    />
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
     );
 };
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     starArea: {
         height: 32,
-      },
+    },
 });
 
 

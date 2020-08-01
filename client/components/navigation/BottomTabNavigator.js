@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from "react-native";
 
 import DiningScreen from "../dining/DiningScreen";
 import LaundryScreen from "../laundry/LaundryScreen";
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
     tabs: {
         paddingVertical: 10
     }
-})
+});
