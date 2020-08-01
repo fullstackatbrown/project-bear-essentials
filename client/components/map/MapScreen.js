@@ -6,14 +6,13 @@ import {
     StyleSheet,
     CheckBox,
     Modal,
-    TouchableHighlight,
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { connect } from "react-redux";
-import { INITIAL_REGION, FLAGS, FLAGS_COLORS, MAP_STYLE } from "./MapConfig";
+import { INITIAL_REGION, FLAGS, FLAGS_COLORS } from "./MapConfig";
 import { BUILDINGS } from "../../data/mapdata/parsedBuildings";
 import { addFlag, deleteFlag } from "../../redux/ActionCreators";
 

@@ -7,18 +7,16 @@ import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
 import Settings from "../settings";
 
-// import icons
 import LaundryIcon from "./LaundryIcon";
 import DiningIcon from "./DiningIcon";
 import MapIcon from "./MapIcon";
 import SettingsIcon from "./SettingsIcon";
-//import colors
 import Colors from "../../constants/Colors";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-export default function BottomTabNavigator({}) {
+export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
             initialRouteName={INITIAL_ROUTE_NAME}

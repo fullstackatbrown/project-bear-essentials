@@ -1,19 +1,22 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    AntDesign,
+} from "react-native";
 import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
 import { ScrollView } from "react-native-gesture-handler";
 
-export const DiningMenu = () => {
+export const DiningMenu = props => {
     const [diningMenu, setDiningMenu] = useState({});
 
     return (
         <View style={styles.screen}>
             <View style={styles.header}>
                 <Text style={styles.title}>{props.name}</Text>
-                <TouchableOpacity
-                    style={styles.starArea}
-                    onPress={starHandler}
-                >
+                <TouchableOpacity style={styles.starArea} onPress={starHandler}>
                     <AntDesign
                         style={styles.star}
                         name={starName}
@@ -29,7 +32,7 @@ export const DiningMenu = () => {
 // useEffect(() => {
 //     const fetchMenu = async () => {
 //         const menu = await fetchMenuDetailed(id[props.name]);
-//         setHallHours(menu.menu.dayparts[0].stations); 
+//         setHallHours(menu.menu.dayparts[0].stations);
 //     };
 //     fetchMenu();
 // }, []);
@@ -53,5 +56,3 @@ const styles = StyleSheet.create({
         height: 32,
     },
 });
-
-
