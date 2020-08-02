@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import { pluralize } from "./utils";
@@ -8,17 +8,11 @@ import Colors from "../../constants/Colors";
 // Component representing an individual laundry machine
 const LaundryMachine = props => {
 
-    // are push notifications toggled for this machine?
-    const [notif, setNotif] = useState(props.isNotif ? true : false);
-
     // machine details
     const thisMachine = props.machine;
 
     // when bell is pressed
-    const bellHandler = async () => {
-        const isNotif = await props.notifAction(thisMachine.time_remaining);
-        setNotif(isNotif);
-    };
+    const bellHandler = () => props.notifAction(thisMachine.time_remaining);
 
     // machine is either offline, ext. cycle, available, or in use
     if (thisMachine.offline) {
@@ -53,7 +47,7 @@ const LaundryMachine = props => {
                     {pluralize(thisMachine.time_remaining, "minute")} rem.)
                 </Text>
                 <TouchableOpacity onPress={bellHandler}>
-                    <BellIcon focused={notif} />
+                    <BellIcon focused={props.isNotif} />
                 </TouchableOpacity>
             </View>
         );

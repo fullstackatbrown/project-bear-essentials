@@ -45,22 +45,40 @@ class LaundryScreen extends Component {
       suggestionsLimit: 10,
     };
 
-    (this.cards = null), // to be fetched
-      (this.canLoadMore = true);
+    this.cards = null; // to be fetched
+    this.canLoadMore = true; // continue infinite scroll
 
     this.fetchCards = this.fetchCards.bind(this);
     this.onTextChanged = this.onTextChanged.bind(this);
     this.onNotifChanged = this.onNotifChanged.bind(this);
     this.onStarChanged = this.onStarChanged.bind(this);
     this.isCloseToBottom = this.isCloseToBottom.bind(this);
+    this.onNotif = this.onNotif.bind(this);
   }
 
-  // fetch cards when mounted
   componentDidMount() {
+    // clean out past notifications from redux by looking at notifTime
+    const now = new Date().getTime();
+    this.props.notifications
+      .map(str => [str, str.split("///")]) // split -> [roomId, machineId, notifId, notifTime]
+      .filter(arr => arr[1].length != 4 || arr[1][3] <= now)
+      .forEach(arr => {
+        this.props.deleteNotification(arr[0]);
+      });
+
+    // set timeouts to call onNotif()
+    this.notifTimeouts = this.props.notifications
+      .map(str => setTimeout(() => this.onNotif(str), str.split("///")[3] - now))
+
     this.fetchCards();
   }
 
-  // fetches cards and then cleans this.props.starred during loading state
+  componentWillUnmount() {
+    // clear timeouts for showing notif popup and cleaning notifcations out of redux
+    this.notifTimeouts.map(clearTimeout);
+  }
+
+  // fetches cards and then cleans this.props.starred during loading
   fetchCards = async () => {
     if (!this.state.loading) {
       this.setState({ loading: true });
@@ -76,6 +94,11 @@ class LaundryScreen extends Component {
     this.setState({ loading: false });
   };
 
+  // Called on notification; deletes notification from redux and updates
+  onNotif = (notifInfo) => {
+    this.props.deleteNotification(notifInfo);
+  };
+
   // Called when a card is starred or unstarred
   onStarChanged = (card) => {
     if (this.props.starred.includes(card)) {
@@ -87,27 +110,26 @@ class LaundryScreen extends Component {
 
   // Called when a machine's notification is set or unset
   onNotifChanged = (roomId, roomName) => (machineId, machineName) => async (timeRemaining) => {
-    console.log(timeRemaining);
-
     const roomMachine = `${roomId}///${machineId}`;
     const prevNotifs = this.props.notifications.filter(n => n.startsWith(roomMachine));
 
-    console.log(prevNotifs);
-
-    if (prevNotifs.length > 0) {
+    if (prevNotifs.length > 0) { // delete notif
       prevNotifs.forEach((p) => {
-        this.props.deleteNotification(p);
         const notifId = p.split("///")[2];
-        if (notifId) cancelNotification(notifId);
-        console.log(`[NOTIF DELETED] ${notifId}`);
+        this.props.deleteNotification(p);
+        cancelNotification(notifId);
         return false;
       });
-    } else {
-      askNotification();
+    } else { // add notif
+      askNotification(); // ensure we have notification permissions
+
       const notifBody = `${roomName} ${machineName} has finished.`
-      const [notifId, notifTime] = await scheduleNotification("Laundry Ready!", notifBody, 0.1); // timeRemaining
-      this.props.addNotification(`${roomMachine}///${notifId}`);
-      console.log(`[NOTIF ADDED] ${notifId}`);
+      const [notifId, notifTime] = await scheduleNotification("Laundry Ready!", notifBody, timeRemaining);
+      const newNotif = [roomMachine, notifId, notifTime].join("///");
+      const now = new Date().getTime();
+
+      this.props.addNotification(newNotif);
+      this.notifTimeouts.push(setTimeout(() => this.onNotif(newNotif), notifTime - now));
       return true;
     }
   };
@@ -154,9 +176,9 @@ class LaundryScreen extends Component {
               card={this.cards[room]}
               isStarred={this.props.starred.includes(room)}
               notifList={this.props.notifications
-                .map((str) => str.split("///")) // split into [room, machine]
-                .filter(([r, _]) => r === room) // check room
-                .map((rm) => rm[1])} // extract machine id
+                .map(str => str.split("///")) // split into [roomId, machineId, ...]
+                .filter(arr => arr[0] === room) // check room
+                .map(arr => arr[1])} // extract machine id
               starAction={() => this.onStarChanged(room)}
               notifAction={this.onNotifChanged(room, this.cards[room].title)}
             />

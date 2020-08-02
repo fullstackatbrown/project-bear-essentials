@@ -24,7 +24,7 @@ export const LAUNDRY_DATA = [
         avail: false,
         ext_cycle: false,
         offline: false,
-        time_remaining: 19,
+        time_remaining: 1,
     },
     {
         id: 66760,

@@ -9,12 +9,22 @@ export const askNotification = async () => {
     console.log("Notification permissions granted.");
 };
 
-// Schedules a local notification
-// returns id of notification
+// Schedules a local notification, returns id and time of notification
 export const scheduleNotification = async (title, body, minutes) => {
-  const notifContent = { title, body };
 
-  let time = new Date().getTime() + Number(minutes * 60000);
+  const notifContent = {
+    title,
+    body,
+    ios: {
+      sound: true,
+    },
+    android: {
+       sound: true,
+       vibrate: true,
+    },
+  };
+
+  const time = new Date().getTime() + Number(minutes * 60000);
   const schedulingOptions = { time };
 
   const notifId = await Notifications.scheduleLocalNotificationAsync(
@@ -25,6 +35,5 @@ export const scheduleNotification = async (title, body, minutes) => {
 };
 
 export const cancelNotification = (id) => {
-  console.log("[CANCELLED NOTIFICATION]");
   Notifications.cancelScheduledNotificationAsync(id);
 };
