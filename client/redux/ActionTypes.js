@@ -16,3 +16,4 @@ export const DELETE_FLAG = "DELETE_FLAG";
 
 // Settings
 export const TOGGLE_THEME = "TOGGLE_THEME";
+export const TOGGLE_PREFERENCE = "TOGGLE_PREFERENCE";

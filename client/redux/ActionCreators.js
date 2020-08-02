@@ -43,3 +43,8 @@ export const deleteFlag = flag => ({
 export const toggleTheme = () => ({
     type: ActionTypes.TOGGLE_THEME,
 });
+
+export const togglePreference = preference => ({
+    type: ActionTypes.TOGGLE_PREFERENCE,
+    payload: preference,
+});

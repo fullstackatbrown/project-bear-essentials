@@ -8,42 +8,39 @@ import SettingsSwitch from "./SettingsSwitch";
 import SettingsTab from "./SettingsTab";
 import DietaryPreferencesIcons from "./DietaryPreferencesIcons";
 import SimpleHeader from "../reusable/SimpleHeader";
-import { toggleTheme } from "../../redux/ActionCreators";
+import { toggleTheme, togglePreference } from "../../redux/ActionCreators";
 
 const mapStateToProps = state => {
     return {
         darkmode: state.settings.darkmode,
+        preferences: state.settings.preferences
     };
 };
 
 const mapDispatchToProps = dispatch => ({
     toggleTheme: () => dispatch(toggleTheme()),
+    togglePreference: preference => dispatch(togglePreference(preference))
 });
 
 type SettingsScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsScreen">;
 type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList, "SettingsScreen">;
 
 interface SettingsScreenProps {
+    darkmode: Boolean,
+    toggleTheme: Function,
+    preferences: Array<string>,
+    togglePreference: Function,
     route: SettingsScreenRouteProp;
     navigation: SettingsScreenNavigationProp;
 }
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({darkmode, toggleTheme, navigation}: SettingsScreenProps) => {
-    const [preferences, setPreferences] = useState(new Map<string, boolean>([["gluten-free", false], ["halal", true], ["kosher", true], ["vegan", false], ["vegetarian", false]]));
-    const toggleDarkTheme = () => {
-        setDarkTheme(!darkTheme);
-    };
-    const onSelect = (preference: string) => {
-        let newPreferences = new Map(preferences);
-        newPreferences.set(preference, !preferences.get(preference));
-        setPreferences(newPreferences);
-    };
 
+const SettingsScreen: React.FC<SettingsScreenProps> = ({darkmode, toggleTheme, preferences, navigation}: SettingsScreenProps) => {
     const navigateToLaundryNotifications = () => {
         navigation.navigate("LaundryNotifications");
     };
     const navigateToDietaryPreferences = () => {
-        navigation.navigate("DietaryPreferences", {preferences: preferences, onSelect: onSelect});
+        navigation.navigate("DietaryPreferences", {preferences: preferences});
     };
     const navigateToDeveloperTeam = () => {
         navigation.navigate("DeveloperTeam");

@@ -8,7 +8,7 @@ import DeveloperTeam from "./DeveloperTeam";
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
-    DietaryPreferences: {preferences: Map<string, boolean>, onSelect: (preference: string) => void};
+    DietaryPreferences: {preferences: Array<string>, onSelect: (preference: string) => void};
     LaundryNotifications: undefined;
     DeveloperTeam: undefined;
 }
