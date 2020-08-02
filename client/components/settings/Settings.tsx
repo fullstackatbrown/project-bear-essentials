@@ -1,10 +1,10 @@
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import React from "react";
+import {createStackNavigator} from "@react-navigation/stack";
 
-import SettingsScreen from './SettingsScreen';
-import DietaryPreferences from './DietaryPreferences';
-import LaundryNotifications from './LaundryNotifications';
-import DeveloperTeam from './DeveloperTeam';
+import SettingsScreen from "./SettingsScreen";
+import DietaryPreferences from "./DietaryPreferences";
+import LaundryNotifications from "./LaundryNotifications";
+import DeveloperTeam from "./DeveloperTeam";
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
@@ -25,7 +25,7 @@ const Settings: React.FC<SettingsStackProps> = () => {
             <SettingsStack.Screen name="LaundryNotifications" component={LaundryNotifications} options={{title: "Laundry Notifications"}} />
             <SettingsStack.Screen name="DeveloperTeam" component={DeveloperTeam} options={{title: "Developer Team"}} />
         </SettingsStack.Navigator>
-    )
-}
+    );
+};
 
 export default Settings;

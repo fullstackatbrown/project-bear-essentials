@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     Text,
     View,
@@ -6,14 +6,14 @@ import {
     StyleSheet,
     CheckBox,
     Modal,
-    TouchableHighlight,
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { connect } from "react-redux";
-import { INITIAL_REGION, FLAGS, FLAGS_COLORS, MAP_STYLE } from "./MapConfig";
+import Header from "../reusable/Header";
+import { INITIAL_REGION, FLAGS, FLAGS_COLORS } from "./MapConfig";
 import { BUILDINGS } from "../../data/mapdata/parsedBuildings";
 import { addFlag, deleteFlag } from "../../redux/ActionCreators";
 
@@ -30,6 +30,9 @@ const mapDispatchToProps = dispatch => ({
 
 const MapScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [region, setRegion] = useState(INITIAL_REGION);
+    const [selected, setSelected] = useState({});
+    const markerRef = useRef(null);
 
     const RenderFlags = () => {
         return (
@@ -57,50 +60,35 @@ const MapScreen = props => {
     const RenderMarkers = () => {
         return (
             <>
-                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e => (
-                    <Marker
-                        coordinate={{ latitude: e.latitude, longitude: e.longitude }}
+                {BUILDINGS.filter(e => props.flags.includes(e.use)).map(e => {
+                    if (e.name == selected.name) {
+                        return <Marker
+                            coordinate={{
+                                latitude: e.latitude,
+                                longitude: e.longitude,
+                            }}
+                            key={e.id}
+                            title={e.name}
+                            pinColor={FLAGS_COLORS[e.use]}
+                            ref={markerRef}
+                        ></Marker>;
+                    }
+                    return <Marker
+                        coordinate={{
+                            latitude: e.latitude,
+                            longitude: e.longitude,
+                        }}
                         key={e.id}
                         title={e.name}
                         pinColor={FLAGS_COLORS[e.use]}
-                    ></Marker>
-                ))}
+                    ></Marker>;
+                })}
             </>
         );
     };
 
-    return (
-        <View style={styles.app}>
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={{ ...StyleSheet.absoluteFillObject }}
-                initialRegion={INITIAL_REGION}
-            >
-                <RenderMarkers />
-            </MapView>
-            <Button
-                buttonStyle={styles.button}
-                icon={() => (
-                    <Icon
-                        reverse
-                        name="map-marker"
-                        type="font-awesome"
-                        color="transparent"
-                    />
-                )}
-                onPress={() => setModalVisible(true)}
-            />
-            <Button
-                buttonStyle={styles.button}
-                icon={() => (
-                    <Icon
-                        reverse
-                        name="location-arrow"
-                        type="font-awesome"
-                        color="transparent"
-                    />
-                )}
-            />
+    const FlagsModal = () => {
+        return (
             <Modal
                 animationType="slide"
                 visible={modalVisible}
@@ -131,11 +119,66 @@ const MapScreen = props => {
                     </View>
                 </TouchableOpacity>
             </Modal>
+        );
+    };
+
+    const onChangeText = prefix => {
+        const results = BUILDINGS.filter(
+            e => e.name.toLowerCase().startsWith(prefix.toLowerCase()) && props.flags.includes(e.use)
+        );
+        if (prefix && results.length > 0) {
+            const firstResult = results[0];
+            setRegion({
+                latitude: firstResult.latitude,
+                longitude: firstResult.longitude,
+                latitudeDelta: 0.002,
+                longitudeDelta: 0.002,
+            });
+            setSelected(firstResult);
+        }
+    };
+
+    useEffect(() => {
+        if (markerRef && markerRef.current) {
+            markerRef.current.showCallout();
+        }
+    });
+
+    return (
+        <View style={styles.screen}>
+            <Header onChangeText={onChangeText}>Map</Header>
+            <View style={styles.app}>
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={{ ...StyleSheet.absoluteFillObject }}
+                    initialRegion={INITIAL_REGION}
+                    region={region}
+                >
+                    <RenderMarkers />
+                </MapView>
+                <Button
+                    buttonStyle={styles.button}
+                    icon={() => (
+                        <Icon
+                            reverse
+                            name="map-marker"
+                            type="font-awesome"
+                            color="transparent"
+                        />
+                    )}
+                    onPress={() => setModalVisible(true)}
+                />
+                <FlagsModal />
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        backgroundColor: "#fafafa",
+    },
     app: {
         flex: 1,
         alignItems: "flex-end",

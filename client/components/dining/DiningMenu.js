@@ -1,35 +1,46 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { DINING_DATA } from "../../data/dummydata/dining/endpoint";
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    AntDesign,
+} from "react-native";
+import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 
-export const DiningMenu = () => {
-    const [diningMenu, setDiningMenu] = useState({});
+export const DiningMenu = props => {
+    const [starred, setStarred] = useState(props.isStarred ? true : false);
+    const [starName, setStarName] = useState(starred ? "star" : "staro");
+    const [starColor, setStarColor] = useState(
+        starred ? Colors.starYellow : Colors.inactiveIcon
+    );
+    const [isClosed, setClosed] = useState(false);
 
     return (
         <View style={styles.screen}>
-        <View style={styles.header}>
-        <Text style={styles.title}>{props.name}</Text>
-            <TouchableOpacity
-                style={styles.starArea}
-                onPress={starHandler}
-            >
-            <AntDesign
-                style={styles.star}
-                name={starName}
-                size={30}
-                color={starColor}
-                />
-            </TouchableOpacity>
+            <View style={styles.header}>
+                <Text style={styles.title}>{props.name}</Text>
+                <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                    <AntDesign
+                        style={styles.star}
+                        name={starName}
+                        size={30}
+                        color={starColor}
+                    />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.openHours}></View>
+            <Text>Entrees</Text>
+                <View style={styles.horizontalLine} />
         </View>
-    </View>
     );
 };
 
 // useEffect(() => {
 //     const fetchMenu = async () => {
 //         const menu = await fetchMenuDetailed(id[props.name]);
-//         setHallHours(menu.menu.dayparts[0].stations); 
+//         setHallHours(menu.menu.dayparts[0].stations);
 //     };
 //     fetchMenu();
 // }, []);
@@ -51,7 +62,34 @@ const styles = StyleSheet.create({
     },
     starArea: {
         height: 32,
-      },
+    },
+    horizontalLine: {
+        marginBottom: 18,
+        alignSelf: "center",
+        width: "86%",
+        borderBottomColor: "#D3D3D3",
+        borderBottomWidth: 1,
+    },
+    openHours: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    open: {
+        color: Colors.success,
+        borderColor: Colors.success,
+    },
+    closed: {
+        color: Colors.danger,
+        borderColor: Colors.danger,
+    },
+    sign: {
+        textTransform: "uppercase",
+        fontSize: 20,
+        borderWidth: 1.5,
+        borderRadius: 6,
+        paddingHorizontal: 8,
+        paddingTop: 2,
+        paddingBottom: 1,
+        fontWeight: "600",
+    },
 });
-
-

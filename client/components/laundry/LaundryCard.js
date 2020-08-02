@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Platform,
     StyleSheet,
@@ -6,18 +6,18 @@ import {
     Text,
     TouchableOpacity,
 } from "react-native";
-import {AntDesign, Ionicons} from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 import LottieView from "lottie-react-native";
 
-import {pluralize} from "./utils";
-import {fetchLaundryRoomDetailed} from "./queries";
+import { pluralize } from "./utils";
+import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors";
-import {LAUNDRY_DATA} from "../../data/dummydata/laundry/endpoint" // for testing
+import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint"; // for testing
 
 // Component representing an individual laundry room
-const LaundryCard = (props) => {
+const LaundryCard = props => {
     // initial fetching of card data
     const [loading, setLoading] = useState(true);
 
@@ -69,7 +69,7 @@ const LaundryCard = (props) => {
     const summaryHandler = () => {
         if (loading) {
             return (
-                <View style={{width: "100%"}}>
+                <View style={{ width: "100%" }}>
                     <LottieView
                         source={require("./animations/small-loader.json")}
                         autoPlay
@@ -86,7 +86,9 @@ const LaundryCard = (props) => {
             );
         } else if (numAvailWashers == 0 && numAvailDryers == 0) {
             return (
-                <Text style={[styles.fail, styles.words]}>No available machines</Text>
+                <Text style={[styles.fail, styles.words]}>
+                    No available machines
+                </Text>
             );
         } else if (numAvailDryers == 0) {
             return (
@@ -114,25 +116,33 @@ const LaundryCard = (props) => {
     // re-parse room data on changes in machineInfo or loading states
     useEffect(() => {
         let mounted = true;
-        const fetchData = async (isInitial) => {
-            const {data} = await fetchLaundryRoomDetailed(props.card.id);
+        const fetchData = async isInitial => {
+            const { data } = await fetchLaundryRoomDetailed(props.card.id);
+
             if (mounted) {
                 let newWashers = [];
                 let newDryers = [];
                 let newNumAvailWashers = 0;
                 let newNumAvailDryers = 0;
 
-                LAUNDRY_DATA // data.data.laundryRoomDetailed.machines
-                    .sort((a, b) => a.machine_no - b.machine_no)
-                    .forEach((machine) => {
+                LAUNDRY_DATA.sort((a, b) => a.machine_no - b.machine_no) // data.data.laundryRoomDetailed.machines
+                    .forEach(machine => {
                         if (machine.type == "wash") {
                             newWashers.push(machine);
-                            if (machine.avail && !machine.offline && !machine.ext_cycle) {
+                            if (
+                                machine.avail &&
+                                !machine.offline &&
+                                !machine.ext_cycle
+                            ) {
                                 newNumAvailWashers++;
                             }
                         } else if (machine.type == "dry") {
                             newDryers.push(machine);
-                            if (machine.avail && !machine.offline && !machine.ext_cycle) {
+                            if (
+                                machine.avail &&
+                                !machine.offline &&
+                                !machine.ext_cycle
+                            ) {
                                 newNumAvailDryers++;
                             }
                         }
@@ -164,11 +174,14 @@ const LaundryCard = (props) => {
             <View style={styles.card}>
                 <TouchableOpacity activeOpacity={0.6} onPress={arrowHandler}>
                     <View style={styles.colSections}>
-                        <View style={{maxWidth: "80%"}}>
+                        <View style={{ maxWidth: "80%" }}>
                             <Text style={styles.title}>{props.card.title}</Text>
                             {roomNumberHandler()}
                         </View>
-                        <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                        <TouchableOpacity
+                            style={styles.starArea}
+                            onPress={starHandler}
+                        >
                             <AntDesign
                                 style={styles.star}
                                 name={starName}
@@ -183,7 +196,9 @@ const LaundryCard = (props) => {
                             {!loading && (
                                 <View style={styles.colSections}>
                                     <View>
-                                        <Text style={styles.tapText}>Tap to expand</Text>
+                                        <Text style={styles.tapText}>
+                                            Tap to expand
+                                        </Text>
                                     </View>
                                     <View style={styles.upArrow}>
                                         <Ionicons
@@ -200,31 +215,43 @@ const LaundryCard = (props) => {
                     <Collapsible collapsed={collapsed}>
                         <View style={styles.collapsed}>
                             <View>
-                                {allWashers.map((washer) => (
+                                {allWashers.map(washer => (
                                     <LaundryMachine
                                         key={washer.id}
                                         name="Washer"
                                         machine={washer}
-                                        isNotif={props.notifList.includes(washer.id.toString())}
-                                        notifAction={props.notifAction(washer.id, `Washer ${washer.machine_no}`)}
+                                        isNotif={props.notifList.includes(
+                                            washer.id.toString()
+                                        )}
+                                        notifAction={props.notifAction(
+                                            washer.id,
+                                            `Washer ${washer.machine_no}`
+                                        )}
                                     />
                                 ))}
                             </View>
                             <View style={styles.horizontalLine} />
                             <View>
-                                {allDryers.map((dryer) => (
+                                {allDryers.map(dryer => (
                                     <LaundryMachine
                                         key={dryer.id}
                                         name="Dryer"
                                         machine={dryer}
-                                        isNotif={props.notifList.includes(dryer.id.toString())}
-                                        notifAction={props.notifAction(dryer.id, `Dryer ${dryer.machine_no}`)}
+                                        isNotif={props.notifList.includes(
+                                            dryer.id.toString()
+                                        )}
+                                        notifAction={props.notifAction(
+                                            dryer.id,
+                                            `Dryer ${dryer.machine_no}`
+                                        )}
                                     />
                                 ))}
                             </View>
                             <View style={styles.colSections}>
                                 <View>
-                                    <Text style={styles.tapText}>Tap to collapse</Text>
+                                    <Text style={styles.tapText}>
+                                        Tap to collapse
+                                    </Text>
                                 </View>
                                 <View style={styles.upArrow}>
                                     <Ionicons

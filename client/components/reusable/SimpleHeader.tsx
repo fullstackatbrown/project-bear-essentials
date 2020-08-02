@@ -1,31 +1,34 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Colors from '../../constants/Colors';
+import React from "react";
+import {View, Text, StyleSheet, Platform, StatusBar} from "react-native";
 
-interface SimpleHeaderProps {
-    title: string;
-}
-
-const SimpleHeader: React.FC<SimpleHeaderProps> = ({title}) => {
+const SimpleHeader = (props) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{props.children}</Text>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     title: {
+        color: "#cc0200",
+        paddingLeft: 12,
         fontSize: 40,
-        fontWeight: 'bold',
-        color: Colors.tintColor,
+        fontWeight: "bold",
     },
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 25,
-        paddingVertical: 20,
+      
+        height: 110,
+        backgroundColor: "#f9f9f9",
+        elevation: 0,
+        shadowOpacity: 0,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 26,
+        paddingTop: Platform.OS === "ios" ? 30 : StatusBar.currentHeight,
     }
-})
+});
 
 export default SimpleHeader;

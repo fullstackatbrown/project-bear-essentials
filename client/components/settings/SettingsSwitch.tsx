@@ -1,6 +1,6 @@
 import React from "react";
 import {ViewProps, View, StyleSheet, Text, Switch} from "react-native";
-import Colors from '../../constants/Colors';
+import Colors from "../../constants/Colors";
 
 interface SettingsSwitchProps extends ViewProps {
     title: string;
@@ -12,7 +12,7 @@ const SettingsSwitch: React.FC<SettingsSwitchProps> = ({title, value, onSwitch, 
     return (
         <View style={[styles.container, style]}>
             <Text style={styles.title}>{title}</Text>
-            <Switch value={value} onValueChange={onSwitch} trackColor={{true: Colors.tintColor, false: 'grey'}} />
+            <Switch value={value} onValueChange={onSwitch} trackColor={{true: Colors.tintColor, false: "grey"}} />
         </View>
     );
 };
@@ -20,8 +20,8 @@ const SettingsSwitch: React.FC<SettingsSwitchProps> = ({title, value, onSwitch, 
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingVertical: 12,
         paddingHorizontal: 20,
         backgroundColor: "#fff",

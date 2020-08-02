@@ -61,26 +61,5 @@ const fetchMenuDetailed = id => {
     `);
 };
 
-// object returning all dining halls for query text
-const fetchDiningAll = async () => {
-    const { data } = await fetchCafes();
-    const diningIds = data.data.cafes;
 
-    const diningHallsDetailed = {};
-    diningIds.forEach(hall => {
-        if (hall.name in diningHallInfo) {
-            const thisHall = diningHallInfo[hall.name];
-            diningHallsDetailed[thisHall.name] = {
-                name: thisHall.name,
-                queryText: thisHall.queryText,
-                id: hall.id,
-            };
-        } else {
-            console.log("[WARNING]'" + hall.name + "' not found in diningHallInfo");
-        }
-    });
-    return diningHallsDetailed;
-};
-
-
-export { fetchMenuDetailed, fetchHours, fetchDiningAll };
+export {fetchMenuDetailed, fetchHours};

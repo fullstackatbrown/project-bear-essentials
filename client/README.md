@@ -14,10 +14,10 @@ After installing dependencies by running `yarn`, you can serve an instance of th
 
 This project uses ESLint to enforce code style. To run the linter, run `yarn lint` in the `client/` directory. Some rules to note:
 
-- Indents should use four (4) spaces.
-- Linebreaks should be in Unix style.
-- Double quotes for strings.
-- Include semicolons.
+-   Indents should use four (4) spaces.
+-   Linebreaks should be in Unix style.
+-   Double quotes for strings.
+-   Include semicolons.
 
 ### TypeScript
 
@@ -25,4 +25,4 @@ This project uses TypeScript to enforce typing. To run the typechecker, run `yar
 
 ## Building
 
-- TODO: Build instructions
+`yarn build`

@@ -22,8 +22,8 @@ const SettingsTab: React.FC<SettingsTabProps> = ({title, rightElement, style, on
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingVertical: 15,
         paddingHorizontal: 20,
         backgroundColor: "#fff",
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     rightElement: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
     chevron: {
         marginLeft: 10

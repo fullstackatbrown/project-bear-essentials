@@ -25,8 +25,8 @@ const SettingsSelect: React.FC<SettingsSelectProps> = ({id, title, icon, selecte
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingVertical: 15,
         paddingHorizontal: 20,
         backgroundColor: "#fff",
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     },
     leftElem: {
         flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
     }
 });
 

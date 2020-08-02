@@ -1,24 +1,22 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from "react-native";
 
 import DiningScreen from "../dining/DiningScreen";
 import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
 import Settings from "../settings";
 
-// import icons
 import LaundryIcon from "./LaundryIcon";
 import DiningIcon from "./DiningIcon";
 import MapIcon from "./MapIcon";
 import SettingsIcon from "./SettingsIcon";
-//import colors
 import Colors from "../../constants/Colors";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
 
-export default function BottomTabNavigator({}) {
+export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
             initialRouteName={INITIAL_ROUTE_NAME}
@@ -70,4 +68,4 @@ const styles = StyleSheet.create({
     tabs: {
         paddingVertical: 10
     }
-})
+});
