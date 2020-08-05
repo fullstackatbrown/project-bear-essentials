@@ -32,7 +32,7 @@ export const DiningMenu = props => {
             </View>
             <View style={styles.openHours}></View>
             <Text>Entrees</Text>
-                <View style={styles.horizontalLine} />
+            <View style={styles.horizontalLine} />
         </View>
     );
 };

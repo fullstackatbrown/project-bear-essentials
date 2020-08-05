@@ -14,7 +14,7 @@ import { pluralize } from "./utils";
 import { fetchLaundryRoomDetailed } from "./queries";
 import LaundryMachine from "./LaundryMachine";
 import Colors from "../../constants/Colors";
-import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint"; // for testing
+// import { LAUNDRY_DATA } from "../../data/dummydata/laundry/endpoint"; // for testing
 
 // Component representing an individual laundry room
 const LaundryCard = props => {
@@ -125,7 +125,7 @@ const LaundryCard = props => {
                 let newNumAvailWashers = 0;
                 let newNumAvailDryers = 0;
 
-                LAUNDRY_DATA.sort((a, b) => a.machine_no - b.machine_no) // data.data.laundryRoomDetailed.machines
+                data.data.laundryRoomDetailed.machines.sort((a, b) => a.machine_no - b.machine_no) // LAUNDRY_DATA
                     .forEach(machine => {
                         if (machine.type == "wash") {
                             newWashers.push(machine);
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     card: {
         padding: 22,
         borderRadius: 8,
+
         // shadows for ios
         shadowColor: "black",
         shadowRadius: 2,
@@ -296,11 +297,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontWeight: "600", // medium
+        fontWeight: "bold",
         fontSize: 28,
     },
     room: {
-        fontWeight: "600", // medium
+        fontWeight: "bold",
         fontSize: 22,
     },
     uncollapsed: {
