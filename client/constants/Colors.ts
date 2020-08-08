@@ -1,4 +1,4 @@
-export const lightmode = {
+export const LIGHTMODE = {
     tintColor: "#cc0200",
     tabIconDefault: "#ccc",
     tabIconSelected: "#2f95dc",
@@ -19,7 +19,7 @@ export const lightmode = {
     accentRed: "#CC0200",
 };
 
-export const darkmode = {
+export const DARKMODE = {
     tintColor: "#cc0200",
     tabIconDefault: "#ccc",
     tabIconSelected: "#2f95dc",
