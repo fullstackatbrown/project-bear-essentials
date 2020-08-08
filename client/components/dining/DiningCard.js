@@ -6,12 +6,22 @@ import {
     Text,
     Platform,
 } from "react-native";
+import { connect } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
-import Colors from "../../constants/Colors";
 import { fetchHours } from "./DinQueries";
 import LottieView from "lottie-react-native";
 
-const DiningCard = props => {
+import { getColors } from "../reusable/getColors";
+
+const mapStateToProps = (state) => {
+    return {
+        darkmode: state.settings.darkmode
+    };
+};
+
+const DiningCard = (props) => {
+    const Colors = getColors(props.darkmode);
+    const styles = getStyles(Colors);
     const [starred, setStarred] = useState(props.isStarred ? true : false);
     const [starName, setStarName] = useState(starred ? "star" : "staro");
     const [starColor, setStarColor] = useState(
@@ -213,7 +223,7 @@ const DiningCard = props => {
     );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (Colors) => StyleSheet.create({
     card: {
         padding: 25,
         paddingVertical: 22,
@@ -276,4 +286,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DiningCard;
+export default connect(mapStateToProps)(DiningCard);
