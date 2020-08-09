@@ -10,16 +10,6 @@ const axiosPost = query => {
     }).catch(e => console.log(e));
 };
 
-const fetchCafes = () => {
-    return axiosPost(`
-        {
-            cafes {
-                name
-                id
-            }
-        }
-    `);
-};
 
 const fetchHours = id => {
     return axiosPost(`  

@@ -191,7 +191,7 @@ const DiningCard = props => {
         <View style={styles.card}>
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.navigate("Menu")}
+                onPress={() => navigation.navigate("Menu", {name: props.card.name, queryText: props.card.queryText})}
             >
                 <View style={styles.header}>
                     <Text style={styles.title}>{props.card.name}</Text>

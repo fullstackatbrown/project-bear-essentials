@@ -20,7 +20,7 @@ interface SettingsStackProps {}
 const Settings: React.FC<SettingsStackProps> = () => {
     return (
         <SettingsStack.Navigator initialRouteName="SettingsScreen">
-            <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} options={{title: "Settings", headerShown: false}} />
+            <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerShown: false}} />
             <SettingsStack.Screen name="DietaryPreferences" component={DietaryPreferences} options={{title: "Dietary Preferences"}} />
             <SettingsStack.Screen name="LaundryNotifications" component={LaundryNotifications} options={{title: "Laundry Notifications"}} />
             <SettingsStack.Screen name="DeveloperTeam" component={DeveloperTeam} options={{title: "Developer Team"}} />

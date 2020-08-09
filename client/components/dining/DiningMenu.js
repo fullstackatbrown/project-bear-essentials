@@ -9,31 +9,27 @@ import {
 import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 
-export const DiningMenu = props => {
-    const [starred, setStarred] = useState(props.isStarred ? true : false);
-    const [starName, setStarName] = useState(starred ? "star" : "staro");
-    const [starColor, setStarColor] = useState(
-        starred ? Colors.starYellow : Colors.inactiveIcon
-    );
-    const [isClosed, setClosed] = useState(false);
+const DiningMenu = props => {
+    console.log(props.route.params)
 
     return (
-        <View style={styles.screen}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{props.name}</Text>
-                <TouchableOpacity style={styles.starArea} onPress={starHandler}>
-                    <AntDesign
-                        style={styles.star}
-                        name={starName}
-                        size={30}
-                        color={starColor}
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.openHours}></View>
-            <Text>Entrees</Text>
-            <View style={styles.horizontalLine} />
-        </View>
+        <Text>Hi</Text>
+        // <View style={styles.screen}>
+        //     <View style={styles.header}>
+        //         <Text style={styles.title}>Dining Menu</Text>
+        //         <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+        //             <AntDesign
+        //                 style={styles.star}
+        //                 name={starName}
+        //                 size={30}
+        //                 color={starColor}
+        //             />
+        //         </TouchableOpacity>
+        //     </View>
+        //     <View style={styles.openHours}></View>
+        //     <Text>Entrees</Text>
+        //     <View style={styles.horizontalLine} />
+        // </View>
     );
 };
 
@@ -93,3 +89,5 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 });
+
+export default DiningMenu

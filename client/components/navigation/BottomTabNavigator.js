@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import {StyleSheet} from "react-native";
 
-import DiningScreen from "../dining/DiningScreen";
+import DiningPage from "../dining/DiningPage";
 import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
 import Settings from "../settings";
@@ -28,7 +28,7 @@ export default function BottomTabNavigator() {
         >
             <BottomTab.Screen
                 name="Dining"
-                component={DiningScreen}
+                component={DiningPage}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <DiningIcon focused={focused} />
