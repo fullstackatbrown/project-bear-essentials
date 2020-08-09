@@ -12,6 +12,7 @@ import DiningIcon from "./DiningIcon";
 import MapIcon from "./MapIcon";
 import SettingsIcon from "./SettingsIcon";
 import Colors from "../../constants/Colors";
+import DiningNavigator from "../dining/DiningPage";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
@@ -28,7 +29,7 @@ export default function BottomTabNavigator() {
         >
             <BottomTab.Screen
                 name="Dining"
-                component={DiningPage}
+                component={DiningNavigator}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <DiningIcon focused={focused} />

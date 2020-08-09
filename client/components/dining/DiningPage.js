@@ -6,7 +6,7 @@ import DiningMenu from "./DiningMenu";
 // configures dining menu screen for navigator
 const DiningStack = createStackNavigator();
 
-const DiningPage = () => {
+const DiningNavigator = () => {
   return(
     <DiningStack.Navigator initialRouteName="DiningScreen">
       <DiningStack.Screen name="DiningScreen" component={DiningScreen} options={{headerShown: false}} />
@@ -15,4 +15,4 @@ const DiningPage = () => {
   );
 }
 
-export default DiningPage
+export default DiningNavigator
