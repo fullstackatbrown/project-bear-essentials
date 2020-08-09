@@ -2,7 +2,6 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import {StyleSheet} from "react-native";
 
-import DiningPage from "../dining/DiningPage";
 import LaundryScreen from "../laundry/LaundryScreen";
 import MapScreen from "../map/MapScreen";
 import Settings from "../settings";
@@ -12,7 +11,7 @@ import DiningIcon from "./DiningIcon";
 import MapIcon from "./MapIcon";
 import SettingsIcon from "./SettingsIcon";
 import Colors from "../../constants/Colors";
-import DiningNavigator from "../dining/DiningPage";
+import DiningNavigator from "../dining/DiningNavigator";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Dining";
