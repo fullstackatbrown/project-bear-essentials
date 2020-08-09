@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-    Platform,
     StyleSheet,
     View,
     Text,
@@ -29,44 +28,18 @@ const mapStateToProps = (state) => {
 const LaundryCard = (props) => {
     const Colors = getColors(props.darkmode);
     const styles = getStyles(Colors);
-    // initial fetching of card data
-    const [loading, setLoading] = useState(true);
-
-    // states for star
-    const [starred, setStarred] = useState(props.isStarred ? true : false);
-    const [starName, setStarName] = useState(starred ? "star" : "staro");
-    const [starColor, setStarColor] = useState(
-        starred ? Colors.starYellow : Colors.inactiveIcon
-    );
 
     // states for collapsible
     const [collapsed, setCollapsed] = useState(true);
 
-    // list of machines
-    const [allWashers, setAllWashers] = useState([]);
-    const [allDryers, setAllDryers] = useState([]);
-    const [numAvailWashers, setNumAvailWashers] = useState(0);
-    const [numAvailDryers, setNumAvailDryers] = useState(0);
-
-    // when star is pressed
-    const starHandler = () => {
-        if (starred) {
-            setStarred(false);
-            setStarName("staro");
-            setStarColor(Colors.inactiveIcon); //inactive color
-        } else {
-            setStarred(true);
-            setStarName("star");
-            setStarColor(Colors.starYellow); //star yellow
-        }
-
-        // send changes to parent
-        props.starAction();
-    };
+    // loading and parsed card data
+    const [cardInfo, setCardInfo] = useState({
+        loading: true,
+    });
 
     // when arrow is pressed, update collapsed
     const arrowHandler = () => {
-        if (!loading) setCollapsed(!collapsed);
+        if (!cardInfo.loading) setCollapsed(!collapsed);
     };
 
     // returns formatted room number, if it exists
@@ -78,7 +51,7 @@ const LaundryCard = (props) => {
 
     // creates summary for unexpanded laundry card
     const summaryHandler = () => {
-        if (loading) {
+        if (cardInfo.loading) {
             return (
                 <View style={{ width: "100%" }}>
                     <LottieView
@@ -86,8 +59,8 @@ const LaundryCard = (props) => {
                         autoPlay
                         loop
                         style={{
-                            marginTop: Platform.OS === "ios" ? -20 : -32,
-                            marginBottom: -96,
+                            marginTop: -22,
+                            marginBottom: -80,
                             width: "auto",
                             height: 160,
                             alignSelf: "center",
@@ -95,27 +68,27 @@ const LaundryCard = (props) => {
                     />
                 </View>
             );
-        } else if (numAvailWashers == 0 && numAvailDryers == 0) {
+        } else if (cardInfo.numAvailWashers == 0 && cardInfo.numAvailDryers == 0) {
             return (
                 <Text style={[styles.fail, styles.words]}>No available machines</Text>
             );
-        } else if (numAvailDryers == 0) {
+        } else if (cardInfo.numAvailDryers == 0) {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(numAvailWashers, "washer")} available
+                    {pluralize(cardInfo.numAvailWashers, "washer")} available
                 </Text>
             );
-        } else if (numAvailWashers == 0) {
+        } else if (cardInfo.numAvailWashers == 0) {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(numAvailDryers, "dryer")} available
+                    {pluralize(cardInfo.numAvailDryers, "dryer")} available
                 </Text>
             );
         } else {
             return (
                 <Text style={[styles.success, styles.words]}>
-                    {pluralize(numAvailWashers, "washer")},{" "}
-                    {pluralize(numAvailDryers, "dryer")} available
+                    {pluralize(cardInfo.numAvailWashers, "washer")},{" "}
+                    {pluralize(cardInfo.numAvailDryers, "dryer")} available
                 </Text>
             );
         }
@@ -125,7 +98,7 @@ const LaundryCard = (props) => {
     // re-parse room data on changes in machineInfo or loading states
     useEffect(() => {
         let mounted = true;
-        const fetchData = async (isInitial) => {
+        const fetchData = async () => {
             const { data } = await fetchLaundryRoomDetailed(props.card.id);
 
             if (mounted) {
@@ -150,20 +123,19 @@ const LaundryCard = (props) => {
                         }
                     });
 
-                if (mounted) {
-                    setAllWashers(newWashers);
-                    setAllDryers(newDryers);
-                    setNumAvailWashers(newNumAvailWashers);
-                    setNumAvailDryers(newNumAvailDryers);
-                }
-
-                if (isInitial) setLoading(false);
+                setCardInfo({
+                    loading: false,
+                    allWashers: newWashers,
+                    allDryers: newDryers,
+                    numAvailWashers: newNumAvailWashers,
+                    numAvailDryers: newNumAvailDryers,
+                });
             }
         };
 
-        fetchData(true);
-
-        let interval = setInterval(() => fetchData(false), 60000);
+        // fetch once, and then every 60 seconds afterwards
+        fetchData();
+        let interval = setInterval(fetchData, 60000);
 
         return () => {
             mounted = false;
@@ -180,39 +152,40 @@ const LaundryCard = (props) => {
                             <Text style={styles.title}>{props.card.title}</Text>
                             {roomNumberHandler()}
                         </View>
-                        <TouchableOpacity style={styles.starArea} onPress={starHandler}>
+                        <TouchableOpacity style={styles.starArea} onPress={props.starAction}>
                             <AntDesign
                                 style={styles.star}
-                                name={starName}
+                                name={props.isStarred ? "star" : "staro"}
                                 size={30}
-                                color={starColor}
+                                color={props.isStarred ? Colors.starYellow : Colors.inactiveIcon}
                             />
                         </TouchableOpacity>
                     </View>
                     <Collapsible collapsed={!collapsed}>
                         <View style={styles.uncollapsed}>
                             {summaryHandler()}
-                            {!loading && (
-                                <View style={styles.colSections}>
-                                    <View>
-                                        <Text style={styles.tapText}>Tap to expand</Text>
-                                    </View>
-                                    <View style={styles.upArrow}>
-                                        <Ionicons
-                                            style={styles.arrow}
-                                            name="ios-arrow-down"
-                                            size={40}
-                                            color="#CCCCCC"
-                                        />
-                                    </View>
+                            {!cardInfo.loading &&
+                            <View style={styles.colSections}>
+                                <View>
+                                    <Text style={styles.tapText}>Tap to expand</Text>
                                 </View>
-                            )}
+                                <View style={styles.upArrow}>
+                                    <Ionicons
+                                        style={styles.arrow}
+                                        name="ios-arrow-down"
+                                        size={40}
+                                        color="#CCCCCC"
+                                    />
+                                </View>
+                            </View>
+                            }
                         </View>
                     </Collapsible>
+                    {!cardInfo.loading &&
                     <Collapsible collapsed={collapsed}>
                         <View style={styles.collapsed}>
                             <View>
-                                {allWashers.map((washer) => (
+                                {cardInfo.allWashers.map((washer) => (
                                     <LaundryMachine
                                         key={washer.id}
                                         name="Washer"
@@ -227,7 +200,7 @@ const LaundryCard = (props) => {
                             </View>
                             <View style={styles.horizontalLine} />
                             <View>
-                                {allDryers.map((dryer) => (
+                                {cardInfo.allDryers.map((dryer) => (
                                     <LaundryMachine
                                         key={dryer.id}
                                         name="Dryer"
@@ -255,6 +228,7 @@ const LaundryCard = (props) => {
                             </View>
                         </View>
                     </Collapsible>
+                    }
                 </TouchableOpacity>
             </View>
         </View>

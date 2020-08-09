@@ -7,12 +7,12 @@ import DiningMenu from "./DiningMenu";
 const DiningStack = createStackNavigator();
 
 const DiningNavigator = () => {
-	return (
-		<DiningStack.Navigator initialRouteName="DiningScreen">
-			<DiningStack.Screen name="DiningScreen" component={DiningScreen} options={{ headerShown: false }} />
-			<DiningStack.Screen name="Menu" component={DiningMenu} />
-		</DiningStack.Navigator>
-	);
-}
+    return (
+        <DiningStack.Navigator initialRouteName="DiningScreen">
+            <DiningStack.Screen name="DiningScreen" component={DiningScreen} options={{ headerShown: false }} />
+            <DiningStack.Screen name="Menu" component={DiningMenu} />
+        </DiningStack.Navigator>
+    );
+};
 
-export default DiningNavigator
+export default DiningNavigator;

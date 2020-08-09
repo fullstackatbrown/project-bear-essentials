@@ -10,7 +10,7 @@ import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 
 const DiningMenu = props => {
-    console.log(props.route.params)
+    console.log(props.route.params);
 
     return (
         <Text>Hi</Text>
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DiningMenu
+export default DiningMenu;
