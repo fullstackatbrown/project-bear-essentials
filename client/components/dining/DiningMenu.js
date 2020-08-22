@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { getColors } from "../reusable/getColors";
+import Carousel from 'react-native-carousel-view';
+//import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 const mapStateToProps = (state) => {
     return {
@@ -43,30 +45,50 @@ const DiningMenu = (props) => {
     return (
        
         <View style={styles.screen}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{props.children}Sharpe Refrectory</Text>
-                {/* <TouchableOpacity>
-                    <AntDesign
-                            style={styles.star}
-                            name={starName}
-                            size={30}
-                            color={starColor}
-                        />
-                </TouchableOpacity> */}
+            <Carousel
+            width={400}
+            height={525}
+            animate={false}
+            indicatorSize={10}
+            inactiveDotColor={Colors.inactive}
+            delay={0}
+            onScroll={() => console.log('on scroll view')}
+            onScrollBegin={() => console.log('scroll begin')}
+            onPageChange={(page) => console.log('scroll change', page)}
+            >
+            <View style={styles.contentContainer}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{props.children}Sharpe Refrectory</Text>
+                    {/* <TouchableOpacity>
+                        <AtDesign
+                                style={styles.star}
+                                name={starName}
+                                size={30}
+                                color={starColor}
+                            />
+                    </TouchableOpacity> */}
+                </View>
+                <View>
+                    {hoursHandler()}
+                </View>
+                <View style={styles.mealInfo}>
+                    <Text style={styles.text}>Now Serving</Text>
+                    <Text style={[styles.text, styles.mealStatus]}>Breakfast</Text>
+                </View>
+                <Text style={styles.menuTitle}>Entrees</Text>
+                <View style={styles.horizontalLine} />
+                <Text style={styles.menuTitle}>Fresh Fruits</Text>
+                <View style={styles.horizontalLine} />
+                <Text style={styles.menuTitle}>Desserts</Text>
+                <View style={styles.horizontalLine} />
             </View>
-            <View>
-                {hoursHandler()}
-            </View>
-            <View style={styles.mealInfo}>
-                <Text style={styles.text}>Now Serving</Text>
-                <Text style={[styles.text, styles.mealStatus]}>Breakfast</Text>
-            </View>
-            <Text style={styles.menuTitle}>Entrees</Text>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.menuTitle}>Fresh Fruits</Text>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.menuTitle}>Desserts</Text>
-            <View style={styles.horizontalLine} />
+                <View style={styles.contentContainer}>
+                    <Text>Page 2</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                     <Text>Page 3</Text>
+                </View>
+            </Carousel>
         </View>
     );
 };
@@ -86,6 +108,12 @@ const getStyles = (Colors) => StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#fafafa",
     },
+    contentContainer: {
+        borderWidth: 0,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     header: {
         height: 110,
         backgroundColor: "#f9f9f9",
