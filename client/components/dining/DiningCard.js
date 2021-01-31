@@ -52,25 +52,28 @@ const DiningCard = (props) => {
         let curr = Date.parse(
             `11/11/11 ${date.getHours()}:${date.getMinutes()}`
         );
-        let open1 = Date.parse(`11/11/11 ${hallHours[0].starttime}`);
-        let close1 = Date.parse(`11/11/11 ${hallHours[0].endtime}`);
-        let open2 = Date.parse(`11/11/11 ${hallHours[1].starttime}`);
-        let close2 = Date.parse(`11/11/11 ${hallHours[1].endtime}`);
-        let open3 = Date.parse(`11/11/11 ${hallHours[2].starttime}`);
-        let close3 = Date.parse(`11/11/11 ${hallHours[2].endtime}`);
-        if (curr > open1 && curr < close1) {
-            return 0;
-        } else if (curr > open2 && curr < close2) {
-            return 1;
-        } else if (curr > open3 && curr < close3) {
-            return 2;
-        } else if (curr > close1 && curr < open2) {
-            return 3;
-        } else if (curr > close2 && curr < open3) {
-            return 4;
-        } else {
-            return 5;
-        }
+        // TODO: hallHours length is sometimes less than 3 (making hallHours[2] = undefined)
+        console.log("hallHours:", hallHours);
+        // let open1 = Date.parse(`11/11/11 ${hallHours[0].starttime}`);
+        // let close1 = Date.parse(`11/11/11 ${hallHours[0].endtime}`);
+        // let open2 = Date.parse(`11/11/11 ${hallHours[1].starttime}`);
+        // let close2 = Date.parse(`11/11/11 ${hallHours[1].endtime}`);
+        // let open3 = Date.parse(`11/11/11 ${hallHours[2].starttime}`);
+        // let close3 = Date.parse(`11/11/11 ${hallHours[2].endtime}`);
+        // if (curr > open1 && curr < close1) {
+        //     return 0;
+        // } else if (curr > open2 && curr < close2) {
+        //     return 1;
+        // } else if (curr > open3 && curr < close3) {
+        //     return 2;
+        // } else if (curr > close1 && curr < open2) {
+        //     return 3;
+        // } else if (curr > close2 && curr < open3) {
+        //     return 4;
+        // } else {
+        //     return 5;
+        // }
+        return 0;
     };
 
     // formats the time returned from the api
