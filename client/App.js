@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Platform, StatusBar, View } from "react-native";
 import { Provider } from "react-redux";
-import { SplashScreen, Linking } from "expo";
+import * as SplashScreen from 'expo-splash-screen';
+import * as Linking from 'expo-linking';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLinking } from "@react-navigation/native";
