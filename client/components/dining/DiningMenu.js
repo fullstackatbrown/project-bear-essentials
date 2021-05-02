@@ -20,6 +20,7 @@ const mapStateToProps = (state) => {
 };
 
 const DiningMenu = (props) => {
+    console
     const Colors = getColors(props.darkmode);
     const styles = getStyles(Colors);
     const [starred, setStarred] = useState(props.isStarred ? true : false);

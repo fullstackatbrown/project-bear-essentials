@@ -32,7 +32,7 @@ const fetchHours = id => {
 const fetchMenuDetailed = id => {
     return axiosPost(`  
         {
-            menu (id: ${id}) {
+            menu (id: "${id}") {
                 name
                 dayparts {
                     endtime
