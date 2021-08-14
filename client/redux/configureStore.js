@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import { persistStore, persistCombineReducers } from "redux-persist";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { dining } from "./dining";
 import { laundry } from "./laundry";
