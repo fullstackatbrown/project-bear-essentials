@@ -10,10 +10,6 @@ This repository holds both the React Native mobile app and the backend API for t
 
 Brown Essentials is a mobile app that exposes vital data and information about Brown University to its students. Currently, the app details dining halls and menus, laundry machines, an interactive map of the campus, and various other resources. It is currently in development, and will be released on both iOS and Android.
 
-## Visuals
-
--   TODO: In-app screenshots!
-
 ## Contributors
 
 Pull requests are welcome. Please open an issue for any bugs you may find. A list of contributors can be found below:
